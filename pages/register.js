@@ -1,4 +1,4 @@
-
+import Image from 'next/image';
 export default function Home() {
   return (
     <div className="flex flex-row h-full w-full">
@@ -8,7 +8,7 @@ export default function Home() {
 
         <div className="ml-10 items-center justify-center">
 
-          <img src={'/ajedrez.png'}
+          <Image src={'/ajedrez.png'}
             className="mx-auto w-2/3"
             alt="Sample image"
           />

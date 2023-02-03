@@ -1,3 +1,4 @@
+import Image from 'next/image';
 export default function Home() {
   return (
 
@@ -6,7 +7,7 @@ export default function Home() {
       <div className="w-1/2 bg-white md:flex flex-none items-center
      justify-center p-10 overflow-hidden ">
         <div className="ml-10 items-center justify-center">
-          <img src={'/unblock.jpg'}
+          <Image src={'/unblock.jpg'}
             className="mx-auto w-2/3 h-2/3"
             alt="Sample image"
           />

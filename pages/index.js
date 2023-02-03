@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-
+import Image from 'next/image';
 export default function Home() {
   return (
 
@@ -9,7 +9,7 @@ export default function Home() {
       <div className="w-2/5 bg-details md:flex flex-none items-center
         justify-center p-10 overflow-hidden ">
         <div className="ml-10 items-center justify-center">
-          <img src={'/ajedrez.png'}
+          <Image src={'/ajedrez.png'}
             className="mx-auto w-2/3"
             alt="Sample image"
           />

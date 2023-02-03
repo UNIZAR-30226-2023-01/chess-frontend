@@ -1,5 +1,5 @@
 
-
+import Image from 'next/image';
 export default function Home() {
   return (
 
@@ -9,7 +9,7 @@ export default function Home() {
     justify-center p-10 overflow-hidden ">
 
         <div className="ml-10 items-center justify-center">
-          <img src={'/newPasswd.jpg'}
+          <Image src={'/newPasswd.jpg'}
             className="mx-auto w-2/3 h-2/3"
             alt="Sample image"
           />
