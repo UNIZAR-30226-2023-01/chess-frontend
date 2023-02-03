@@ -1,6 +1,6 @@
 
 import Image from 'next/image';
-export default function Home() {
+export default function Reset() {
   return (
 
     <div className="flex flex-row h-full w-full overflow-hidden">

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-export default function Home() {
+export default function Register() {
   return (
     <div className="flex flex-row h-full w-full">
 
@@ -136,6 +136,8 @@ export default function Home() {
                transition ease-in duration-300" rel="noreferrer">
           </a>
         </div>
+
+        <p></p>
 
       </div>
     </div>

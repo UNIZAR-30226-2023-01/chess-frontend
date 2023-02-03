@@ -88,7 +88,7 @@ export default function Home() {
 
 
         <div className="flex flex-row justify-center items-center space-x-3">
-          <a href="https://www.behance.net/ajeeshmon" target="_blank"
+          <a href="" target="_blank"
             className="w-11 h-11 items-center justify-center inline-flex
               rounded-2xl font-bold text-lg
               bg-blue-900 hover:shadow-lg cursor-pointer transition
@@ -96,14 +96,14 @@ export default function Home() {
 
 
           </a>
-          <a href="https://twitter.com/ajeemon?lang=en" target="_blank"
+          <a href="" target="_blank"
             className="w-11 h-11 items-center justify-center
                inline-flex rounded-2xl font-bold text-lg  text-white
                bg-blue-400 hover:shadow-lg cursor-pointer
                 transition ease-in duration-300" rel="noreferrer">
 
           </a>
-          <a href="https://in.linkedin.com/in/ajeeshmon"
+          <a href=""
             target="_blank"
             className="w-11 h-11 items-center justify-center
               inline-flex rounded-2xl font-bold text-lg
@@ -112,6 +112,10 @@ export default function Home() {
           </a>
         </div>
 
+        <Link
+          href="/juego"
+          className="justify-self-end mt-3 mb-3">Play
+        </Link>
       </div>
     </div>
   );

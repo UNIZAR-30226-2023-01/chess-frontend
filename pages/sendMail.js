@@ -1,5 +1,5 @@
 import Image from 'next/image';
-export default function Home() {
+export default function sendMail() {
   return (
 
     <div className="flex flex-row h-full w-full overflow-hidden">
@@ -8,15 +8,12 @@ export default function Home() {
      justify-center p-10 overflow-hidden ">
         <div className="ml-10 items-center justify-center">
           <Image src={'/unblock.jpg'}
-            width="400"
-            height="400"
+            width="600"
+            height="600"
             className="mx-auto w-2/3 h-2/3"
             alt="Sample image"
           />
-
-
         </div>
-
       </div>
 
       <div className=" h-screen w-full items-end p-10
