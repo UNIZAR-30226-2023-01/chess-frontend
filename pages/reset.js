@@ -10,6 +10,8 @@ export default function Home() {
 
         <div className="ml-10 items-center justify-center">
           <Image src={'/newPasswd.jpg'}
+            width="400"
+            height="400"
             className="mx-auto w-2/3 h-2/3"
             alt="Sample image"
           />

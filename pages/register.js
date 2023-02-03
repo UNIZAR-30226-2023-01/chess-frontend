@@ -10,6 +10,8 @@ export default function Home() {
 
           <Image src={'/ajedrez.png'}
             className="mx-auto w-2/3"
+            width="400"
+            height="400"
             alt="Sample image"
           />
 
