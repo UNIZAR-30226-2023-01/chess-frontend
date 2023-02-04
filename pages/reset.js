@@ -34,8 +34,7 @@ export default function Reset() {
             Your new password must be unique from those previously used.</p>
           </h1>
           <input
-            className="ml-2  px-5 py-1 h-16 w-80 mt-5
-            focus:outline-none focus:bg-white"
+            className="mt-10 focus:bg-white"
             placeholder="   Enter your password"
             type="password"
             id="password"
@@ -45,8 +44,7 @@ export default function Reset() {
           />
 
           <input
-            className="ml-2 px-5 py-1 h-16 w-80 mt-5
-            focus:outline-none focus:bg-white"
+            className="focus:bg-white"
             placeholder="   Confirm your password"
             type="password"
             id="password"
@@ -56,7 +54,7 @@ export default function Reset() {
           />
 
 
-          <button className ="ml-2 w-80 h-16 mt-3">
+          <button className ="ml-2 w-80 h-16 mt-10 mb-10 ">
            Reset password
           </button>
 
