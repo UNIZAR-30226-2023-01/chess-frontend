@@ -26,17 +26,11 @@ export default function Register() {
       <div className=" h-screen mt-10 mr-10 ml-20 items-end
       p-10 overflow-hidden justify-self-end ">
 
-        <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-300
-        rounded-full mix-blend-multiply filter blur-xl opacity-70
-        animate-blob animation-delay-2000">
+        <div className=" circulo top-0 -right-4  bg-blue-300
+          rounded-full "></div>
 
-        </div>
-
-        <div className="absolute bottom-2 right-20 w-72 h-72 bg-purple-300
-        rounded-full mix-blend-multiply filter blur-xl
-         opacity-70 animate-blob animation-delay-4000">
-
-        </div>
+        <div className=" circulo bottom-2 right-20
+          bg-purple-300 rounded-full "></div>
 
         <h1 className="text-xl font-body leading-tight
         tracking-tight text-gray-900 mb-10 ">
@@ -48,8 +42,7 @@ export default function Register() {
         <block className=" justify-self-end flex flex-col col-2 h-1/2
         w-96 drop-shadow-lg">
           <input
-            className="ml-2 h-16 w-80 mt-5  px-5 py-1
-            focus:outline-none focus:bg-white"
+            className="focus:bg-white mt-10"
             placeholder="   Email"
             type="email"
             id="email"
@@ -59,8 +52,7 @@ export default function Register() {
           />
 
           <input
-            className="ml-2 px-5 py-1  h-16 w-80 mt-5
-            focus:outline-none focus:bg-white"
+            className="focus:bg-white"
             placeholder="   Username"
             type="name"
             id="username"
@@ -70,8 +62,7 @@ export default function Register() {
           />
 
           <input
-            className="ml-2  px-5 py-1 h-16 w-80 mt-5
-            focus:outline-none focus:bg-white"
+            className="focus:bg-white"
             placeholder="   Enter your password"
             type="password"
             id="password"
@@ -81,8 +72,7 @@ export default function Register() {
           />
 
           <input
-            className="ml-2 px-5 py-1 h-16 w-80 mt-5
-             focus:outline-none focus:bg-white"
+            className="focus:bg-white"
             placeholder="   Confirm your password"
             type="password"
             id="password"
@@ -110,30 +100,23 @@ export default function Register() {
 
 
         <div className="flex flex-row justify-center items-center space-x-3">
-          <a href="https://www.behance.net/ajeeshmon"
-            target="_blank"
-            className="w-11 h-11 items-center justify-center
-              inline-flex rounded-2xl font-bold text-lg
-              bg-blue-900 hover:shadow-lg cursor-pointer
-              transition ease-in duration-300" rel="noreferrer">
-
-
+          <a href="" target="_blank"
+            className="boton-RRSS inline-flex
+              rounded-2xl text-lg
+              bg-blue-900 hover:shadow-lg cursor-pointer"
+            rel="noreferrer">
           </a>
-          <a href="https://twitter.com/ajeemon?lang=en"
-            target="_blank"
-            className="w-11 h-11 items-center justify-center
-              inline-flex rounded-2xl font-bold text-lg
-              text-white bg-blue-400 hover:shadow-lg cursor-pointer
-              transition ease-in duration-300" rel="noreferrer">
-
-
+          <a href="" target="_blank"
+            className=" boton-RRSS
+              inline-flex rounded-2xl text-lg  text-white
+              bg-blue-400 hover:shadow-lg cursor-pointer"
+            rel="noreferrer">
           </a>
-          <a href="https://in.linkedin.com/in/ajeeshmon"
-            target="_blank"
-            className="w-11 h-11 items-center justify-center
-               inline-flex rounded-2xl font-bold text-lg
-               text-white bg-blue-500 hover:shadow-lg cursor-pointer
-               transition ease-in duration-300" rel="noreferrer">
+          <a href="" target="_blank"
+            className=" boton-RRSS
+              inline-flex rounded-2xl text-lg
+              text-white bg-blue-500 hover:shadow-lg cursor-pointer"
+            rel="noreferrer">
           </a>
         </div>
 
