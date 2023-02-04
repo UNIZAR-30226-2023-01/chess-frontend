@@ -12,12 +12,11 @@ export default function Home() {
             Choose a game mode
         </h1>
 
-        <block className="flex flex-col col-2 h-2/3 w-1/3 grid justify-items-start">
+        <block className="flex flex-col col-2 h-2/3 w-1/3 
+        grid justify-items-start">
           <div className='ml-4'>Joe mama</div>
           <div className="flex flex-row">
             <div classname="bg-black h-full w-1/2">
-           
-          <img src="https://www.disneyplusinformer.com/wp-content/uploads/2021/09/The-Simpsons-Profile-Icons-8.png" alt="profile"></img>
             
             </div>
             <div className='grid justify-items-start'>
@@ -29,11 +28,13 @@ export default function Home() {
               <option>15 min</option>
             </select>
           <button
-              className ="boton ml-2 w-80 h-16 mt-3 bg-black text-white hover:bg-gray-900">
+              className ="boton ml-2 w-80 h-16 mt-3 bg-black 
+              text-white hover:bg-gray-900">
             Play Ranked!
             </button>
             <button
-              className ="boton ml-2 w-80 h-16 mt-3 bg-white text-black hover:bg-gray-100">
+              className ="boton ml-2 w-80 h-16 mt-3 bg-white 
+              text-black  hover:bg-gray-100">
             Play with Friends!
             </button>
 
@@ -48,7 +49,8 @@ export default function Home() {
             </p>
 
             <button
-              className ="boton ml-2 w-80 h-16 bg-white text-black hover:bg-gray-100">
+              className ="boton ml-2 w-80 h-16 bg-white text-black 
+              hover:bg-gray-100">
                ⚙️ Play against computer
             </button>
             
