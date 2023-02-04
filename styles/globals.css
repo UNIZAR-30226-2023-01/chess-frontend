@@ -22,13 +22,13 @@ block{
    
 }
 
-button{
-    background-color: #1E232C;
+.boton{
     font-size: 18px;
-    color: #FFFFFF;
     font-weight: 500;
     border-radius: 5px;
     text-align: center;
+    border-color: #1E232C;
+    border-radius: 2px;
 }
 
 
@@ -50,24 +50,21 @@ button{
     justify-items:center;
     justify-content:center;
     font:bold;
-    
-               
+              
 }
-button:hover{
-    background-color:dimgray;
-}
+
 input{
     background-color: #F7F8F9;
     border-radius: 5px;
-    height: 20%;
-    width: 85%;
-    margin-left:2%;
-    margin-top:3%;
+    height: 60px;
+    width: 340px;
+    margin-left:2px;
+    margin-top:3px;
     padding-left: 1%;
     padding-right: 5%;
     outline: none;
-
 }
+
 input:placeholder-shown{
     color: #8391A1;
 }
@@ -90,8 +87,8 @@ Esta parte esta dedicada a la creacion del juego
 
 #tablero{
     display: grid;
-    grid-template-columns: repeat(8,100px);
-    grid-template-rows: repeat(8,100px);
+    grid-template-columns: repeat(8,75px);
+    grid-template-rows: repeat(8,75px);
     width: 800px;
     height: 800px;
 }
@@ -99,8 +96,8 @@ Esta parte esta dedicada a la creacion del juego
 .casilla{
     display: grid;
     place-content: center;
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
 }
 .casilla-negra{
     background-color: #779556;
@@ -114,8 +111,8 @@ Esta parte esta dedicada a la creacion del juego
     background-repeat: no-repeat;
     background-position: center;
     background-size: 60px;
-    width: 100px;
-    height: 100px;
+    width: 75px;
+    height: 75px;
 }
 
 /*************************************************

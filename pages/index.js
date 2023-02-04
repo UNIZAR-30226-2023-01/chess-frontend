@@ -8,7 +8,9 @@ export default function Home() {
 
       <div className="w-2/5 bg-details md:flex flex-none items-center
         justify-center p-10 overflow-hidden ">
+          
         <div className="ml-10 items-center justify-center">
+       
           <Image src={'/ajedrez.png'}
             width="400"
             height="400"
@@ -36,10 +38,10 @@ export default function Home() {
         */}
 
 
-        <div className=" circulo top-0 -right-4  bg-blue-300
+        <div className=" circulo top-0 right-1 bg-blue-300
           rounded-full "></div>
 
-        <div className=" circulo bottom-2 right-20
+        <div className=" circulo bottom-7 right-19
           bg-purple-300 rounded-full "></div>
 
         <h1 className="text-xl font-body leading-tight tracking-tight
@@ -51,7 +53,7 @@ export default function Home() {
         <block className=" flex flex-col col-2 h-1/2
           w-96 drop-shadow-lg">
           <input
-            className="focus:bg-white"
+            className="focus:bg-white mt-10"
             placeholder="   Enter your email"
             type="email"
             id="email"
@@ -61,7 +63,7 @@ export default function Home() {
           />
 
           <input
-            className="focus:bg-white"
+            className="focus:bg-white mt-5"
             placeholder="   Enter your password"
             type="password"
             id="password"
@@ -76,7 +78,7 @@ export default function Home() {
           </Link>
 
           <button
-            className ="ml-2 w-80 h-16 mt-3">
+            className ="boton bg-black text-white rounded ml-2 w-80 h-16 mt-3">
           Login
           </button>
 
@@ -119,7 +121,7 @@ export default function Home() {
 
         <Link
           href="/juego"
-          className="justify-self-end mt-3 mb-3">Play
+          className="">Play
         </Link>
       </div>
     </div>
