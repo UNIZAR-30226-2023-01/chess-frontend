@@ -1,8 +1,10 @@
+import Tablero from '../models/Tablero';
+
 export default function Juego() {
   return (
-    <div>
+    <div id="juego">
 
-        a
+      <Tablero/>
     </div>
 
   );

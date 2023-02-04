@@ -43,3 +43,47 @@ p{
     color:#6A707C;
     text-align: center;
 }
+
+/*************************************************
+Esta parte esta dedicada a la creacion del juego
+**************************************************/
+#juego{
+    display: grid;
+    place-content: center;
+    background-color: #202020;
+    height: 100vh;
+}
+
+#tablero{
+    display: grid;
+    grid-template-columns: repeat(8,100px);
+    grid-template-rows: repeat(8,100px);
+    width: 800px;
+    height: 800px;
+}
+
+.casilla{
+    display: grid;
+    place-content: center;
+    width: 100px;
+    height: 100px;
+}
+.casilla-negra{
+    background-color: #779556;
+}
+
+.casilla-blanca{
+    background-color: #ebecd0;
+}
+
+.pieza{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 60px;
+    width: 100px;
+    height: 100px;
+}
+
+/*************************************************
+Esta parte esta dedicada a la creacion del juego
+**************************************************/
