@@ -8,9 +8,7 @@ export default function Home() {
 
       <div className="w-2/5 bg-details md:flex flex-none items-center
         justify-center p-10 overflow-hidden ">
-          
         <div className="ml-10 items-center justify-center">
-       
           <Image src={'/ajedrez.png'}
             width="400"
             height="400"
