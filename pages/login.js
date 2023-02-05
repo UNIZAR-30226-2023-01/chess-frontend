@@ -38,7 +38,7 @@ export default function Login() {
                 </div>
 
                 <div>
-                  <button type="submit" className="flex items-center justify-center w-full px-10 py-4 text-sm font-bold text-center text-white transition duration-500 ease-in-out transform bg-blue-700 rounded-xl hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 select-none">Sign in</button>
+                  <button type="submit" className="flex items-center justify-center w-full px-10 py-4 text-sm font-bold text-center text-white transition duration-500 ease-in-out transform bg-blue-700 rounded-xl hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 select-none capitalize">Sign in</button>
                 </div>
               </form>
               <div className="relative my-4">
