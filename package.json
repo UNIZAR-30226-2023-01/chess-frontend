@@ -17,10 +17,13 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "chess.js": "^1.0.0-beta.3",
+    "cm-chessboard": "^5.4.8",
     "eslint-config-next": "13.1.6",
     "fs": "^0.0.1-security",
     "next": "13.1.6",
     "react": "18.2.0",
+    "react-chessboard": "^2.0.8",
     "react-dom": "18.2.0",
     "sitemap": "^7.1.1"
   },
