@@ -8,8 +8,6 @@ h1 {
     font-weight: bold;
 }
 
-
-
 block{
     background-color: #E1E5EE;
     font-size: 18px;
@@ -89,8 +87,8 @@ Esta parte esta dedicada a la creacion del juego
     display: grid;
     grid-template-columns: repeat(8,75px);
     grid-template-rows: repeat(8,75px);
-    width: 800px;
-    height: 800px;
+    width: 600px;
+    height: 600px;
 }
 
 .casilla{
@@ -113,6 +111,13 @@ Esta parte esta dedicada a la creacion del juego
     background-size: 60px;
     width: 75px;
     height: 75px;
+}
+
+.pieza:hover{
+    cursor:grab;
+}
+.pieza:active{
+    cursor:grabbing;
 }
 
 /*************************************************
