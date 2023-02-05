@@ -25,6 +25,7 @@
     "react": "18.2.0",
     "react-chessboard": "^2.0.8",
     "react-dom": "18.2.0",
+    "react-icons": "^4.7.1",
     "sitemap": "^7.1.1"
   },
   "devDependencies": {
