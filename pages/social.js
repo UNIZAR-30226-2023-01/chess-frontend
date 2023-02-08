@@ -65,7 +65,7 @@ function classNames(...classes) {
 export default function Example() {
   return (
     <>
-      <div className="flex h-full">
+      <div className="flex h-full h-screen">
         <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
           <div className="relative z-0 flex flex-1 overflow-hidden">
             <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
