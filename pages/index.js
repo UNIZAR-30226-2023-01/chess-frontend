@@ -1,44 +1,94 @@
-export default function index() {
+/* This example requires Tailwind CSS v3.0+ */
+import { CheckIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
+
+
+const tiers = [
+  {
+    name: 'Play Computer',
+    id: 'tier-freelancer',
+    href: '#',
+    description: 'PLAY VS THE MACHINE',
+    features: ['5 products', 'Up to 1,000 subscribers', 'Basic analytics', '48-hour support response time'],
+    cta: 'Play Now',
+  },
+  {
+    name: 'Play Online',
+    id: 'tier-startup',
+    href: '#',
+    description: 'PLAY WITH SOMEONE AT YOUR LEVEL',
+    features: [
+      '25 products',
+      'Up to 10,000 subscribers',
+      'Advanced analytics',
+      '24-hour support response time',
+      'Marketing automations',
+    ],
+    cta: 'Play Now',
+  },
+];
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+export default function Example() {
   return (
-    <div className="h-screen w-full flex items-center justify-center">
-      <section className="w-full text-gray-600 body-font overflow-hidden mx-auto">
-        <div className="container px-5 py-16 mx-auto">
-          <div className="flex flex-col text-center w-full mb-20">
-            <h1 className="sm:text-5xl text-4xl font-bold title-font mb-2 text-gray-900">Play Chess</h1>
-            <p className="lg:w-2/3 mx-auto leading-relaxed text-base text-gray-500 max-w-prose">Join the game of chess and challenge your strategic skills. Play against opponents from all over the world and improve your skills, discover the thrill of playing chess now!</p>
-          </div>
-          <div className="flex flex-wrap justify-center">
-            <div className="p-4 xl:w-1/4 md:w-1/2 w-full">
-              <div className="h-full p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
-                <h2 className="text-sm tracking-widest title-font mb-1 font-medium uppercase">Play vs the machine</h2>
-                <h1 className="text-4xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
-                  Play Computer
-                </h1>
-                <button className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Play Now
-                  <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-auto" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7"></path>
-                  </svg>
-                </button>
-                <p className="text-xs text-gray-500 mt-3">Literally you probably haven&apost heard of them jean shorts.</p>
-              </div>
-            </div>
-            <div className="p-4 xl:w-1/4 md:w-1/2 w-full">
-              <div className="h-full p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
-                <h2 className="text-sm tracking-widest title-font mb-1 font-medium uppercase">Play with someone at your level</h2>
-                <h1 className="text-4xl text-gray-900 leading-none flex items-center pb-4 mb-4 border-b border-gray-200">
-                  Play Online
-                </h1>
-                <button className="flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Play Now
-                  <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 ml-auto" viewBox="0 0 24 24">
-                    <path d="M5 12h14M12 5l7 7-7 7"></path>
-                  </svg>
-                </button>
-                <p className="text-xs text-gray-500 mt-3">Literally you probably haven&apost heard of them jean shorts.</p>
-              </div>
-            </div>
-          </div>
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl text-center">
+          <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            Play Chess
+          </p>
         </div>
-      </section>
+        <p className="mx-auto mt-6 max-w-prose text-center text-lg leading-8 text-gray-600">
+          Join the game of chess and challenge your strategic skills. Play against opponents
+          from all over the world and improve your skills, discover the thrill of playing chess now!
+        </p>
+        <div className="isolate mx-auto mt-16 flex flex-wrap justify-center max-w-md gap-8 lg:mx-0 lg:max-w-none">
+          {tiers.map((tier) => (
+            <div
+              key={tier.id}
+              className={classNames('ring-gray-200 rounded-xl p-6 ring-1 xl:p-6 flex flex-col' )}
+            >
+              <p className={classNames('text-gray-600 text-sm leading-6 text-left')}>
+                {tier.description}
+              </p>
+              <h3
+                id={tier.id}
+                className={classNames('text-gray-900 text-4xl font-bold tracking-tight pb-4 border-b border-gray-200' )}
+              >
+                {tier.name}
+              </h3>
+              <ul
+                role="list"
+                className={classNames('text-gray-600 mt-4 mb-6 space-y-3 text-sm leading-6 xl:mt-6')}
+              >
+                {tier.features.map((feature) => (
+                  <li key={feature} className="flex gap-x-3">
+                    <CheckIcon
+                      className={classNames('text-indigo-600 h-6 w-5 flex-none')}
+                      aria-hidden="true"
+                    />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={tier.href}
+                aria-describedby={tier.id}
+                className={classNames( 'flex items-center mt-auto justify-between bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-indigo-600',
+                    'rounded-md py-2 px-4 text-center text-sm leading-6 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2',
+                )}
+              >
+                {tier.cta}
+                <ArrowRightIcon
+                  className={classNames('text-white h-5 w-5 flex-none')}
+                  aria-hidden="true"/>
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
