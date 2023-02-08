@@ -210,8 +210,8 @@ export default function Agenda() {
   return (
     <aside className="hidden w-96 flex-shrink-0 border-r border-gray-200 xl:order-first xl:flex xl:flex-col">
       <div className="px-6 pt-6 pb-4">
-        <h2 className="text-lg font-medium text-gray-900">Directory</h2>
-        <p className="mt-1 text-sm text-gray-600 text-left">Search directory of 3,018 employees</p>
+        <h2 className="text-lg font-medium text-gray-900">Friends</h2>
+        <p className="mt-1 text-sm text-gray-600 text-left">0 friends are online</p>
         <form className="mt-6 flex space-x-4" action="#">
           <div className="min-w-0 flex-1">
             <label htmlFor="search" className="sr-only">

@@ -2,23 +2,24 @@ import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import {
   Bars3Icon,
-  CalendarIcon,
-  ChartBarIcon,
-  FolderIcon,
-  HomeIcon,
-  InboxIcon,
+  PlayIcon,
+  RectangleStackIcon,
   UsersIcon,
   XMarkIcon,
+  PuzzlePieceIcon,
+  ShoppingBagIcon,
+  PresentationChartLineIcon,
 } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/router';
 import Agenda from '@/components/Agenda';
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Team', href: '#', icon: UsersIcon, current: false },
-  { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-  { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-  { name: 'Documents', href: '#', icon: InboxIcon, current: false },
-  { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
+  { name: 'Play', href: 'play', icon: PlayIcon, current: true },
+  { name: 'Games', href: 'history', icon: RectangleStackIcon, current: false },
+  { name: 'Social', href: 'social', icon: UsersIcon, current: false },
+  { name: 'Achivements', href: 'achivements', icon: PuzzlePieceIcon, current: false },
+  { name: 'Leaderboard', href: 'leaderboard', icon: PresentationChartLineIcon, current: false },
+  { name: 'Shop', href: 'shop', icon: ShoppingBagIcon, current: false },
 ];
 
 function classNames(...classes) {
@@ -26,6 +27,7 @@ function classNames(...classes) {
 }
 
 export default function Layout({children}) {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -196,11 +198,14 @@ export default function Layout({children}) {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className='flex h-screen overflow-hidden'>
-            <Agenda/>
+          <div className='flex h-screen'>
+            {router.pathname.includes('social') && <Agenda />}
             <main className="flex-1">
-              <div className="py-6">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+              <div className={classNames(router.pathname.includes('social') ? '' :'py-6')}>
+                <div className={classNames(
+                            router.pathname.includes('social') ? 'mx-auto' :
+                              'mx-auto max-w-7xl px-4 sm:px-6 md:px-8',
+                )}>
                   {/* Replace with your content */}
                   {children}
                   {/* /End replace */}
