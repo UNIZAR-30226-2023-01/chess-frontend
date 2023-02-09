@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Transition, Disclosure} from '@headlessui/react';
 import {
   Bars3Icon,
   PlayIcon,
@@ -14,7 +14,17 @@ import { useRouter } from 'next/router';
 import Agenda from '@/components/Agenda';
 
 const navigation = [
-  { name: 'Play', href: 'play', icon: PlayIcon, current: true },
+  {
+    name: 'Play',
+    href: 'play',
+    icon: PlayIcon,
+    current: true,
+    children: [
+      { name: 'Single Player', href: '#' },
+      { name: 'With a Friend', href: '#' },
+      { name: 'Competitive', href: '#' },
+    ],
+  },
   { name: 'Games', href: 'history', icon: RectangleStackIcon, current: false },
   { name: 'Social', href: 'social', icon: UsersIcon, current: false },
   { name: 'Achivements', href: 'achivements', icon: PuzzlePieceIcon, current: false },
@@ -86,32 +96,77 @@ export default function Layout({children}) {
                         alt="Your Company"
                       />
                     </div>
-                    <nav className="mt-5 space-y-1 px-2">
-                      {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            item.current ?
-                              'bg-gray-100 text-gray-900' :
-                              'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                            'group flex items-center px-2 py-2 text-base font-medium rounded-md',
-                          )}
-                        >
-                          <item.icon
-                            className={classNames(
-                              item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                              'mr-4 flex-shrink-0 h-6 w-6',
+                    <nav className="flex-1 space-y-1 bg-white px-2" aria-label="Sidebar">
+                      {navigation.map((item) =>
+                        !item.children ? (
+                          <div key={item.name}>
+                            <a
+                              href={item.href}
+                              className={classNames(
+                                item.current ?
+                                  'bg-gray-100 text-gray-900' :
+                                  'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                                'group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md',
+                              )}
+                            >
+                              <item.icon
+                                className={classNames(
+                                  item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                                  'mr-3 flex-shrink-0 h-6 w-6',
+                                )}
+                                aria-hidden="true"
+                              />
+                              {item.name}
+                            </a>
+                          </div>
+                        ) : (
+                          <Disclosure as="div" key={item.name} className="space-y-1">
+                            {({ open }) => (
+                              <>
+                                <Disclosure.Button
+                                  className={classNames(
+                                    item.current ?
+                                      'bg-gray-100 text-gray-900' :
+                                      'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                                    'group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium rounded-md ',
+                                  )}
+                                >
+                                  <item.icon
+                                    className="mr-3 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                                    aria-hidden="true"
+                                  />
+                                  <span className="flex-1">{item.name}</span>
+                                  <svg
+                                    className={classNames(
+                                      open ? 'text-gray-400 rotate-90' : 'text-gray-300',
+                                      'ml-3 h-5 w-5 flex-shrink-0 transform transition-colors duration-150 ease-in-out group-hover:text-gray-400',
+                                    )}
+                                    viewBox="0 0 20 20"
+                                    aria-hidden="true"
+                                  >
+                                    <path d="M6 6L14 10L6 14V6Z" fill="currentColor" />
+                                  </svg>
+                                </Disclosure.Button>
+                                <Disclosure.Panel className="space-y-1">
+                                  {item.children.map((subItem) => (
+                                    <Disclosure.Button
+                                      key={subItem.name}
+                                      as="a"
+                                      href={subItem.href}
+                                      className="group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                                    >
+                                      {subItem.name}
+                                    </Disclosure.Button>
+                                  ))}
+                                </Disclosure.Panel>
+                              </>
                             )}
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </a>
-                      ))}
+                          </Disclosure>
+                        ))}
                     </nav>
                   </div>
                   <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                    <a href="#" className="group block flex-shrink-0">
+                    <a href="/hec7orci7o" className="group block flex-shrink-0">
                       <div className="flex items-center">
                         <div>
                           <img
@@ -146,30 +201,77 @@ export default function Layout({children}) {
                   alt="Your Company"
                 />
               </div>
-              <nav className="mt-5 flex-1 space-y-1 bg-white px-2">
-                {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className={classNames(
-                      item.current ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900',
-                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md',
+              <nav className="flex-1 space-y-1 bg-white px-2" aria-label="Sidebar">
+                {navigation.map((item) =>
+                  !item.children ? (
+                    <div key={item.name}>
+                      <a
+                        href={item.href}
+                        className={classNames(
+                          item.current ?
+                            'bg-gray-100 text-gray-900' :
+                            'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                          'group w-full flex items-center pl-2 py-2 text-sm font-medium rounded-md',
+                        )}
+                      >
+                        <item.icon
+                          className={classNames(
+                            item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
+                            'mr-3 flex-shrink-0 h-6 w-6',
+                          )}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </a>
+                    </div>
+                ) : (
+                  <Disclosure as="div" key={item.name} className="space-y-1">
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button
+                          className={classNames(
+                            item.current ?
+                              'bg-gray-100 text-gray-900' :
+                              'bg-white text-gray-600 hover:bg-gray-50 hover:text-gray-900',
+                            'group w-full flex items-center pl-2 pr-1 py-2 text-left text-sm font-medium rounded-md ',
+                          )}
+                        >
+                          <item.icon
+                            className="mr-3 h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                            aria-hidden="true"
+                          />
+                          <span className="flex-1">{item.name}</span>
+                          <svg
+                            className={classNames(
+                              open ? 'text-gray-400 rotate-90' : 'text-gray-300',
+                              'ml-3 h-5 w-5 flex-shrink-0 transform transition-colors duration-150 ease-in-out group-hover:text-gray-400',
+                            )}
+                            viewBox="0 0 20 20"
+                            aria-hidden="true"
+                          >
+                            <path d="M6 6L14 10L6 14V6Z" fill="currentColor" />
+                          </svg>
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="space-y-1">
+                          {item.children.map((subItem) => (
+                            <Disclosure.Button
+                              key={subItem.name}
+                              as="a"
+                              href={subItem.href}
+                              className="group flex w-full items-center rounded-md py-2 pl-11 pr-2 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                            >
+                              {subItem.name}
+                            </Disclosure.Button>
+                          ))}
+                        </Disclosure.Panel>
+                      </>
                     )}
-                  >
-                    <item.icon
-                      className={classNames(
-                        item.current ? 'text-gray-500' : 'text-gray-400 group-hover:text-gray-500',
-                        'mr-3 flex-shrink-0 h-6 w-6',
-                      )}
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </a>
+                  </Disclosure>
                 ))}
               </nav>
             </div>
             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-              <a href="#" className="group block w-full flex-shrink-0">
+              <a href="/hec7orci7o" className="group block w-full flex-shrink-0">
                 <div className="flex items-center">
                   <div>
                     <img

@@ -50,8 +50,16 @@ const products = [
 
 export default function Example() {
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className="px-4 sm:px-6 lg:px-8">
+      <div className="sm:flex sm:items-center ">
+        <div className="sm:flex-auto">
+          <h1 className="text-xl font-semibold text-left text-gray-900">Shop</h1>
+          <p className="mt-2 text-sm text-left text-gray-700">
+            A list of all the users in your account including their name, title, email and role.
+          </p>
+        </div>
+      </div>
+      <div className="mx-auto max-w-2xl py-16 sm:py-16 lg:max-w-7xl">
         <h2 className="text-xl font-bold text-gray-900">Boards</h2>
         <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
@@ -88,7 +96,7 @@ export default function Example() {
           ))}
         </div>
       </div>
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-16 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto max-w-2xl py-16 sm:py-16 lg:max-w-7xl">
         <h2 className="text-xl font-bold text-gray-900">Pieces</h2>
         <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
