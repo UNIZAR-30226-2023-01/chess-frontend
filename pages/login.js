@@ -1,14 +1,16 @@
+
+
 export default function Example() {
   return (
     <>
-      <div className="bg-[#7798ED] flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="bg-gray-200 flex min-h-screen flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             className="mx-auto h-12 w-auto"
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
           />
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">Sign in</h2>
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-black">Sign in</h2>
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
