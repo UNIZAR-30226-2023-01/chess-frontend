@@ -122,7 +122,7 @@ export default function Invite() {
               <div className="mt-6 grid grid-cols-3 gap-3">
                 <div>
                   <a
-                    href="#"
+                    href="http://localhost:4000/api/v1/sign-in/google"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
                     <span className="sr-only">Sign in with Facebook</span>
@@ -138,7 +138,7 @@ export default function Invite() {
 
                 <div>
                   <a
-                    href="#"
+                    href="http://localhost:4000/api/v1/sign-in/google"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
                     <span className="sr-only">Sign in with Twitter</span>
@@ -150,7 +150,7 @@ export default function Invite() {
 
                 <div>
                   <a
-                    href="#"
+                    href="http://localhost:4000/api/v1/sign-in/google"
                     className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
                   >
                     <span className="sr-only">Sign in with GitHub</span>

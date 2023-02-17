@@ -9,6 +9,7 @@ import {
   PuzzlePieceIcon,
   ShoppingBagIcon,
   PresentationChartLineIcon,
+  ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/router';
 import Agenda from '@/components/Agenda';
@@ -39,6 +40,21 @@ function classNames(...classes) {
 export default function Layout({children}) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    fetch('http://localhost:4000/api/v1/sign-out', {
+      method: 'POST',
+      credentials: 'include',
+    })
+        .then((res) => {
+          console.log('logout');
+          if (res.status === 200) router.push('/login');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  };
 
   return (
     <>
@@ -166,18 +182,25 @@ export default function Layout({children}) {
                     </nav>
                   </div>
                   <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
-                    <a href="/hec7orci7o" className="group block flex-shrink-0">
-                      <div className="flex items-center">
-                        <div>
-                          <img
-                            className="inline-block h-10 w-10 rounded-full"
-                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                            alt=""
-                          />
+                    <a href="/hec7orci7o" className="group block w-full flex-shrink-0">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div>
+                            <img
+                              className="inline-block h-10 w-10 rounded-full"
+                              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                              alt=""
+                            />
+                          </div>
+                          <div className="ml-3">
+                            <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
+                            <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                          </div>
                         </div>
-                        <div className="ml-3">
-                          <p className="text-base font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
-                          <p className="text-sm font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                        <div className='px-2'>
+                          <button onClick={handleLogout} className='bg-transparent text-black'>
+                            <ArrowRightOnRectangleIcon className='w-6 h-6'/>
+                          </button>
                         </div>
                       </div>
                     </a>
@@ -272,17 +295,24 @@ export default function Layout({children}) {
             </div>
             <div className="flex flex-shrink-0 border-t border-gray-200 p-4">
               <a href="/hec7orci7o" className="group block w-full flex-shrink-0">
-                <div className="flex items-center">
-                  <div>
-                    <img
-                      className="inline-block h-9 w-9 rounded-full"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                      alt=""
-                    />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <div>
+                      <img
+                        className="inline-block h-9 w-9 rounded-full"
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        alt=""
+                      />
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
+                      <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                    </div>
                   </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">Tom Cook</p>
-                    <p className="text-xs font-medium text-gray-500 group-hover:text-gray-700">View profile</p>
+                  <div className='px-2'>
+                    <button onClick={handleLogout} className='bg-transparent text-black'>
+                      <ArrowRightOnRectangleIcon className='w-6 h-6'/>
+                    </button>
                   </div>
                 </div>
               </a>
