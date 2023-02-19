@@ -7,24 +7,24 @@ import _ from 'lodash';
 
 export default function Play() {
   const [game, setGame] = useState(new Chess());
-  const [isGameOver, setIsGameOver] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
+  const [moveFrom, setMoveFrom] = useState('');
+  const [isGameOver, setIsGameOver] = useState(false);
   const movimiento = 'rgba(255, 255, 0, 0.4)';
   const newSquares = {};
-  /* function onPieceDragBegin(piece, sourceSquare) {
-    console.log(sourceSquare);
+  function getMoveOptions(square) {
     const moves = game.moves({
-      sourceSquare,
+      square,
       verbose: true,
     });
     if (moves.length === 0) {
       return;
     }
-    console.log(moves);
+
     moves.map((move) => {
       newSquares[move.to] = {
         background:
-          game.get(move.to) && game.get(move.to).color !== game.get(sourceSquare).color ?
+          game.get(move.to) && game.get(move.to).color !== game.get(square).color ?
             'radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)' :
             'radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)',
         borderRadius: '50%',
@@ -32,41 +32,56 @@ export default function Play() {
       return move;
     });
 
-    newSquares[sourceSquare] = {
+    newSquares[square] = {
       background: movimiento,
     };
     setOptionSquares(newSquares);
-  }*/
-  // El código anterior en teoria es para sacar la lista de movimientos de una pieza, pero te devuelve la
-  // lista de todos los posibles y en play-click lo hace bien :)
+  }
 
-  function onDrop(sourceSquare, targetSquare) {
+  function onSquareClick(square) {
+    function resetFirstMove(square) {
+      setMoveFrom(square);
+      getMoveOptions(square);
+    }
+    // from square
+    if (!moveFrom) {
+      resetFirstMove(square);
+      return;
+    }
+    // attempt to make move
+    let move = null;
     const gameCopy = _.cloneDeep(game);
     try {
-      gameCopy.move({
-        from: sourceSquare,
-        to: targetSquare,
+      move = gameCopy.move({
+        from: moveFrom,
+        to: square,
         promotion: 'q', // always promote to a queen for example simplicity
       });
       setGame(gameCopy);
       if (gameCopy.isGameOver()) {
         setIsGameOver(true);
       }
-      newSquares[sourceSquare] = {
+      newSquares[moveFrom] = {
         background: movimiento,
       };
-      newSquares[targetSquare] = {
+      newSquares[square] = {
         background: movimiento,
       };
       setOptionSquares(newSquares);
-      return true;
     } catch (error) {
+      // if invalid, setMoveFrom and getMoveOptions
+      if (move === null) {
+        // setOptionSquares({});
+        resetFirstMove(square);
+        return;
+      }
       if (game.isGameOver() || game.isDraw()) {
         <div className='bg-black h-full'> </div>;
         console.log('sacabu');
       }
       return false;
     }
+    setMoveFrom('');
   }
   return (
     <div>
@@ -76,10 +91,9 @@ export default function Play() {
             id="BasicBoard"
             position={game.fen()}
             areArrowsAllowed="true"
-            arePiecesDraggable="true"
-            onPieceDrop={onDrop}
-            // onPieceDragBegin={onPieceDragBegin}
-            animationDuration={500}
+            arePiecesDraggable={false}
+            onSquareClick={onSquareClick}
+            animationDuration={200}
             customSquareStyles={{
               ...optionSquares,
             }}

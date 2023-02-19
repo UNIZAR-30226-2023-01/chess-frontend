@@ -104,10 +104,10 @@ export default function principal() {
                 REIGN
               </a>
             </div>
-            <div className="flex-1 ">
-              <p className="uppercase text-gray-500 ">Links</p>
-              <ul className=" mb-6">
-                <li className="mt-2   md:block md:mr-0">
+            <div className="flex-1">
+              <p className="uppercase text-gray-500 text-left">Links</p>
+              <ul className="mb-6">
+                <li className="mt-2  md:block md:mr-0">
                   <a href="#" className="no-underline  hover:underline text-gray-800 hover:text-pink-500">FAQ</a>
                 </li>
                 <li className="mt-2 inline-block mr-2 md:block md:mr-0">
@@ -119,7 +119,7 @@ export default function principal() {
               </ul>
             </div>
             <div className="flex-1">
-              <p className="uppercase text-gray-500 md:mb-6">Legal</p>
+              <p className="uppercase text-gray-500 md:mb-6 text-left">Legal</p>
               <ul className=" mb-6">
                 <li className="mt-2 inline-block mr-2 md:block md:mr-0">
                   <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Terms</a>
@@ -130,7 +130,7 @@ export default function principal() {
               </ul>
             </div>
             <div className="flex-1">
-              <p className="uppercase text-gray-500 md:mb-6">Social</p>
+              <p className="uppercase text-gray-500 md:mb-6 text-left">Social</p>
               <ul className="list-reset mb-6">
                 <li className="mt-2 inline-block mr-2 md:block md:mr-0">
                   <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Facebook</a>
@@ -144,7 +144,7 @@ export default function principal() {
               </ul>
             </div>
             <div className="flex-1">
-              <p className="uppercase text-gray-500 md:mb-6">Company</p>
+              <p className="uppercase text-gray-500 md:mb-6 text-left">Company</p>
               <ul className="list-reset mb-6">
                 <li className="mt-2 inline-block mr-2 md:block md:mr-0">
                   <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Official Blog</a>
