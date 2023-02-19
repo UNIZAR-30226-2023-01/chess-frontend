@@ -1,3 +1,5 @@
+const colors = require('tailwindcss/colors');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -8,8 +10,13 @@ module.exports = {
     extend: {
       colors: {
         'details': 'rgba(197,243,255,0.65)',
+        'colors': {
+          orange: colors.orange,
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 };
