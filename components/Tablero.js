@@ -1,30 +1,29 @@
-import Layout from '@/components/Layout';
 import { Chessboard } from 'react-chessboard';
 import React, {useState} from 'react';
 import { Chess } from 'chess.js';
 import _ from 'lodash';
 
 
-export default function Play() {
+export default function Tablero({colorTablero, fichas, colorUser}) {
   const [game, setGame] = useState(new Chess());
-  const [optionSquares, setOptionSquares] = useState({});
-  const [moveFrom, setMoveFrom] = useState('');
   const [isGameOver, setIsGameOver] = useState(false);
+  const [optionSquares, setOptionSquares] = useState({});
   const movimiento = 'rgba(255, 255, 0, 0.4)';
   const newSquares = {};
-  function getMoveOptions(square) {
+  /* function onPieceDragBegin(piece, sourceSquare) {
+    console.log(sourceSquare);
     const moves = game.moves({
-      square,
+      sourceSquare,
       verbose: true,
     });
     if (moves.length === 0) {
       return;
     }
-
+    console.log(moves);
     moves.map((move) => {
       newSquares[move.to] = {
         background:
-          game.get(move.to) && game.get(move.to).color !== game.get(square).color ?
+          game.get(move.to) && game.get(move.to).color !== game.get(sourceSquare).color ?
             'radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)' :
             'radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)',
         borderRadius: '50%',
@@ -32,56 +31,49 @@ export default function Play() {
       return move;
     });
 
-    newSquares[square] = {
+    newSquares[sourceSquare] = {
       background: movimiento,
     };
     setOptionSquares(newSquares);
+  }*/
+  // El código anterior en teoria es para sacar la lista de movimientos de una pieza, pero te devuelve la
+  // lista de todos los posibles y en play-click lo hace bien :)
+
+  function sound() {
+    const audio = document.getElementById('myAudio');
+    audio.play();
   }
 
-  function onSquareClick(square) {
-    function resetFirstMove(square) {
-      setMoveFrom(square);
-      getMoveOptions(square);
-    }
-    // from square
-    if (!moveFrom) {
-      resetFirstMove(square);
-      return;
-    }
-    // attempt to make move
-    let move = null;
+  function onDrop(sourceSquare, targetSquare) {
     const gameCopy = _.cloneDeep(game);
+    let move = undefined;
     try {
       move = gameCopy.move({
-        from: moveFrom,
-        to: square,
+        from: sourceSquare,
+        to: targetSquare,
         promotion: 'q', // always promote to a queen for example simplicity
       });
       setGame(gameCopy);
       if (gameCopy.isGameOver()) {
         setIsGameOver(true);
       }
-      newSquares[moveFrom] = {
+      newSquares[sourceSquare] = {
         background: movimiento,
       };
-      newSquares[square] = {
+      newSquares[targetSquare] = {
         background: movimiento,
       };
       setOptionSquares(newSquares);
+      sound();
+      console.log(move.captured);
+      return true;
     } catch (error) {
-      // if invalid, setMoveFrom and getMoveOptions
-      if (move === null) {
-        setOptionSquares({});
-        resetFirstMove(square);
-        return;
-      }
       if (game.isGameOver() || game.isDraw()) {
         <div className='bg-black h-full'> </div>;
         console.log('sacabu');
       }
       return false;
     }
-    setMoveFrom('');
   }
   return (
     <div>
@@ -91,12 +83,16 @@ export default function Play() {
             id="BasicBoard"
             position={game.fen()}
             areArrowsAllowed="true"
-            arePiecesDraggable={false}
-            onSquareClick={onSquareClick}
-            animationDuration={200}
+            arePiecesDraggable="true"
+            onPieceDrop={onDrop}
+            // onPieceDragBegin={onPieceDragBegin}
+            animationDuration={500}
+            boardOrientation={colorUser}
             customSquareStyles={{
               ...optionSquares,
             }}
+            customDarkSquareStyle={{ backgroundColor: colorTablero[0] }}
+            customLightSquareStyle={{ backgroundColor: colorTablero[1] }}
           />)
         }
         {isGameOver && (
@@ -105,14 +101,9 @@ export default function Play() {
           </div>
         )}
       </div>
+      <audio id="myAudio">
+        <source src="audio.mp3" type="audio/mp3"/>
+      </audio>
     </div>
   );
 }
-
-Play.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  );
-};

@@ -1,12 +1,28 @@
 /* This example requires Tailwind CSS v3.0+ */
 import Link from 'next/link';
-import pr from '/public/landing.png';
 
+const modos = [
+  {
+    name: 'Play against an AI',
+    desc: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.',
+    Image: '/Match_Bot.png',
+  },
+  {
+    name: 'Play against a friend',
+    desc: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.',
+    Image: 'Private_Match_1.png',
+  },
+  {
+    name: 'Train to become better',
+    desc: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.',
+    Image: 'Training_Match.png',
+  },
+];
 
 export default function principal() {
   return (
     <div className="static bg-black ">
-      <section className=" border-b py-8 mx-auto  h-screen "style={{backgroundImage: `url(${pr})`}}>
+      <div className="background-image bg-cover border-b py-8 mx-auto h-screen ">
 
         <div className="mx-auto max-w-4xl text-center">
           <p className="mt-10 py-8 text-3xl font-bold tracking-tight text-white text- sm:text-5xl">
@@ -37,65 +53,35 @@ export default function principal() {
           </div>
         </div>
 
-      </section>
+      </div>
       <div className="flex flex-wrap flex-col-reverse sm:flex-row"></div>
-      <section className="bg-white border-b py-8">
+      <div className="bg-white border-b py-8">
         <div className="container max-w-5xl mx-auto m-8">
           <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
-            Choose your opponent
+              Choose your opponent
           </h2>
-          <div className="w-full mb-4">
-            <div className="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
-          </div>
-          <div className="flex flex-wrap">
-            <div className="w-5/6 sm:w-1/2 p-6">
-              <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3 mt-10 pt-5">
-                Play against the computer
-              </h3>
-              <p className="text-gray-600 mb-8">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
-                <br />
-                <br />
-              </p>
-            </div>
-            <div className="w-full sm:w-1/2 p-6">
-              <img className=" w-full sm:w-1/2 p-6 " src="Match_Bot.png" alt="" />
-            </div>
-          </div>
-          <div className="flex flex-wrap flex-col-reverse sm:flex-row">
-            <div className="w-full sm:w-1/2 p-6 mt-6">
-              <img className=" w-full sm:w-1/2 p-6 " src="Private_Match_1.png" alt="" />
-            </div>
-            <div className="w-full sm:w-1/2 p-6 mt-6">
-              <div className="align-middle">
+          {modos.map((modo) => (
+            <><div className="w-full mb-4">
+              <div className="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+            </div><div className="flex flex-wrap">
+              <div className="w-5/6 sm:w-1/2 p-6">
                 <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3 mt-10 pt-5">
-                  Play against a friend
+                  {modo.name}
                 </h3>
                 <p className="text-gray-600 mb-8">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
+                  {modo.desc}
                   <br />
                   <br />
                 </p>
               </div>
+              <div className="w-full sm:w-1/2 p-6">
+                <img className=" w-full sm:w-1/2 p-6 " src={modo.Image} alt="" />
+              </div>
             </div>
-          </div>
-          <div className="flex flex-wrap">
-            <div className="w-5/6 sm:w-1/2 p-6">
-              <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3 mt-10 pt-5">
-                Train to become better
-              </h3>
-              <p className="text-gray-600 mb-8">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.
-                <br />
-                <br />
-              </p>
-            </div>
-            <div className="w-full sm:w-1/2 p-6">
-              <img className=" w-full sm:w-1/2 p-6 " src="Training_Match.png" alt="" />
-            </div>
-          </div>
+            </>
+          ))}
         </div>
-      </section>
+      </div>
       <footer className="bg-white">
         <div className="container mx-auto  ">
           <div className="w-full flex flex-col md:flex-row py-6">

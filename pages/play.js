@@ -1,96 +1,29 @@
 import Layout from '@/components/Layout';
-import { Chessboard } from 'react-chessboard';
 import React, {useState} from 'react';
-import { Chess } from 'chess.js';
-import _ from 'lodash';
+import Tablero from '@/components/Tablero';
 
 
 export default function Play() {
-  const [game, setGame] = useState(new Chess());
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [optionSquares, setOptionSquares] = useState({});
-  const movimiento = 'rgba(255, 255, 0, 0.4)';
-  const newSquares = {};
-  /* function onPieceDragBegin(piece, sourceSquare) {
-    console.log(sourceSquare);
-    const moves = game.moves({
-      sourceSquare,
-      verbose: true,
-    });
-    if (moves.length === 0) {
-      return;
-    }
-    console.log(moves);
-    moves.map((move) => {
-      newSquares[move.to] = {
-        background:
-          game.get(move.to) && game.get(move.to).color !== game.get(sourceSquare).color ?
-            'radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)' :
-            'radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)',
-        borderRadius: '50%',
-      };
-      return move;
-    });
-
-    newSquares[sourceSquare] = {
-      background: movimiento,
-    };
-    setOptionSquares(newSquares);
-  }*/
-  // El código anterior en teoria es para sacar la lista de movimientos de una pieza, pero te devuelve la
-  // lista de todos los posibles y en play-click lo hace bien :)
-
-  function onDrop(sourceSquare, targetSquare) {
-    const gameCopy = _.cloneDeep(game);
-    try {
-      gameCopy.move({
-        from: sourceSquare,
-        to: targetSquare,
-        promotion: 'q', // always promote to a queen for example simplicity
-      });
-      setGame(gameCopy);
-      if (gameCopy.isGameOver()) {
-        setIsGameOver(true);
-      }
-      newSquares[sourceSquare] = {
-        background: movimiento,
-      };
-      newSquares[targetSquare] = {
-        background: movimiento,
-      };
-      setOptionSquares(newSquares);
-      return true;
-    } catch (error) {
-      if (game.isGameOver() || game.isDraw()) {
-        <div className='bg-black h-full'> </div>;
-        console.log('sacabu');
-      }
-      return false;
-    }
+  const [board, setBoard] = useState(['#F0D9B5', '#B58863']);
+  const altColor=['#edeed1', '#779952'];
+  function reinicioColor() {
+    setBoard(['#F0D9B5', '#B58863']);
   }
+  // white #edeed1 dark #779952
   return (
-    <div>
-      <div className="w-1/2">
-        { !isGameOver &&(
-          <Chessboard
-            id="BasicBoard"
-            position={game.fen()}
-            areArrowsAllowed="true"
-            arePiecesDraggable="true"
-            onPieceDrop={onDrop}
-            // onPieceDragBegin={onPieceDragBegin}
-            animationDuration={500}
-            customSquareStyles={{
-              ...optionSquares,
-            }}
-          />)
+    <div className='grid'>
+      <Tablero colorTablero={board} fichas={'a'} colorUser={'white'}/>
+      { // <Tablero colorTablero={'u.color'} fichas={'u.fichas'} colorUser={'random'}/>;
+      // cuando tengamos los usuarios y tal se haría así :)
+      }
+      <button onClick={(e) => {
+        if (board[0]=='#F0D9B5') {
+          setBoard(altColor);
+        } else {
+          reinicioColor();
         }
-        {isGameOver && (
-          <div style={{ background: 'lightgray', padding: '20px' }}>
-          Se ha acabado la partida
-          </div>
-        )}
-      </div>
+      }}
+      className="h-10 w-10"></button>
     </div>
   );
 }

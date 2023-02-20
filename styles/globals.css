@@ -18,6 +18,11 @@ block{
     align-items: center;
 }
 
+.background-image {
+    background-image: url('/landing.png');
+    background-repeat: no-repeat;
+  }
+
 button{
     background-color: #1E232C;
     font-size: 18px;
