@@ -1,9 +1,11 @@
 import Layout from '@/components/Layout';
+import { globals } from '@/components/colors';
 const products = [
   {
     id: 1,
     name: 'Zip Tote Basket',
-    color: 'White and black',
+    color1: 'White and black',
+    color2: 'a',
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -12,7 +14,8 @@ const products = [
   {
     id: 2,
     name: 'Zip Tote Basket',
-    color: 'White and black',
+    color1: 'White and black',
+    color2: 'a',
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -21,7 +24,8 @@ const products = [
   {
     id: 3,
     name: 'Zip Tote Basket',
-    color: 'White and black',
+    color1: 'White and black',
+    color2: 'a',
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -30,7 +34,8 @@ const products = [
   {
     id: 4,
     name: 'Zip Tote Basket',
-    color: 'White and black',
+    color1: 'White and black',
+    color2: 'a',
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -39,7 +44,8 @@ const products = [
   {
     id: 5,
     name: 'Zip Tote Basket',
-    color: 'White and black',
+    color1: 'White and black',
+    color2: '',
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -48,7 +54,13 @@ const products = [
   // More products...
 ];
 
+
 export default function Example() {
+  function reinicioColor(color1, color2) {
+    globals.colorTablero1=color1;
+    globals.colorTablero2=color2;
+    // setBoard([color1, color2]);
+  }
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center ">
@@ -74,7 +86,7 @@ export default function Example() {
                 </div>
                 <div className="relative mt-4">
                   <h3 className="text-sm font-medium text-gray-900 text-left">{product.name}</h3>
-                  <p className="mt-1 text-sm text-gray-500 text-left">{product.color}</p>
+                  <p className="mt-1 text-sm text-gray-500 text-left"></p>
                 </div>
                 <div className="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
                   <div
@@ -88,7 +100,9 @@ export default function Example() {
                 <a
                   href={product.href}
                   className="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 py-2 px-8 text-sm font-medium text-gray-900 hover:bg-gray-200"
-                >
+                  onClick={() => {
+                    reinicioColor(product.color1, product.color2);
+                  }}>
                   Unlock<span className="sr-only">, {product.name}</span>
                 </a>
               </div>
