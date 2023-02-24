@@ -3,9 +3,9 @@ import { globals } from '@/components/colors';
 const products = [
   {
     id: 1,
-    name: 'Zip Tote Basket',
-    color1: 'White and black',
-    color2: 'a',
+    name: 'Tablero de madera',
+    color1: '0xFFB88B4A', // maderaN
+    color2: '0xFFE3C16F', // maderaB
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -13,9 +13,9 @@ const products = [
   },
   {
     id: 2,
-    name: 'Zip Tote Basket',
-    color1: 'White and black',
-    color2: 'a',
+    name: 'Tablero coral',
+    color1: '0xFF70A2A3', // coralN
+    color2: '0xFFB1E4B9', // coralB
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -23,9 +23,9 @@ const products = [
   },
   {
     id: 3,
-    name: 'Zip Tote Basket',
-    color1: 'White and black',
-    color2: 'a',
+    name: 'Tablero oscuro',
+    color1: '0xFF706677', // oscuroN
+    color2: '0xFFCCB7AE', // oscuroB
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -33,9 +33,9 @@ const products = [
   },
   {
     id: 4,
-    name: 'Zip Tote Basket',
-    color1: 'White and black',
-    color2: 'a',
+    name: 'Tablero marino',
+    color1: '0xff6f73d2', // marN
+    color2: '0x9dacff', // marB
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
@@ -43,9 +43,19 @@ const products = [
   },
   {
     id: 5,
-    name: 'Zip Tote Basket',
-    color1: 'White and black',
-    color2: '',
+    name: 'Tablero color trigo',
+    color1: '0xffbbbe64', // trigoN
+    color2: '0xffeaf0ce', // trigoB
+    href: '#',
+    imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
+    imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
+    price: '$140',
+  },
+  {
+    id: 6,
+    name: 'Tablero color esmeralda',
+    color1: '0xff6f8f72', // esmeraldaN
+    color2: '0xffad8d8f', // esmeraldaB
     href: '#',
     imageSrc: 'https://www.chess.com/dynboard?board=green&fen=rnbqkbnr/pppp1ppp/8/4p3/4PP2/8/PPPP2PP/RNBQKBNR&piece=neo&size=2',
     imageAlt: 'Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.',
