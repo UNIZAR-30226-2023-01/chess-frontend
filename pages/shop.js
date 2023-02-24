@@ -63,14 +63,12 @@ const products = [
   },
   // More products...
 ];
-
+function reinicioColor(color1, color2) {
+  globals.colorTablero1=color1;
+  globals.colorTablero2=color2;
+}
 
 export default function Example() {
-  function reinicioColor(color1, color2) {
-    globals.colorTablero1=color1;
-    globals.colorTablero2=color2;
-    // setBoard([color1, color2]);
-  }
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center ">
