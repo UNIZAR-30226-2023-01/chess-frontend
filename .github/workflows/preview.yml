@@ -2,9 +2,9 @@ name: Preview CI
 
 on:
   push:
-    branches-ignore: [main]
-  pull_request:
-    branches-ignore: [main]
+    branches: [dev]
+  pull_request: 
+    branches: [dev]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -71,13 +71,13 @@ jobs:
       with:
         cache: npm
         node-version: 16
-    # - name: Install Vercel CLI
-    #   run: npm install --global vercel@latest
-    # - name: Pull Vercel Environment Information
-    #   run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
-    # - name: Install Dependencies
-    #   run: npm ci --force
-    # - name: Build
-    #   run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
-    # - name: Deploy Project Artifacts to Vercel
-    #   run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+    - name: Pull Vercel Environment Information
+      run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Install Dependencies
+      run: npm ci --force
+    - name: Build
+      run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Deploy Project Artifacts to Vercel
+      run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}

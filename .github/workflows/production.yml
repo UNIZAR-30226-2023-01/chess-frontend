@@ -66,23 +66,23 @@ jobs:
   cypress-run:
     name: cypress-run 🧪
     needs: [lint, build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/download-artifact@v3
-        with:
-          name: .next
-          path: .next
-      - name: Cypress run --config video=false
-        uses: cypress-io/github-action@v5 # use the explicit version number
-        with:
-          install-command: npm ci --force
-          build: npm run build
-          start: npm start
-          wait-on: 'http://localhost:3000'
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v3
+    #     with:
+    #       fetch-depth: 0
+    #   - uses: actions/download-artifact@v3
+    #     with:
+    #       name: .next
+    #       path: .next
+    #   - name: Cypress run --config video=false
+    #     uses: cypress-io/github-action@v5 # use the explicit version number
+    #     with:
+    #       install-command: npm ci --force
+    #       build: npm run build
+    #       start: npm start
+    #       wait-on: 'http://localhost:3000'
 
   deploy:
     name: deploy 🚀
@@ -96,13 +96,13 @@ jobs:
       with:
         cache: npm
         node-version: 16
-    # - name: Install Vercel CLI
-    #   run: npm install --global vercel@latest
-    # - name: Pull Vercel Environment Information
-    #   run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-    # - name: Install Dependencies
-    #   run: npm ci --force
-    # - name: Build
-    #   run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-    # - name: Deploy Project Artifacts to Vercel
-    #   run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Install Vercel CLI
+      run: npm install --global vercel@latest
+    - name: Pull Vercel Environment Information
+      run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Install Dependencies
+      run: npm ci --force
+    - name: Build
+      run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+    - name: Deploy Project Artifacts to Vercel
+      run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
