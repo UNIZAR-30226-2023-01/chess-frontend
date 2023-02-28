@@ -2,44 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-    font-size: 40px;
-    text-align: center;
-    font-weight: bold;
-}
-
-block{
-    background-color: #E1E5EE;
-    font-size: 18px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 500;
-    border-radius: 5px;
-    justify-content: center;
-    align-items: center;
-}
-
-button{
-    background-color: #1E232C;
-    font-size: 18px;
-    color: #FFFFFF;
-    font-weight: 500;
-    border-radius: 5px;
-    text-align: center;
-}
-
-button:hover{
-    background-color:dimgray;
-}
-input{
-    background-color: #F7F8F9;
-    border-radius: 5px;
-}
-input:placeholder-shown{
-    color: #8391A1;
-}
-
-p{
-    font-size: 14px;
-    color:#6A707C;
-    text-align: center;
+::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background-color: transparent;
 }
