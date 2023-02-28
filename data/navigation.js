@@ -10,24 +10,23 @@ import {
 
 export const primaryButton = {
   name: 'Jugar partida',
-  href: '/play',
   icon: PlayIcon,
   link: [
     {
       name: 'Contra la IA',
-      href: '/ranking',
+      href: '/game',
       icon: ArrowTopRightOnSquareIcon,
     }, {
       name: 'Competitiva',
-      href: '/ranking',
+      href: '/game',
       icon: ArrowTopRightOnSquareIcon,
     }, {
       name: 'Igualada',
-      href: '/ranking',
+      href: '/game',
       icon: ArrowTopRightOnSquareIcon,
     }, {
       name: 'Amistosa',
-      href: '/ranking',
+      href: '/game',
       icon: ArrowTopRightOnSquareIcon,
     },
   ],
@@ -49,7 +48,7 @@ export const navigation = [{
 
 export const subNavigation = [{
   name: 'Perfil',
-  href: '/',
+  href: '/u/username',
   icon: UserIcon,
 }, { theme: true }, {
   name: 'Upgrades & FAQ',

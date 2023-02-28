@@ -32,7 +32,7 @@ export default function Layout({children}) {
             </div>
           </main>
         </div>
-        <Reconnect/>
+        {false && <Reconnect/>}
       </div>
     </>
   );

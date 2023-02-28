@@ -18,8 +18,8 @@ export default function Analytics() {
     <div className="px-0 sm:px-6 lg:px-8 py-12 max-w-5xl mx-auto">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
-          <h1 className="text-xl font-semibold text-left text-gray-900">Analiticas</h1>
-          <p className="mt-2 text-sm text-left text-gray-700">
+          <h1 className="text-xl font-semibold text-left text-gray-900 dark:text-white">Analiticas</h1>
+          <p className="mt-2 text-sm text-left text-gray-700 dark:text-gray-200">
             Listado de resultados de todas tus partidas.
           </p>
         </div>

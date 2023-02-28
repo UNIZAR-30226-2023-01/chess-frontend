@@ -5,14 +5,14 @@ export default function Profile({profile}) {
     <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
       {Object.keys(profile.fields).map((field) => (
         <div key={field} className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-700">{field}</dt>
-          <dd className="mt-1 text-sm text-gray-900">{profile.fields[field]}</dd>
+          <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">{field}</dt>
+          <dd className="mt-1 text-sm text-gray-900 dark:text-white">{profile.fields[field]}</dd>
         </div>
       ))}
       <div className="sm:col-span-2">
-        <dt className="text-sm font-medium text-gray-700">About</dt>
+        <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">About</dt>
         <dd
-          className="mt-1 max-w-prose space-y-5 text-sm text-gray-900 text-left"
+          className="mt-1 max-w-prose space-y-5 text-sm text-gray-900 dark:text-white text-left"
           dangerouslySetInnerHTML={{ __html: profile.about }}
         />
       </div>

@@ -1,25 +1,168 @@
 export const matches = [
   {
-    'id': 260005,
-    'name': 'Final - Match',
-    'nextMatchId': null, // Id for the nextMatch in the bracket, if it's final match it must be null OR undefined
-    'tournamentRoundText': '4', // Text for Round Header
+    'id': 19753,
+    'nextMatchId': null,
+    'tournamentRoundText': '3',
     'startTime': '2021-05-30',
-    'state': 'DONE', // 'NO_SHOW' | 'WALK_OVER' | 'NO_PARTY' | 'DONE' | 'SCORE_DONE' Only needed to decide walkovers and if teamNames are TBD (to be decided)
+    'state': 'DONE',
     'participants': [
       {
-        'id': 'c016cb2a-fdd9-4c40-a81f-0cc6bdf4b9cc', // Unique identifier of any kind
-        'resultText': 'WON', // Any string works
+        'id': '14754a1a-932c-4992-8dec-f7f94a339960',
+        'resultText': 'Lost',
         'isWinner': false,
-        'status': null, // 'PLAYED' | 'NO_SHOW' | 'WALK_OVER' | 'NO_PARTY' | null
-        'name': 'giacomo123',
+        'status': null,
+        'name': 'PatriciaS797',
+        'picture': 'teamlogos/client_team_default_logo',
       },
       {
-        'id': '9ea9ce1a-4794-4553-856c-9a3620c0531b',
-        'resultText': null,
+        'id': 'df01fe2c-18db-4190-9f9e-aa63364128fe',
+        'resultText': 'Won',
         'isWinner': true,
-        'status': null, // 'PLAYED' | 'NO_SHOW' | 'WALK_OVER' | 'NO_PARTY'
-        'name': 'Ant',
+        'status': null,
+        'name': 'AlvaroUnizar',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+    ],
+  },
+  {
+    'id': 19754,
+    'nextMatchId': 19753,
+    'tournamentRoundText': '2',
+    'startTime': '2021-05-30',
+    'state': 'DONE',
+    'participants': [
+      {
+        'id': '14754a1a-932c-4992-8dec-f7f94a339960',
+        'resultText': 'Won',
+        'isWinner': true,
+        'status': null,
+        'name': 'PatriciaS797',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+      {
+        'id': 'd8b9f00a-0ffa-4527-8316-da701894768e',
+        'resultText': 'Lost',
+        'isWinner': false,
+        'status': null,
+        'name': 'hec7orci7o',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+    ],
+  },
+  {
+    'id': 19755,
+    'nextMatchId': 19754,
+    'tournamentRoundText': '1',
+    'startTime': '2021-05-30',
+    'state': 'DONE',
+    'participants': [
+      {
+        'id': '14754a1a-932c-4992-8dec-f7f94a339960',
+        'resultText': 'Won',
+        'isWinner': true,
+        'status': 'PLAYED',
+        'name': 'PatriciaS797',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+      {
+        'id': 'd16315d4-7f2d-427b-ae75-63a1ae82c0a8',
+        'resultText': 'Lost',
+        'isWinner': false,
+        'status': 'PLAYED',
+        'name': 'Jorgesolan',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+    ],
+  },
+  {
+    'id': 19756,
+    'nextMatchId': 19754,
+    'tournamentRoundText': '1',
+    'startTime': '2021-05-30',
+    'state': 'DONE',
+    'participants': [
+      {
+        'id': 'd8b9f00a-0ffa-4527-8316-da701894768e',
+        'resultText': 'Pass',
+        'isWinner': false,
+        'status': null,
+        'name': 'hec7orci7o',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+    ],
+  },
+  {
+    'id': 19757,
+    'nextMatchId': 19753,
+    'tournamentRoundText': '2',
+    'startTime': '2021-05-30',
+    'state': 'DONE',
+    'participants': [
+      {
+        'id': '9397971f-4b2f-44eb-a094-722eb286c59b',
+        'resultText': 'Lost',
+        'isWinner': false,
+        'status': null,
+        'name': 'fernando-lahoz',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+      {
+        'id': 'df01fe2c-18db-4190-9f9e-aa63364128fe',
+        'resultText': 'Won',
+        'isWinner': true,
+        'status': 'PLAYED',
+        'name': 'AlvaroUnizar',
+        'picture': 'teamlogos/r7zn4gr8eajivapvjyzd',
+      },
+    ],
+  },
+  {
+    'id': 19758,
+    'nextMatchId': 19757,
+    'tournamentRoundText': '1',
+    'startTime': '2021-05-30',
+    'state': 'DONE',
+    'participants': [
+      {
+        'id': '9397971f-4b2f-44eb-a094-722eb286c59b',
+        'resultText': 'Won',
+        'isWinner': true,
+        'status': 'PLAYED',
+        'name': 'fernando-lahoz',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+      {
+        'id': 'df01fe2c-18db-4190-9f9e-aa63364128fj',
+        'resultText': 'Lost',
+        'isWinner': false,
+        'status': 'PLAYED',
+        'name': 'FranciscoJavierPizarro',
+        'picture': 'teamlogos/r7zn4gr8eajivapvjyzd',
+      },
+    ],
+  },
+  {
+    'id': 19759,
+    'nextMatchId': 19757,
+    'tournamentRoundText': '1',
+    'startTime': '2021-05-30',
+    'state': 'DONE',
+    'participants': [
+      {
+        'id': '42fecd89-dc83-4821-80d3-718acb50a30c',
+        'resultText': 'Lost',
+        'isWinner': false,
+        'status': 'PLAYED',
+        'name': 'CristivNnn',
+        'picture': 'teamlogos/client_team_default_logo',
+      },
+      {
+        'id': 'df01fe2c-18db-4190-9f9e-aa63364128fe',
+        'resultText': 'Won',
+        'isWinner': true,
+        'status': 'PLAYED',
+        'name': 'AlvaroUnizar',
+        'picture': 'teamlogos/r7zn4gr8eajivapvjyzd',
       },
     ],
   },

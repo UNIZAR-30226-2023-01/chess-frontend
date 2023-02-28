@@ -8,7 +8,9 @@ const Bracket = dynamic(
 
 export default function Tournaments() {
   return (
-    <Bracket/>
+    <div className="px-0 sm:px-6 lg:px-8 py-12 mx-auto flex items-center justify-center">
+      <Bracket/>
+    </div>
   );
 }
 

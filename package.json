@@ -32,6 +32,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.7.1",
+    "react-timer-hook": "^3.0.5",
     "sitemap": "^7.1.1",
     "socket.io-client": "^4.6.1"
   },

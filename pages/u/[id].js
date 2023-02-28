@@ -36,18 +36,18 @@ export default function User() {
                       </div>
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
-                          <h1 className="truncate text-2xl font-bold text-left text-gray-900">{profile.name}</h1>
+                          <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white">{profile.name}</h1>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                           <button
                             type="button"
-                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-black shadow-sm hover:bg-gray-100 duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                           >
                             <span>Añadir amigo</span>
                           </button>
                           <button
                             type="button"
-                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-black shadow-sm hover:bg-gray-100 duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                           >
                             <span>Desafiar</span>
                           </button>
@@ -55,14 +55,14 @@ export default function User() {
                       </div>
                     </div>
                     <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
-                      <h1 className="truncate text-2xl font-bold text-gray-900">{profile.name}</h1>
+                      <h1 className="truncate text-2xl font-bold text-gray-900 dark:text-white">{profile.name}</h1>
                     </div>
                   </div>
                 </div>
 
                 {/* Tabs */}
                 <div className="mt-6 sm:mt-2 2xl:mt-5">
-                  <div className="border-b border-gray-200">
+                  <div className="border-b border-gray-200 dark:border-gray-200/50">
                     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                       <nav className="-mb-px flex space-x-8" aria-label="Tabs">
                         {profileTabs.map((tab, index) => (
@@ -71,8 +71,8 @@ export default function User() {
                             onClick={() => setCurrentTab(tab.name)}
                             className={classNames(
                               currentTab === tab.name ?
-                                'border-indigo-500 text-gray-900' :
-                                'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                                'border-indigo-500 text-gray-900 dark:text-white' :
+                                'border-transparent text-gray-500 dark:text-white/60 hover:text-gray-700 hover:border-gray-300',
                               'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
                             )}
                             aria-current={currentTab === tab.name}

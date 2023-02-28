@@ -1,6 +1,6 @@
 export default function Reconnect() {
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6">
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 px-6 pb-6 z-50">
       <div className="pointer-events-auto ml-auto max-w-xl rounded-xl bg-white p-6 shadow-lg ring-1 ring-gray-900/10">
         <p className="text-sm leading-6 text-gray-900">
         ¡Atención! Hemos detectado una perdida de conexión con el servidor de la partida en la que estás participando.

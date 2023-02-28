@@ -11,8 +11,20 @@ export default function SingleElimination() {
     <SingleEliminationBracket
       matches={matches}
       matchComponent={Match}
+      options={{
+        style: {
+          connectorColor: '#CED1F288',
+          connectorColorHighlight: '#CED1F2',
+        },
+      }}
       svgWrapper={({ children, ...props }) => (
-        <SVGViewer width={finalWidth} height={finalHeight} {...props}>
+        <SVGViewer
+          background="#343541"
+          SVGBackground="#343541"
+          width={finalWidth}
+          height={finalHeight}
+          {...props}
+        >
           {children}
         </SVGViewer>
       )}

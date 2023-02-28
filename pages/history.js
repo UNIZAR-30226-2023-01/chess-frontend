@@ -40,7 +40,7 @@ const applications = [
   },
 ];
 
-export default function Example() {
+export default function History() {
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center ">
@@ -106,10 +106,4 @@ export default function Example() {
   );
 }
 
-Example.getLayout = function getLayout(page) {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  );
-};
+History.getLayout = (page) => <Layout>{page}</Layout>;
