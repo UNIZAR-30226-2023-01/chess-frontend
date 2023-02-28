@@ -11,7 +11,7 @@ export default function Layout({children}) {
   return (
     <>
       <Toaster position='top-right' />
-      <div className='h-screen overflow-hidden overflow-hidden'>
+      <div className='h-screen overflow-hidden'>
         <MSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         {/* Static sidebar for desktop */}
         <DSidebar/>
