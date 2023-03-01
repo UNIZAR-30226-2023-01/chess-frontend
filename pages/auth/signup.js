@@ -27,6 +27,7 @@ export default function Login() {
       },
       body: JSON.stringify({
         email: e.target.elements?.email?.value,
+        username: e.target.elements?.username?.value,
         password: e.target.elements?.password?.value,
       }),
     })
@@ -56,6 +57,17 @@ export default function Login() {
             Please note that email verification is required for signup. Your email will be used to verify your identity for security purposes.
             </p>
             <div>
+              <div className="mt-1">
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  autoComplete="username"
+                  placeholder="Username"
+                  required
+                  className="block w-full appearance-none rounded-sm border border-gray-300 px-3 py-4 placeholder-gray-400 shadow-sm focus:outline-none sm:text-sm"
+                />
+              </div>
               <div className="mt-1">
                 <input
                   id="email"
