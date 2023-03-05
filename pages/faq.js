@@ -1,5 +1,4 @@
 import { Disclosure } from '@headlessui/react';
-import Layout from '@/components/Layout';
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
 import {faqs} from '@/data/faqs';
 
@@ -39,5 +38,3 @@ export default function FAQ() {
     </div>
   );
 }
-
-FAQ.getLayout= (page) => <Layout>{page}</Layout>;
