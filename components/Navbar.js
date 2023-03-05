@@ -4,10 +4,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 const navigation = [
-  { name: 'Product', href: '#' },
-  { name: 'Features', href: '#' },
-  { name: 'Marketplace', href: '#' },
-  { name: 'Company', href: '#' },
+  { name: 'Características', href: '#features' },
+  { name: 'Novedades', href: '#news' },
+  { name: 'Testimonios', href: '#testimonials' },
 ];
 
 export default function Example() {
@@ -41,7 +40,7 @@ export default function Example() {
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link href="/auth/login" className="text-sm font-semibold leading-6 text-gray-900">
-              Log in <span aria-hidden="true">&rarr;</span>
+              Entrar <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
       </nav>
@@ -79,7 +78,7 @@ export default function Example() {
                   href="/auth/login"
                   className="-mx-3 block rounded-lg py-2.5 px-3 text-base font-semibold leading-6 text-gray-900 hover:bg-gray-400/10"
                 >
-                    Log in
+                    Entrar
                 </Link>
               </div>
             </div>
