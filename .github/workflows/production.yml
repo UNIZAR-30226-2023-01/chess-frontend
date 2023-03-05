@@ -63,9 +63,9 @@ jobs:
         name: .next
         path: .next
   
-  cypress-run:
-    name: cypress-run 🧪
-    needs: [lint, build]
+  # cypress-run:
+  #   name: cypress-run 🧪
+  #   needs: [lint, build]
     # runs-on: ubuntu-latest
     # steps:
     #   - name: Checkout
@@ -86,7 +86,8 @@ jobs:
 
   deploy:
     name: deploy 🚀
-    needs: [cypress-run]
+    needs: [lint, build]
+    # needs: [cypress-run]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
