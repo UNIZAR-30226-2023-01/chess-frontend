@@ -1,16 +1,15 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 
 const stats = [
-  { id: 1, name: 'Creators on the platform', value: '8,000+' },
-  { id: 2, name: 'Flat platform fee', value: '3%' },
-  { id: 3, name: 'Uptime guarantee', value: '99.9%' },
-  { id: 4, name: 'Paid out to creators', value: '$70M' },
+  { id: 1, name: 'Jugadores registrados', value: '8,000+' },
+  { id: 2, name: 'Partidas diarias', value: '100+' },
+  { id: 3, name: 'Torneos diarios', value: '200+' },
+  { id: 4, name: 'Garantía de disponibilidad', value: '99.9%' },
 ];
 const featuredTestimonial = {
-  body: 'Integer id nunc sit semper purus. Bibendum at lacus ut arcu blandit montes vitae auctor libero. Hac condimentum dignissim nibh vulputate ut nunc. Amet nibh orci mi venenatis blandit vel et proin. Non hendrerit in vel ac diam.',
+  body: 'He estado usando Reinado durante los últimos meses y debo decir que es la mejor aplicación de ajedrez que existe. La interfaz es increíblemente intuitiva y las opciones para personalizar tu experiencia son infinitas. La IA es impresionante y supone un desafío incluso para los jugadores más experimentados.',
   author: {
     name: 'Brenna Goyette',
     handle: 'brennagoyette',
@@ -23,7 +22,7 @@ const testimonials = [
   [
     [
       {
-        body: 'Laborum quis quam. Dolorum et ut quod quia. Voluptas numquam delectus nihil. Aut enim doloremque et ipsam.',
+        body: 'Reign ofrece a los jugadores de ajedrez un gran desafío de IA y una interfaz fácil de usar. Además, ¡incluso puedes tener torneos virtuales con tus amigos!',
         author: {
           name: 'Leslie Alexander',
           handle: 'lesliealexander',
@@ -35,7 +34,7 @@ const testimonials = [
     ],
     [
       {
-        body: 'Aut reprehenderit voluptatem eum asperiores beatae id. Iure molestiae ipsam ut officia rem nulla blanditiis.',
+        body: '¡Reign es el sueño de todo amante del ajedrez! AI ofrece un verdadero desafío, la interfaz es hermosa e intuitiva, definitivamente vale la pena echarle un vistazo.',
         author: {
           name: 'Lindsay Walton',
           handle: 'lindsaywalton',
@@ -49,7 +48,7 @@ const testimonials = [
   [
     [
       {
-        body: 'Voluptas quos itaque ipsam in voluptatem est. Iste eos blanditiis repudiandae. Earum deserunt enim molestiae ipsum perferendis recusandae saepe corrupti.',
+        body: '¡Jugar al ajedrez nunca ha sido más divertido o conveniente con Reign! Es la combinación perfecta de una gran interfaz de usuario y potentes algoritmos de IA que facilitan el aprendizaje.',
         author: {
           name: 'Tom Cook',
           handle: 'tomcook',
@@ -61,7 +60,7 @@ const testimonials = [
     ],
     [
       {
-        body: 'Molestias ea earum quos nostrum doloremque sed. Quaerat quasi aut velit incidunt excepturi rerum voluptatem minus harum.',
+        body: 'He estado jugando al ajedrez desde que era un niño, ¡y Reine es sin duda la mejor aplicación de ajedrez que existe!',
         author: {
           name: 'Leonard Krasner',
           handle: 'leonardkrasner',
@@ -108,33 +107,22 @@ export default function Index() {
       <Navbar/>
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
-          <div className="flex">
-            <div className="relative flex items-center gap-x-4 rounded-full py-1 px-4 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              <span className="font-semibold text-indigo-600">We’re hiring</span>
-              <span className="h-4 w-px bg-gray-900/10" aria-hidden="true" />
-              <a href="#" className="flex items-center gap-x-1">
-                <span className="absolute inset-0" aria-hidden="true" />
-                See open positions
-                <ChevronRightIcon className="-mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
-              </a>
-            </div>
-          </div>
           <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-            A better way to ship your projects
+            Domina el tablero de ajedrez en línea
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
-            Esse id magna consectetur fugiat non dolor in ad laboris magna laborum ea consequat. Nisi irure aliquip nisi
-            adipisicing veniam voluptate id. In veniam incididunt ex veniam adipisicing sit.
+          Toma el control del tablero de ajedrez desde cualquier lugar del mundo. Regístrate hoy y comienza a jugar al
+           ajedrez en línea, ¡la diversión y la competencia te esperan!
           </p>
           <div className="mt-10 flex items-center gap-x-6">
             <Link
               href="/auth/login"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Get started
+              Jugar ahora
             </Link>
             <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-              Learn more <span aria-hidden="true">→</span>
+              Descubrir más <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>
@@ -168,12 +156,12 @@ export default function Index() {
       <div className="bg-white py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:max-w-none">
-            <div className="text-center">
+            <div id='features' className="text-center">
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Trusted by creators worldwide
+              Con la confianza de jugadores de todo el mundo
               </h2>
               <p className="mt-4 text-lg leading-8 text-gray-600">
-              Lorem ipsum dolor sit amet consect adipisicing possimus.
+              Algunos números sorprendentes de nuestra plataforma de ajedrez.
               </p>
             </div>
             <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
@@ -187,31 +175,30 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <div className="overflow-hidden py-24 sm:py-32">
+      <div id='news' className="overflow-hidden py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
             <div className="lg:pt-4 lg:pr-4">
               <div className="lg:max-w-lg">
-                <h2 className="text-base font-semibold leading-7 text-indigo-600">Deploy faster</h2>
-                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">A better workflow</p>
+                <h2 className="text-base font-semibold leading-7 text-indigo-600">Juegue comodamete</h2>
+                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Una interfaz nueva</p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque,
-                iste dolor cupiditate blanditiis ratione.
+                  Juega partidas de ajedrez online con jugadores de todo el mundo. Disfruta de partidas emocionantes y desafiantes con este nuevo programa de ajedrez.
                 </p>
                 <div className="mt-8">
                   <a
                     href="#"
                     className="inline-flex rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                  Get started
+                    Registrarme
                   </a>
                 </div>
                 <figure className="mt-16 border-l border-gray-200 pl-8 text-gray-600">
                   <blockquote className="text-base leading-7">
                     <p>
-                    “Vel ultricies morbi odio facilisi ultrices accumsan donec lacus purus. Lectus nibh ullamcorper ac
-                    dictum justo in euismod. Risus aenean ut elit massa. In amet aliquet eget cras. Sem volutpat enim
-                    tristique.”
+                    “Me encanta usar esta aplicación, aprender a jugar al ajedrez y jugar contra otros jugadores en línea,
+                    lo que me ayuda a mejorar mis habilidades y a tener una experiencia más emocionante y desafiante en el juego.
+                     En resumen, esta aplicación se ha convertido en mi aplicación favorita para jugar al ajedrez.”
                     </p>
                   </blockquote>
                   <figcaption className="mt-6 flex gap-x-4 text-sm leading-6">
@@ -249,11 +236,11 @@ export default function Index() {
             <use href="#bc169a03-3518-42d4-ab1e-d3eadac65edc" />
           </svg>
         </div>
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div id='testimonials' className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-xl text-center">
-            <h2 className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Testimonials</h2>
+            <h2 className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Testimonios</h2>
             <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            We have worked with thousands of amazing people
+              Hemos trabajado con miles de personas increíbles
             </p>
           </div>
           <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
@@ -271,7 +258,6 @@ export default function Index() {
                   <div className="font-semibold">{featuredTestimonial.author.name}</div>
                   <div className="text-gray-600">{`@${featuredTestimonial.author.handle}`}</div>
                 </div>
-                <img className="h-10 w-auto flex-none" src={featuredTestimonial.author.logoUrl} alt="" />
               </figcaption>
             </figure>
             {testimonials.map((columnGroup, columnGroupIdx) => (
@@ -314,20 +300,17 @@ export default function Index() {
       <div className="bg-white">
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Ready to dive in?
+          Listo para empezar?
             <br />
-          Start your free trial today.
+          Prueba ahora gratis la aplicación.
           </h2>
           <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
             <Link
               href="/auth/login"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-            Get started
+              Jugar Ahora
             </Link>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Learn more <span aria-hidden="true">→</span>
-            </a>
           </div>
         </div>
       </div>
