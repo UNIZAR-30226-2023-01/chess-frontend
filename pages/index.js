@@ -116,12 +116,12 @@ export default function Index() {
           </p>
           <div className="mt-10 flex items-center gap-x-6">
             <Link
-              href="/auth/login"
+              href="/home"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Jugar ahora
             </Link>
-            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            <a href="#features" className="text-sm font-semibold leading-6 text-gray-900">
               Descubrir más <span aria-hidden="true">→</span>
             </a>
           </div>
@@ -187,10 +187,10 @@ export default function Index() {
                 </p>
                 <div className="mt-8">
                   <a
-                    href="#"
+                    href="/home"
                     className="inline-flex rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Registrarme
+                    Empezar a jugar
                   </a>
                 </div>
                 <figure className="mt-16 border-l border-gray-200 pl-8 text-gray-600">
@@ -306,7 +306,7 @@ export default function Index() {
           </h2>
           <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
             <Link
-              href="/auth/login"
+              href="/home"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Jugar Ahora

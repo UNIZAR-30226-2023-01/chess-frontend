@@ -51,10 +51,10 @@ export default function Login() {
         <div className="py-8 px-4 sm:px-10">
           <form className="space-y-6" action="#" method="POST">
             <h2 className="text-center text-3xl font-bold tracking-tight text-gray-700">
-            Create your account
+            Crea tu cuenta
             </h2>
             <p className='text-sm text-center'>
-            Please note that email verification is required for signup. Your email will be used to verify your identity for security purposes.
+            Tenga en cuenta que para registrarse es necesario verificar su dirección de correo electrónico. Su correo electrónico se utilizará para verificar su identidad por motivos de seguridad.
             </p>
             <div>
               <div className="mt-1">
@@ -63,7 +63,7 @@ export default function Login() {
                   name="username"
                   type="text"
                   autoComplete="username"
-                  placeholder="Username"
+                  placeholder="Nombre de usuario"
                   required
                   className="block w-full appearance-none rounded-sm border border-gray-300 px-3 py-4 placeholder-gray-400 shadow-sm focus:outline-none sm:text-sm"
                 />
@@ -74,7 +74,7 @@ export default function Login() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  placeholder="Email address"
+                  placeholder="Correo electrónico"
                   required
                   className="block w-full appearance-none rounded-sm border border-gray-300 px-3 py-4 placeholder-gray-400 shadow-sm focus:outline-none sm:text-sm"
                 />
@@ -85,7 +85,7 @@ export default function Login() {
                   name="password"
                   type="password"
                   autoComplete="password"
-                  placeholder="Password"
+                  placeholder="Contraseña"
                   required
                   className="block w-full appearance-none rounded-sm border border-gray-300 px-3 py-4 placeholder-gray-400 shadow-sm focus:outline-none sm:text-sm"
                 />
@@ -98,15 +98,15 @@ export default function Login() {
                 onClick={handleSubmit}
                 className="capitalize flex w-full justify-center rounded-sm border border-transparent bg-emerald/80 hover:bg-emerald/90 duration-300 py-4 px-4 text-sm font-medium text-white shadow-sm focus:outline-none"
               >
-                  continue
+                  continuar
               </button>
             </div>
 
             <div className="flex items-center justify-center">
               <div className="text-sm font-base tracking-wide">
-                Already have an account?
+                ¿Ya tienes cuenta?
                 <a href="/auth/signin" className="ml-1 text-emerald">
-                 Sign in
+                 Entrar
                 </a>
               </div>
             </div>
@@ -118,7 +118,7 @@ export default function Login() {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="bg-white px-2 text-gray-500">OR</span>
+                <span className="bg-white px-2 text-gray-500">O</span>
               </div>
             </div>
 
@@ -130,7 +130,7 @@ export default function Login() {
                 className="flex w-full justify-start items-center gap-x-3 rounded-sm border py-4 px-5 text-sm font-medium text-gray-800 shadow-sm focus:outline-none"
               >
                 <FcGoogle className='w-6 h-6'/>
-                <span>Continue with Google</span>
+                <span>Continuar con Google</span>
               </button>
             </div>
           </div>

@@ -1,12 +1,12 @@
 import Layout from '@/components/Layout';
+import Link from 'next/link';
 import { Chessboard } from 'react-chessboard';
-import { PlayIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
 
 const stats = [
-  { name: 'Total Subscribers', stat: '71,897', previousStat: '70,946', change: '12%', changeType: 'increase' },
-  { name: 'Avg. Open Rate', stat: '58.16%', previousStat: '56.14%', change: '2.02%', changeType: 'increase' },
-  { name: 'Avg. Click Rate', stat: '24.57%', previousStat: '28.62%', change: '4.05%', changeType: 'decrease' },
+  { name: 'Partidas ganadas', stat: '2897', previousStat: '2797', change: '12%', changeType: 'increase' },
+  { name: 'Clasificación', stat: '500', previousStat: '413', change: '2.02%', changeType: 'decrease' },
+  { name: 'Logros obtenidos', stat: '70%', previousStat: '50%', change: '4.05%', changeType: 'increase' },
 ];
 
 function classNames(...classes) {
@@ -33,7 +33,7 @@ export default function Analytics() {
               <dd className="mt-1 flex items-baseline justify-between md:block lg:flex">
                 <div className="flex items-baseline text-2xl font-semibold text-indigo-600">
                   {item.stat}
-                  <span className="ml-2 text-sm font-medium text-gray-500">from {item.previousStat}</span>
+                  <span className="ml-2 text-sm font-medium text-gray-500">desde {item.previousStat}</span>
                 </div>
 
                 <div
@@ -65,9 +65,10 @@ export default function Analytics() {
       {/* Card */}
       <div className="mt-5 grid grid-cols-1 gap-y-4overflow-hidden rounded-lg md:grid-cols-3 gap-y-4">
         {[1, 2, 3].map((item) => (
-          <div
+          <Link
             key={item}
-            className='col-span-2 relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
+            href="#"
+            className='cursor-pointer col-span-2 relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
           >
             {/* <div className='w-28 h-28 bg-gray-800'/> */}
             <div className='w-24 h-24 bg-gray-50/20 select-none relative'>
@@ -85,27 +86,19 @@ export default function Analytics() {
                 Competitiva
                 </div>
                 <div className='text-sm'>
-                a month ago
+                Hace un mes
                 </div>
               </div>
               <div>
                 <div className='font-semibold'>
-                Victory
+                Victoria
                 </div>
                 <div className='text-sm'>
                 11m 21s
                 </div>
               </div>
             </div>
-            <div className='absolute h-full right-0 bg-gray-100 rounded-r-lg flex flex-col divide-y divide-black/20'>
-              <button className='flex-1 flex items-center hover:bg-gray-500/10 px-2 rounded-tr-lg duration-300'>
-                <PlayIcon className='w-6 h-6'/>
-              </button>
-              <button className='flex-1 flex items-center hover:bg-gray-500/10 px-2 rounded-br-lg duration-300'>
-                <EyeIcon className='w-6 h-6'/>
-              </button>
-            </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
