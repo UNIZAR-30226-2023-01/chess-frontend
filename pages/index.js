@@ -1,151 +1,347 @@
-/* This example requires Tailwind CSS v3.0+ */
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import { ChevronRightIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 
-const modos = [
-  {
-    name: 'Play against an AI',
-    desc: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.',
-    Image: '/Match_Bot.png',
+const stats = [
+  { id: 1, name: 'Creators on the platform', value: '8,000+' },
+  { id: 2, name: 'Flat platform fee', value: '3%' },
+  { id: 3, name: 'Uptime guarantee', value: '99.9%' },
+  { id: 4, name: 'Paid out to creators', value: '$70M' },
+];
+const featuredTestimonial = {
+  body: 'Integer id nunc sit semper purus. Bibendum at lacus ut arcu blandit montes vitae auctor libero. Hac condimentum dignissim nibh vulputate ut nunc. Amet nibh orci mi venenatis blandit vel et proin. Non hendrerit in vel ac diam.',
+  author: {
+    name: 'Brenna Goyette',
+    handle: 'brennagoyette',
+    imageUrl:
+      'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80',
+    logoUrl: 'https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg',
   },
-  {
-    name: 'Play against a friend',
-    desc: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.',
-    Image: 'Private_Match_1.png',
-  },
-  {
-    name: 'Train to become better',
-    desc: ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam at ipsum eu nunc commodo posuere et sit amet ligula.',
-    Image: 'Training_Match.png',
-  },
+};
+const testimonials = [
+  [
+    [
+      {
+        body: 'Laborum quis quam. Dolorum et ut quod quia. Voluptas numquam delectus nihil. Aut enim doloremque et ipsam.',
+        author: {
+          name: 'Leslie Alexander',
+          handle: 'lesliealexander',
+          imageUrl:
+            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        },
+      },
+      // More testimonials...
+    ],
+    [
+      {
+        body: 'Aut reprehenderit voluptatem eum asperiores beatae id. Iure molestiae ipsam ut officia rem nulla blanditiis.',
+        author: {
+          name: 'Lindsay Walton',
+          handle: 'lindsaywalton',
+          imageUrl:
+            'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        },
+      },
+      // More testimonials...
+    ],
+  ],
+  [
+    [
+      {
+        body: 'Voluptas quos itaque ipsam in voluptatem est. Iste eos blanditiis repudiandae. Earum deserunt enim molestiae ipsum perferendis recusandae saepe corrupti.',
+        author: {
+          name: 'Tom Cook',
+          handle: 'tomcook',
+          imageUrl:
+            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        },
+      },
+      // More testimonials...
+    ],
+    [
+      {
+        body: 'Molestias ea earum quos nostrum doloremque sed. Quaerat quasi aut velit incidunt excepturi rerum voluptatem minus harum.',
+        author: {
+          name: 'Leonard Krasner',
+          handle: 'leonardkrasner',
+          imageUrl:
+            'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        },
+      },
+      // More testimonials...
+    ],
+  ],
 ];
 
-export default function principal() {
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
+
+export default function Index() {
   return (
-    <div className="static bg-black ">
-      <div className="background-image bg-cover border-b py-8 mx-auto h-screen ">
-
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="mt-10 py-8 text-3xl font-bold tracking-tight text-white text- sm:text-5xl">
-            Play Chess
-          </p>
-        </div>
-
-        <div className="pt-24">
-          <div className="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
-            <div className="flex flex-col w-full md:w-2/5 justify-center items-start text-center md:text-left">
-              <p className="uppercase tracking-loose w-full">ABOUT THE PAGE</p>
-              <h1 className="text-white my-4 text-5xl font-bold leading-tight">
-                Want to play chess?
-              </h1>
-              <p className="text-white leading-normal pt-5 text-2xl mb-8">
-                Join the game of chess and challenge your strategic skills. Play against opponents
-                from all over the world and improve your skills, discover the thrill of playing chess now!
-              </p>
-              <Link href="/login" >
-                <button className="mx-auto mt-2 lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-300 ease-in-out">
-                  Play
-                </button>
-              </Link>
-            </div>
-            <div className="w-full md:w-3/5 py-6 text-center">
-              <img className="w-full md:w-4/5 z-50" src="landing.jpg" alt="" />
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <div className="flex flex-wrap flex-col-reverse sm:flex-row"></div>
-      <div className="bg-white border-b py-8">
-        <div className="container max-w-5xl mx-auto m-8">
-          <h2 className="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
-              Choose your opponent
-          </h2>
-          {modos.map((modo) => (
-            <><div className="w-full mb-4">
-              <div className="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
-            </div><div className="flex flex-wrap">
-              <div className="w-5/6 sm:w-1/2 p-6">
-                <h3 className="text-3xl text-gray-800 font-bold leading-none mb-3 mt-10 pt-5">
-                  {modo.name}
-                </h3>
-                <p className="text-gray-600 mb-8">
-                  {modo.desc}
-                  <br />
-                  <br />
-                </p>
-              </div>
-              <div className="w-full sm:w-1/2 p-6">
-                <img className=" w-full sm:w-1/2 p-6 " src={modo.Image} alt="" />
-              </div>
-            </div>
-            </>
-          ))}
-        </div>
-      </div>
-      <footer className="bg-white">
-        <div className="container mx-auto  ">
-          <div className="w-full flex flex-col md:flex-row py-6">
-            <div className="flex-1 mb-6 text-black">
-              <a className="text-black no-underline hover:no-underline font-bold text-2xl lg:text-4xl" href="#">
-                REIGN
+    <div className="relative isolate bg-white">
+      <svg
+        className="absolute inset-0 -z-10 h-full w-full stroke-gray-200 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+        aria-hidden="true"
+      >
+        <defs>
+          <pattern
+            id="83fd4e5a-9d52-42fc-97b6-718e5d7ee527"
+            width={200}
+            height={200}
+            x="50%"
+            y={-1}
+            patternUnits="userSpaceOnUse"
+          >
+            <path d="M100 200V.5M.5 .5H200" fill="none" />
+          </pattern>
+        </defs>
+        <svg x="50%" y={-1} className="overflow-visible fill-gray-50">
+          <path
+            d="M-100.5 0h201v201h-201Z M699.5 0h201v201h-201Z M499.5 400h201v201h-201Z M-300.5 600h201v201h-201Z"
+            strokeWidth={0}
+          />
+        </svg>
+        <rect width="100%" height="100%" strokeWidth={0} fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
+      </svg>
+      <Navbar/>
+      <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
+        <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
+          <div className="flex">
+            <div className="relative flex items-center gap-x-4 rounded-full py-1 px-4 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+              <span className="font-semibold text-indigo-600">We’re hiring</span>
+              <span className="h-4 w-px bg-gray-900/10" aria-hidden="true" />
+              <a href="#" className="flex items-center gap-x-1">
+                <span className="absolute inset-0" aria-hidden="true" />
+                See open positions
+                <ChevronRightIcon className="-mr-2 h-5 w-5 text-gray-400" aria-hidden="true" />
               </a>
             </div>
-            <div className="flex-1">
-              <p className="uppercase text-gray-500 text-left">Links</p>
-              <ul className="mb-6">
-                <li className="mt-2  md:block md:mr-0">
-                  <a href="#" className="no-underline  hover:underline text-gray-800 hover:text-pink-500">FAQ</a>
-                </li>
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Help</a>
-                </li>
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Support</a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex-1">
-              <p className="uppercase text-gray-500 md:mb-6 text-left">Legal</p>
-              <ul className=" mb-6">
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Terms</a>
-                </li>
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Privacy</a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex-1">
-              <p className="uppercase text-gray-500 md:mb-6 text-left">Social</p>
-              <ul className="list-reset mb-6">
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Facebook</a>
-                </li>
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Linkedin</a>
-                </li>
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Twitter</a>
-                </li>
-              </ul>
-            </div>
-            <div className="flex-1">
-              <p className="uppercase text-gray-500 md:mb-6 text-left">Company</p>
-              <ul className="list-reset mb-6">
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Official Blog</a>
-                </li>
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">About Us</a>
-                </li>
-                <li className="mt-2 inline-block mr-2 md:block md:mr-0">
-                  <a href="#" className="no-underline hover:underline text-gray-800 hover:text-pink-500">Contact</a>
-                </li>
-              </ul>
-            </div>
+          </div>
+          <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            A better way to ship your projects
+          </h1>
+          <p className="mt-6 text-lg leading-8 text-gray-600">
+            Esse id magna consectetur fugiat non dolor in ad laboris magna laborum ea consequat. Nisi irure aliquip nisi
+            adipisicing veniam voluptate id. In veniam incididunt ex veniam adipisicing sit.
+          </p>
+          <div className="mt-10 flex items-center gap-x-6">
+            <Link
+              href="/auth/login"
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+              Get started
+            </Link>
+            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+              Learn more <span aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
-      </footer>
+        <div className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
+          <svg viewBox="0 0 366 729" role="img" className="mx-auto w-[22.875rem] max-w-full drop-shadow-xl">
+            <title>App screenshot</title>
+            <defs>
+              <clipPath id="2ade4387-9c63-4fc4-b754-10e687a0d332">
+                <rect width={316} height={684} rx={36} />
+              </clipPath>
+            </defs>
+            <path
+              fill="#4B5563"
+              d="M363.315 64.213C363.315 22.99 341.312 1 300.092 1H66.751C25.53 1 3.528 22.99 3.528 64.213v44.68l-.857.143A2 2 0 0 0 1 111.009v24.611a2 2 0 0 0 1.671 1.973l.95.158a2.26 2.26 0 0 1-.093.236v26.173c.212.1.398.296.541.643l-1.398.233A2 2 0 0 0 1 167.009v47.611a2 2 0 0 0 1.671 1.973l1.368.228c-.139.319-.314.533-.511.653v16.637c.221.104.414.313.56.689l-1.417.236A2 2 0 0 0 1 237.009v47.611a2 2 0 0 0 1.671 1.973l1.347.225c-.135.294-.302.493-.49.607v377.681c0 41.213 22 63.208 63.223 63.208h95.074c.947-.504 2.717-.843 4.745-.843l.141.001h.194l.086-.001 33.704.005c1.849.043 3.442.37 4.323.838h95.074c41.222 0 63.223-21.999 63.223-63.212v-394.63c-.259-.275-.48-.796-.63-1.47l-.011-.133 1.655-.276A2 2 0 0 0 366 266.62v-77.611a2 2 0 0 0-1.671-1.973l-1.712-.285c.148-.839.396-1.491.698-1.811V64.213Z"
+            />
+            <path
+              fill="#343E4E"
+              d="M16 59c0-23.748 19.252-43 43-43h246c23.748 0 43 19.252 43 43v615c0 23.196-18.804 42-42 42H58c-23.196 0-42-18.804-42-42V59Z"
+            />
+            <foreignObject
+              width={316}
+              height={684}
+              transform="translate(24 24)"
+              clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
+            >
+              <img src="https://tailwindui.com/img/component-images/mobile-app-screenshot.png" alt="" />
+            </foreignObject>
+          </svg>
+        </div>
+      </div>
+      <div className="bg-white py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:max-w-none">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              Trusted by creators worldwide
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-gray-600">
+              Lorem ipsum dolor sit amet consect adipisicing possimus.
+              </p>
+            </div>
+            <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+              {stats.map((stat) => (
+                <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
+                  <dt className="text-sm font-semibold leading-6 text-gray-600">{stat.name}</dt>
+                  <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900">{stat.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div className="overflow-hidden py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
+            <div className="lg:pt-4 lg:pr-4">
+              <div className="lg:max-w-lg">
+                <h2 className="text-base font-semibold leading-7 text-indigo-600">Deploy faster</h2>
+                <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">A better workflow</p>
+                <p className="mt-6 text-lg leading-8 text-gray-600">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque,
+                iste dolor cupiditate blanditiis ratione.
+                </p>
+                <div className="mt-8">
+                  <a
+                    href="#"
+                    className="inline-flex rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                  Get started
+                  </a>
+                </div>
+                <figure className="mt-16 border-l border-gray-200 pl-8 text-gray-600">
+                  <blockquote className="text-base leading-7">
+                    <p>
+                    “Vel ultricies morbi odio facilisi ultrices accumsan donec lacus purus. Lectus nibh ullamcorper ac
+                    dictum justo in euismod. Risus aenean ut elit massa. In amet aliquet eget cras. Sem volutpat enim
+                    tristique.”
+                    </p>
+                  </blockquote>
+                  <figcaption className="mt-6 flex gap-x-4 text-sm leading-6">
+                    <img
+                      src="https://images.unsplash.com/photo-1509783236416-c9ad59bae472?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
+                      alt=""
+                      className="h-6 w-6 flex-none rounded-full"
+                    />
+                    <div>
+                      <span className="font-semibold text-gray-900">Maria Hill</span> – Marketing Manager
+                    </div>
+                  </figcaption>
+                </figure>
+              </div>
+            </div>
+            <img
+              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+              alt="Product screenshot"
+              className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:ml-0"
+              width={2432}
+              height={1442}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="relative isolate bg-white pt-24 pb-32 sm:pt-32">
+
+        <div className="absolute inset-x-0 top-0 -z-10 flex transform-gpu overflow-hidden pt-32 opacity-25 blur-3xl sm:pt-40 xl:justify-end">
+          <svg
+            viewBox="0 0 1313 771"
+            aria-hidden="true"
+            className="ml-[-22rem] w-[82.0625rem] flex-none origin-top-right rotate-[30deg] xl:ml-0 xl:mr-[calc(50%-12rem)]"
+          >
+            <use href="#bc169a03-3518-42d4-ab1e-d3eadac65edc" />
+          </svg>
+        </div>
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-xl text-center">
+            <h2 className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Testimonials</h2>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            We have worked with thousands of amazing people
+            </p>
+          </div>
+          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
+            <figure className="col-span-2 hidden sm:block sm:rounded-2xl sm:bg-white sm:shadow-lg sm:ring-1 sm:ring-gray-900/5 xl:col-start-2 xl:row-end-1">
+              <blockquote className="p-12 text-xl font-semibold leading-8 tracking-tight text-gray-900">
+                <p>{`“${featuredTestimonial.body}”`}</p>
+              </blockquote>
+              <figcaption className="flex items-center gap-x-4 border-t border-gray-900/10 py-4 px-6">
+                <img
+                  className="h-10 w-10 flex-none rounded-full bg-gray-50"
+                  src={featuredTestimonial.author.imageUrl}
+                  alt=""
+                />
+                <div className="flex-auto">
+                  <div className="font-semibold">{featuredTestimonial.author.name}</div>
+                  <div className="text-gray-600">{`@${featuredTestimonial.author.handle}`}</div>
+                </div>
+                <img className="h-10 w-auto flex-none" src={featuredTestimonial.author.logoUrl} alt="" />
+              </figcaption>
+            </figure>
+            {testimonials.map((columnGroup, columnGroupIdx) => (
+              <div key={columnGroupIdx} className="space-y-8 xl:contents xl:space-y-0">
+                {columnGroup.map((column, columnIdx) => (
+                  <div
+                    key={columnIdx}
+                    className={classNames(
+                    (columnGroupIdx === 0 && columnIdx === 0) ||
+                      (columnGroupIdx === testimonials.length - 1 && columnIdx === columnGroup.length - 1) ?
+                      'xl:row-span-2' :
+                      'xl:row-start-1',
+                    'space-y-8',
+                    )}
+                  >
+                    {column.map((testimonial) => (
+                      <figure
+                        key={testimonial.author.handle}
+                        className="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
+                      >
+                        <blockquote className="text-gray-900">
+                          <p>{`“${testimonial.body}”`}</p>
+                        </blockquote>
+                        <figcaption className="mt-6 flex items-center gap-x-4">
+                          <img className="h-10 w-10 rounded-full bg-gray-50" src={testimonial.author.imageUrl} alt="" />
+                          <div>
+                            <div className="font-semibold">{testimonial.author.name}</div>
+                            <div className="text-gray-600">{`@${testimonial.author.handle}`}</div>
+                          </div>
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          Ready to dive in?
+            <br />
+          Start your free trial today.
+          </h2>
+          <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
+            <Link
+              href="/auth/login"
+              className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            >
+            Get started
+            </Link>
+            <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+            Learn more <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
+
+Index.getLayout = (page) => {
+  return (
+    <div>
+      <main className=''>
+        {page}
+      </main>
+      <Footer/>
+    </div>
+  );
+};
