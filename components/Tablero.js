@@ -6,16 +6,16 @@ import ChessPiece from './ChessPiece';
 
 const promotionPieces= [
   {name: 'q',
-    key: 'queen',
+    key: 'reina',
   },
   {name: 'b',
-    key: 'bishop',
+    key: 'alfil',
   },
   {name: 'n',
     key: 'juan',
   },
   {name: 'r',
-    key: 'rook',
+    key: 'rey',
   },
 ];
 

@@ -1,16 +1,54 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Switch } from '@headlessui/react';
 import Tippy from '@tippyjs/react';
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import { Chessboard } from 'react-chessboard';
 
+const colores = [
+  {
+    id: 1,
+    name: 'Tablero de madera',
+    color1: '#B88B4A', // maderaN
+    color2: '#E3C16F', // maderaB
+  },
+  {
+    id: 2,
+    name: 'Tablero coral',
+    color1: '#70A2A3', // coralN
+    color2: '#B1E4B9', // coralB
+  },
+  {
+    id: 3,
+    name: 'Tablero oscuro',
+    color1: '#706677', // oscuroN
+    color2: '#CCB7AE', // oscuroB
+  },
+  {
+    id: 4,
+    name: 'Tablero marino',
+    color1: '#6f73d2', // marN
+    color2: '#9dacff', // marB
+  },
+  {
+    id: 5,
+    name: 'Tablero trigo',
+    color1: '#bbbe64', // trigoN
+    color2: '#eaf0ce', // trigoB
+  },
+  {
+    id: 6,
+    name: 'Tablero esmeralda',
+    color1: '#6f8f72', // esmeraldaN
+    color2: '#ad8d8f', // esmeraldaB
+  },
+];
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Settings() {
   const [visibility, setvisibility] = useState(true);
-
+  const [color, setColor] = useState(['#B88B4A', '#E3C16F']);
   return (
     <div className='space-y-16'>
       {/* Profile details */}
@@ -203,56 +241,49 @@ export default function Settings() {
                       id="BasicBoard"
                       position='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
                       boardOrientation='white'
+                      customDarkSquareStyle={{ backgroundColor: color[0] }}
+                      customLightSquareStyle={{ backgroundColor: color[1] }}
                     />
                   </div>
                   <div className='col-span-1 flex flex-col justify-around'>
+
                     <div>
-                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
-                      Tablero
+                      <React.Fragment key={color.id}>
+                        <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                          Tablero
+                        </label>
+                        <select
+                          id="board"
+                          name="board"
+                          autoComplete="board"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                          onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
+                        >
+                          {colores.map((color, index) => (
+                            <option key={index}>{color.name}</option>
+                          ))}
+                        </select>
+
+                      </React.Fragment>
+                    </div>
+
+                    <div>
+                      <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
+                      Pizarros
                       </label>
                       <select
                         id="board"
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
                       >
-                        <option>Tablero 1</option>
-                        <option>Tablero 2</option>
-                        <option>Tablero 3</option>
+                        {colores.map((color, index) => (
+                          <option key={index}>{color.name}</option>
+                        ))}
                       </select>
                     </div>
 
-                    <div>
-                      <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
-                      Blancas
-                      </label>
-                      <select
-                        id="country"
-                        name="country"
-                        autoComplete="country-name"
-                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                      >
-                        <option>Blancas 1</option>
-                        <option>Blancas 2</option>
-                        <option>Blancas 3</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                      Negras
-                      </label>
-                      <select
-                        id="country"
-                        name="country"
-                        autoComplete="country-name"
-                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                      >
-                        <option>Negras 1</option>
-                        <option>Negras 2</option>
-                        <option>Negras 3</option>
-                      </select>
-                    </div>
                   </div>
                 </div>
               </div>
