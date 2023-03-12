@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
+import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
@@ -107,9 +108,9 @@ export default function Login() {
             <div className="flex items-center justify-center">
               <div className="text-sm font-base tracking-wide">
                 ¿Ya tienes cuenta?
-                <a href="/auth/signin" className="ml-1 text-emerald">
+                <Link href="/auth/signin" className="ml-1 text-emerald">
                  Entrar
-                </a>
+                </Link>
               </div>
             </div>
           </form>

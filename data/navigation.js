@@ -21,10 +21,6 @@ export const primaryButton = {
       href: '/game',
       icon: ArrowTopRightOnSquareIcon,
     }, {
-      name: 'Igualada',
-      href: '/game',
-      icon: ArrowTopRightOnSquareIcon,
-    }, {
       name: 'Amistosa',
       href: '/game',
       icon: ArrowTopRightOnSquareIcon,

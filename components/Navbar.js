@@ -4,9 +4,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 const navigation = [
-  { name: 'Características', href: '#features' },
-  { name: 'Novedades', href: '#news' },
-  { name: 'Testimonios', href: '#testimonials' },
+  { name: 'Características', href: '/#features' },
+  { name: 'Novedades', href: '/#news' },
+  { name: 'Testimonios', href: '/#testimonials' },
 ];
 
 export default function Example() {
