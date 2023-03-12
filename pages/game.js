@@ -4,34 +4,52 @@ import { useTimer } from 'react-timer-hook';
 import { Chess } from 'chess.js';
 import _ from 'lodash';
 import { useState } from 'react';
+import ChessPiece from 'components/ChessPiece';
 
-export default function Game() {
+const promotionPieces= [
+  {name: 'q',
+    key: 'reina',
+  },
+  {name: 'b',
+    key: 'alfil',
+  },
+  {name: 'n',
+    key: 'juan',
+  },
+  {name: 'r',
+    key: 'rey',
+  },
+];
+
+export default function Game({ colorTablero, colorUser, modelo }) {
   const time = new Date();
   const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
   const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
 
   const [game, setGame] = useState(new Chess());
-  const [optionSquares, setOptionSquares] = useState({});
-  const [moveFrom, setMoveFrom] = useState('');
+  const [pausedgame, setPausedGame] = useState(new Chess());
   const [isGameOver, setIsGameOver] = useState(false);
-  console.log(isGameOver);
-
+  const [optionSquares, setOptionSquares] = useState({});
+  const [lastMoveSquares, setLastMoveSquares] = useState({});
+  const [showPromotion, setShowPromotion] = useState(false);
+  const [promotionPiece, setPromotionPiece] = useState('q');
   const movimiento = 'rgba(255, 255, 0, 0.4)';
   const newSquares = {};
 
-  function getMoveOptions(square) {
+  function onPieceDragBegin(piece, sourceSquare) {
+    console.log(isGameOver);
     const moves = game.moves({
-      square,
+      square: sourceSquare,
       verbose: true,
     });
     if (moves.length === 0) {
+      setOptionSquares({});
       return;
     }
-
     moves.map((move) => {
       newSquares[move.to] = {
         background:
-          game.get(move.to) && game.get(move.to).color !== game.get(square).color ?
+          game.get(move.to) && game.get(move.to).color !== game.get(sourceSquare).color ?
             'radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)' :
             'radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)',
         borderRadius: '50%',
@@ -39,56 +57,63 @@ export default function Game() {
       return move;
     });
 
-    newSquares[square] = {
+    newSquares[sourceSquare] = {
       background: movimiento,
     };
     setOptionSquares(newSquares);
+    // setLastMoveSquares({});
   }
 
-  function onSquareClick(square) {
-    function resetFirstMove(square) {
-      setMoveFrom(square);
-      getMoveOptions(square);
-    }
-    // from square
-    if (!moveFrom) {
-      resetFirstMove(square);
-      return;
-    }
-    // attempt to make move
-    let move = null;
+  function sound() {
+    const audio = document.getElementById('myAudio');
+    audio.play();
+  }
+
+  function onDrop(sourceSquare, targetSquare) {
     const gameCopy = _.cloneDeep(game);
+    let move = undefined;
     try {
       move = gameCopy.move({
-        from: moveFrom,
-        to: square,
-        promotion: 'q', // always promote to a queen for example simplicity
+        from: sourceSquare,
+        to: targetSquare,
+        promotion: promotionPiece,
       });
+      if (move && move.promotion) {
+        setShowPromotion(true);
+        setPausedGame(gameCopy);
+        return true;
+      }
       setGame(gameCopy);
       if (gameCopy.isGameOver()) {
         setIsGameOver(true);
       }
-      newSquares[moveFrom] = {
+      newSquares[sourceSquare] = {
         background: movimiento,
       };
-      newSquares[square] = {
+      newSquares[targetSquare] = {
         background: movimiento,
       };
       setOptionSquares(newSquares);
+      sound();
+      setLastMoveSquares({
+        [move.from]: { background: movimiento },
+        [move.to]: { background: movimiento },
+      });
+      return true;
     } catch (error) {
-      // if invalid, setMoveFrom and getMoveOptions
-      if (move === null) {
-        setOptionSquares({});
-        resetFirstMove(square);
-        return;
-      }
+      setOptionSquares({});
       if (game.isGameOver() || game.isDraw()) {
         <div className='bg-black h-full'> </div>;
         console.log('sacabu');
       }
       return false;
     }
-    setMoveFrom('');
+  }
+
+  function onPromotion(piece) {
+    setPromotionPiece(piece);
+    setShowPromotion(false);
+    setGame(pausedgame);
   }
 
   return (
@@ -132,16 +157,67 @@ export default function Game() {
             <Chessboard
               id="BasicBoard"
               position={game.fen()}
-              boardOrientation='white'
               areArrowsAllowed="true"
-              arePiecesDraggable={false}
-              onSquareClick={onSquareClick}
-              animationDuration={200}
+              arePiecesDraggable="true"
+              onPieceDrop={onDrop}
+              onPieceDragBegin={onPieceDragBegin}
+              animationDuration={500}
+              boardOrientation={colorUser}
               customSquareStyles={{
                 ...optionSquares,
+                ...lastMoveSquares,
               }}
+              customDarkSquareStyle={{ backgroundColor: colorTablero[0] }}
+              customLightSquareStyle={{ backgroundColor: colorTablero[1] }}
             />
           </div>
+          {showPromotion && (
+            <div className="fixed z-10 inset-0 overflow-y-auto">
+              <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div
+                  className="fixed inset-0 transition-opacity"
+                  aria-hidden="true"
+                  onClick={() => setShowPromotion(false)}
+                >
+                  <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+                <span
+                  className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                  aria-hidden="true"
+                >
+                  &#8203;
+                </span>
+                <div
+                  className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="modal-headline"
+                >
+                  <div>
+                    <div className="mt-3 text-center sm:mt-5">
+                      <h3
+                        className="text-lg leading-6 font-medium text-gray-900"
+                        id="modal-headline"
+                      >
+                        Promocionar peón
+                      </h3>
+                      <div className="mt-2">
+                        {promotionPieces.map((piece) => (
+                          <div
+                            key={piece.key}
+                            className="inline-block"
+                            onClick={() => onPromotion(piece.name)}
+                          >
+                            <ChessPiece piece={piece} modelo={modelo} color={colorUser} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         {/* Player 2 */}
         <div className='h-16 w-full flex gap-x-4'>
