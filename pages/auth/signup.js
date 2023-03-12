@@ -19,9 +19,8 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:4000/api/v1/sign-in', {
+    fetch(`http://reign-chess.duckdns.org:4000/api/v1/auth/sign-up`, {
       method: 'POST',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -49,7 +48,11 @@ export default function Login() {
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-8 px-4 sm:px-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+            action="#"
+            method="POST">
             <h2 className="text-center text-3xl font-bold tracking-tight text-gray-700">
             Crea tu cuenta
             </h2>
@@ -95,7 +98,6 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                onClick={handleSubmit}
                 className="capitalize flex w-full justify-center rounded-sm border border-transparent bg-emerald/80 hover:bg-emerald/90 duration-300 py-4 px-4 text-sm font-medium text-white shadow-sm focus:outline-none"
               >
                   continuar

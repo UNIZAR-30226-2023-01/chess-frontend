@@ -7,7 +7,7 @@ export default function Login() {
 
   const handleGoogle = async () => {
     let timer = null;
-    const popup = window.open('http://localhost:4000/api/v1/sign-in/google', 'popup', 'width=600,height=600');
+    const popup = window.open(`http://reign-chess.duckdns.org:4000/api/v1/auth/sign-in/google`, 'popup', 'width=600,height=600');
     if (popup) {
       timer = setInterval(() => {
         if (popup.closed) {
@@ -18,27 +18,29 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password } = e.target.elements;
-    fetch('http://localhost:4000/api/v1/sign-in', {
+
+    const res = await fetch(`http://reign-chess.duckdns.org:4000/api/v1/auth/sign-in`, {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: email.value,
-        password: password.value,
+        username: e.target.elements?.username?.value,
+        password: e.target.elements?.password?.value,
       }),
     })
         .then((res) => {
-          if (res.ok) router.push('/home');
-          throw new Error('Network response was not ok.');
+          console.log(res.headers);
+          if (res.ok) return res.json();
         })
         .catch((error) => {
           console.error('There has been a problem with your fetch operation:', error);
         });
+
+    console.log(res);
   };
 
   return (
@@ -50,18 +52,23 @@ export default function Login() {
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-8 px-4 sm:px-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+            action="#"
+            method="POST"
+          >
             <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-gray-700">
                 Bienvenido de nuevo
             </h2>
             <div>
               <div className="mt-1">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="Correo electrónico"
+                  id="username"
+                  name="username"
+                  type="username"
+                  autoComplete="username"
+                  placeholder="Nombre de usuario"
                   required
                   className="block w-full appearance-none rounded-sm border border-gray-300 px-3 py-4 placeholder-gray-400 shadow-sm focus:outline-none sm:text-sm"
                 />
@@ -82,7 +89,6 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                onClick={handleSubmit}
                 className="capitalize flex w-full justify-center rounded-sm border border-transparent bg-emerald/80 hover:bg-emerald/90 duration-300 py-4 px-4 text-sm font-medium text-white shadow-sm focus:outline-none"
               >
                   continuar
