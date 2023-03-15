@@ -6,10 +6,9 @@ import Link from 'next/link';
 const navigation = [
   { name: 'Características', href: '/#features' },
   { name: 'Novedades', href: '/#news' },
-  { name: 'Testimonios', href: '/#testimonials' },
 ];
 
-export default function Example() {
+export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -33,9 +32,9 @@ export default function Example() {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+            <Link key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
               {item.name}
-            </a>
+            </Link>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
