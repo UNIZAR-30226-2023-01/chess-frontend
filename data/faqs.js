@@ -1,19 +1,29 @@
 export const faqs =[
   {
-    question: 'What\'s the best thing about Switzerland?',
+    question: '¿Puedo personalizar las piezas y el tablero?',
     answer:
-      'I don\'t know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+      'Sí, nuestra página web ofrece la opción de personalizar el tablero y las piezas. Puedes elegir entre diferentes estilos de tablero y piezas entre las disponibles.',
   }, {
-    question: 'What\'s the best thing about Switzerland?',
+    question: '¿Cómo puedo jugar al ajedrez en esta página web?',
     answer:
-      'I don\'t know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+      'Desde la página principal puedes elegir el modo de juego : jugar contra el ordenador , en multijugador aleatorio o contra un amigo , previamente tienes que haber iniciado sesión.',
   }, {
-    question: 'What\'s the best thing about Switzerland?',
+    question: '¿Es necesario registrarse para jugar al ajedrez en línea?',
     answer:
-      'I don\'t know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+      'Sí, es necesario registrarse en nuestra plataforma para poder jugar al ajedrez en línea. El proceso de registro es rápido y fácil, y te permitirá acceder a todas las características de la plataforma.',
   }, {
-    question: 'What\'s the best thing about Switzerland?',
+    question: '¿Puedo jugar al ajedrez en línea desde mi dispositivo móvil?',
     answer:
-      'I don\'t know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.',
+      'Sí, puedes jugar al ajedrez en línea desde tu dispositivo móvil. Nuestra plataforma está optimizada para dispositivos móviles, por lo que puedes jugar en cualquier momento y en cualquier lugar.',
+  },
+  {
+    question: '¿Hay algún costo para jugar al ajedrez en línea en esta web?',
+    answer:
+      'No, no hay ningún costo para jugar al ajedrez en línea en nuestra web. Ofrecemos nuestro servicio de forma gratuita para que todos puedan disfrutar del juego.',
+  },
+  {
+    question: '¿Qué sucede si mi conexión a internet se interrumpe durante una partida?',
+    answer:
+      'Si pierdes la conexión a internet durante una partida, el sistema tratará de reconectarte automáticamente. Si no es posible, se considerará la partida como una derrota para ti.',
   },
 ];
