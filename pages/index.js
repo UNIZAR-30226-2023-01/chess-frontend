@@ -1,81 +1,17 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-
+import screenshot from '../public/assets/images/inicio.png';
 const stats = [
   { id: 1, name: 'Jugadores registrados', value: '8,000+' },
   { id: 2, name: 'Partidas diarias', value: '100+' },
   { id: 3, name: 'Torneos diarios', value: '200+' },
   { id: 4, name: 'Garantía de disponibilidad', value: '99.9%' },
 ];
-const featuredTestimonial = {
-  body: 'He estado usando Reinado durante los últimos meses y debo decir que es la mejor aplicación de ajedrez que existe. La interfaz es increíblemente intuitiva y las opciones para personalizar tu experiencia son infinitas. La IA es impresionante y supone un desafío incluso para los jugadores más experimentados.',
-  author: {
-    name: 'Brenna Goyette',
-    handle: 'brennagoyette',
-    imageUrl:
-      'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=1024&h=1024&q=80',
-    logoUrl: 'https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg',
-  },
-};
-const testimonials = [
-  [
-    [
-      {
-        body: 'Reign ofrece a los jugadores de ajedrez un gran desafío de IA y una interfaz fácil de usar. Además, ¡incluso puedes tener torneos virtuales con tus amigos!',
-        author: {
-          name: 'Leslie Alexander',
-          handle: 'lesliealexander',
-          imageUrl:
-            'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-      },
-      // More testimonials...
-    ],
-    [
-      {
-        body: '¡Reign es el sueño de todo amante del ajedrez! AI ofrece un verdadero desafío, la interfaz es hermosa e intuitiva, definitivamente vale la pena echarle un vistazo.',
-        author: {
-          name: 'Lindsay Walton',
-          handle: 'lindsaywalton',
-          imageUrl:
-            'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-      },
-      // More testimonials...
-    ],
-  ],
-  [
-    [
-      {
-        body: '¡Jugar al ajedrez nunca ha sido más divertido o conveniente con Reign! Es la combinación perfecta de una gran interfaz de usuario y potentes algoritmos de IA que facilitan el aprendizaje.',
-        author: {
-          name: 'Tom Cook',
-          handle: 'tomcook',
-          imageUrl:
-            'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-      },
-      // More testimonials...
-    ],
-    [
-      {
-        body: 'He estado jugando al ajedrez desde que era un niño, ¡y Reine es sin duda la mejor aplicación de ajedrez que existe!',
-        author: {
-          name: 'Leonard Krasner',
-          handle: 'leonardkrasner',
-          imageUrl:
-            'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-      },
-      // More testimonials...
-    ],
-  ],
-];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
+// function classNames(...classes) {
+//  return classes.filter(Boolean).join(' ');
+// }
 
 export default function Index() {
   return (
@@ -148,7 +84,7 @@ export default function Index() {
               transform="translate(24 24)"
               clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
             >
-              <img src="https://tailwindui.com/img/component-images/mobile-app-screenshot.png" alt="" />
+              <img src={screenshot} alt="" />
             </foreignObject>
           </svg>
         </div>
@@ -235,66 +171,6 @@ export default function Index() {
           >
             <use href="#bc169a03-3518-42d4-ab1e-d3eadac65edc" />
           </svg>
-        </div>
-        <div id='testimonials' className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-xl text-center">
-            <h2 className="text-lg font-semibold leading-8 tracking-tight text-indigo-600">Testimonios</h2>
-            <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Hemos trabajado con miles de personas increíbles
-            </p>
-          </div>
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 grid-rows-1 gap-8 text-sm leading-6 text-gray-900 sm:mt-20 sm:grid-cols-2 xl:mx-0 xl:max-w-none xl:grid-flow-col xl:grid-cols-4">
-            <figure className="col-span-2 hidden sm:block sm:rounded-2xl sm:bg-white sm:shadow-lg sm:ring-1 sm:ring-gray-900/5 xl:col-start-2 xl:row-end-1">
-              <blockquote className="p-12 text-xl font-semibold leading-8 tracking-tight text-gray-900">
-                <p>{`“${featuredTestimonial.body}”`}</p>
-              </blockquote>
-              <figcaption className="flex items-center gap-x-4 border-t border-gray-900/10 py-4 px-6">
-                <img
-                  className="h-10 w-10 flex-none rounded-full bg-gray-50"
-                  src={featuredTestimonial.author.imageUrl}
-                  alt=""
-                />
-                <div className="flex-auto">
-                  <div className="font-semibold">{featuredTestimonial.author.name}</div>
-                  <div className="text-gray-600">{`@${featuredTestimonial.author.handle}`}</div>
-                </div>
-              </figcaption>
-            </figure>
-            {testimonials.map((columnGroup, columnGroupIdx) => (
-              <div key={columnGroupIdx} className="space-y-8 xl:contents xl:space-y-0">
-                {columnGroup.map((column, columnIdx) => (
-                  <div
-                    key={columnIdx}
-                    className={classNames(
-                    (columnGroupIdx === 0 && columnIdx === 0) ||
-                      (columnGroupIdx === testimonials.length - 1 && columnIdx === columnGroup.length - 1) ?
-                      'xl:row-span-2' :
-                      'xl:row-start-1',
-                    'space-y-8',
-                    )}
-                  >
-                    {column.map((testimonial) => (
-                      <figure
-                        key={testimonial.author.handle}
-                        className="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-gray-900/5"
-                      >
-                        <blockquote className="text-gray-900">
-                          <p>{`“${testimonial.body}”`}</p>
-                        </blockquote>
-                        <figcaption className="mt-6 flex items-center gap-x-4">
-                          <img className="h-10 w-10 rounded-full bg-gray-50" src={testimonial.author.imageUrl} alt="" />
-                          <div>
-                            <div className="font-semibold">{testimonial.author.name}</div>
-                            <div className="text-gray-600">{`@${testimonial.author.handle}`}</div>
-                          </div>
-                        </figcaption>
-                      </figure>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
       <div className="bg-white">

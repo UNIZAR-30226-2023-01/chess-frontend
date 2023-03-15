@@ -1,27 +1,24 @@
 export const TermsContent = {
-  title: 'Terms',
-  introduction: 'At CoinMarketCap, we’re strongly committed to protecting and respecting your privacy. This Privacy Policy (“Privacy Policy”) covers your access and use of this Website, coinmarketcap.com (the “Website”), as well as associated content, software, and mobile applications (collectively, the “Service”). This Privacy Policy explains when and why and how we collect and use personal information about people who visit our Website or use our Services, the conditions under which we may disclose your personal information to others, and how we keep your personal information secure. We may change this Privacy Policy from time to time so please check this page occasionally to ensure that you are happy with any changes. By using our Website or our Services, you are agreeing to be bound by this Privacy Policy.',
+  title: 'Términos de uso de REIGN',
+  introduction: 'Al utilizar nuestro sitio web, usted acepta cumplir y estar sujeto a los siguientes términos y condiciones de uso:',
   subsections: [
     {
-      title: 'What Information Do We Collect?',
-      desciption: 'CoinMarketCap (“CoinMarketCap”, “we” or “us”) collects (a) the e-mail addresses of those who communicate with us via email; (b) aggregate information concerning what pages users access or visit; (c) information given by the user (such as survey information and/or site registrations); and (d) information related to your use of the Website and/or the mobile application, including IP address, Device ID, geographic location, and date and time of your request; (e) any other information that you might provide voluntarily. We might also collect your email address and your Wallet ID if you decide to participate to one of our campaigns.',
-    },
-    {
-      title: 'How Do We Use the Information?',
-      desciption: 'We may collect, store and use the following kinds of personal information:',
+      title: '',
       list: [
-        'To fulfill a contract or take steps linked to a contract such as processing your registration on our Website or sending you information about changes to our terms or policies;',
-        'to provide you with information about other products or services we offer that are similar to those that you have already purchased or enquired about;',
-        'Where we are legally required to do so. We may also provide access to your personally identifiable information when legally required to do so, to cooperate with police investigations or other legal proceedings, to protect against misuse or unauthorized use of our Website, to limit our legal liability and protect our rights, or to protect the rights, property or safety of visitors of the Website or the public. In those instances, the information is provided only for that purpose.',
+        'Contenido del sitio web: El contenido de este sitio web es solo para fines informativos y educativos. No garantizamos la exactitud, integridad o utilidad de la información proporcionada.',
+        'Uso permitido: Usted está autorizado a utilizar este sitio web para su uso personal y no comercial. No puede copiar, reproducir, distribuir, transmitir, modificar o crear obras derivadas de cualquier parte del sitio web sin nuestro permiso previo por escrito.',
+        'Registro de usuario: Para acceder a ciertas funciones de este sitio web, es posible que deba registrarse y crear una cuenta de usuario. Usted es responsable de proteger la confidencialidad de su información de registro y cualquier actividad que ocurra bajo su cuenta.',
+        'Uso prohibido: Usted no puede utilizar este sitio web para cualquier propósito ilegal o no autorizado. Usted acepta no interferir con el uso y disfrute de este sitio web por parte de otros usuarios.',
+        'Propiedad intelectual: Todos los derechos de propiedad intelectual en y para el sitio web son propiedad de [nombre de la web de ajedrez] y están protegidos por las leyes de derechos de autor y marcas registradas. No se le concede ninguna licencia o derecho a utilizar ninguna de estas marcas o logotipos sin nuestro permiso previo por escrito.',
+        'Descargo de responsabilidad: Este sitio web se proporciona "tal cual" sin garantías de ningún tipo, ya sean expresas o implícitas. No asumimos ninguna responsabilidad por cualquier daño que surja del uso de este sitio web.',
+        'Enlaces a otros sitios web: Este sitio web puede contener enlaces a otros sitios web de terceros que no son propiedad ni están controlados por [nombre de la web de ajedrez]. No tenemos control sobre el contenido, las políticas de privacidad o las prácticas de otros sitios web y no somos responsables de ellos.',
+        'Modificaciones de los términos de uso: Nos reservamos el derecho de modificar estos términos de uso en cualquier momento y sin previo aviso. Le recomendamos que revise estos términos de uso periódicamente para estar al tanto de cualquier cambio.',
+        'Ley aplicable: Estos términos de uso se regirán e interpretarán de acuerdo con las leyes del país o estado donde [nombre de la web de ajedrez] tiene su sede principal, sin referencia a los principios de conflicto de leyes.',
       ],
     },
     {
-      title: 'What information do we collect?',
-      desciption: 'We may collect, store and use the following kinds of personal information:',
-    },
-    {
-      title: 'What information do we collect?',
-      desciption: 'We may collect, store and use the following kinds of personal information:',
+      title: '',
+      desciption: 'Al utilizar este sitio web, usted reconoce que ha leído, comprendido y acepta estos términos de uso en su totalidad. Si no está de acuerdo con estos términos, no utilice este sitio web.',
     },
   ],
 };
