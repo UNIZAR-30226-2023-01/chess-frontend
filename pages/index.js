@@ -1,7 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
-import screenshot from '../public/assets/images/inicio.png';
+// import screenshot from '../public/assets/images/inicio.png';
 const stats = [
   { id: 1, name: 'Jugadores registrados', value: '8,000+' },
   { id: 2, name: 'Partidas diarias', value: '100+' },
@@ -84,7 +84,7 @@ export default function Index() {
               transform="translate(24 24)"
               clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
             >
-              <img src={screenshot} alt="" />
+              <img src="https://tailwindui.com/img/component-images/mobile-app-screenshot.png" alt="" />
             </foreignObject>
           </svg>
         </div>
