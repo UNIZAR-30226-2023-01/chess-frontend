@@ -7,7 +7,7 @@ export default function Login() {
 
   const handleGoogle = async () => {
     let timer = null;
-    const popup = window.open(`http://reign-chess.duckdns.org:4000/api/v1/auth/sign-in/google`, 'popup', 'width=600,height=600');
+    const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-in/google`, 'popup', 'width=600,height=600');
     if (popup) {
       timer = setInterval(() => {
         if (popup.closed) {
@@ -18,10 +18,10 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const res = await fetch(`http://reign-chess.duckdns.org:4000/api/v1/auth/sign-in`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-in`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -32,15 +32,19 @@ export default function Login() {
         password: e.target.elements?.password?.value,
       }),
     })
-        .then((res) => {
-          console.log(res.headers);
-          if (res.ok) return res.json();
+        .then(async (res) => {
+          if (res.ok && res.status === 200) {
+            console.log('res', res);
+            console.log('res headers', res.headers);
+            console.log('res parsed', await res.json());
+            // router.push('/home');
+            return;
+          }
+          throw new Error('Network response was not ok.');
         })
         .catch((error) => {
           console.error('There has been a problem with your fetch operation:', error);
         });
-
-    console.log(res);
   };
 
   return (
