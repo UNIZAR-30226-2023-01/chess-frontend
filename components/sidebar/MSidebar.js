@@ -7,7 +7,6 @@ import { Disclosure } from '@headlessui/react';
 import { primaryButton, navigation, subNavigation } from '@/data/navigation';
 import { CubeIcon } from '@heroicons/react/24/outline';
 
-
 export default function MSidebar({ sidebarOpen, setSidebarOpen }) {
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>

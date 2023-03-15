@@ -1,12 +1,13 @@
 import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
+import Link from 'next/link';
 
 export default function Login() {
   const router = useRouter();
 
   const handleGoogle = async () => {
     let timer = null;
-    const popup = window.open('http://localhost:4000/api/v1/sign-in/google', 'popup', 'width=600,height=600');
+    const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/sign-in/google`, 'popup', 'width=600,height=600');
     if (popup) {
       timer = setInterval(() => {
         if (popup.closed) {
@@ -19,9 +20,8 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:4000/api/v1/sign-in', {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`, {
       method: 'POST',
-      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -31,8 +31,13 @@ export default function Login() {
         password: e.target.elements?.password?.value,
       }),
     })
-        .then((res) => {
-          if (res.ok) router.push('/home');
+        .then(async (res) => {
+          if (res.ok && res.status === 201) {
+            console.log('res', res);
+            console.log('res parsed', await res.json());
+            // router.push('/home');
+            return;
+          }
           throw new Error('Network response was not ok.');
         })
         .catch((error) => {
@@ -49,7 +54,11 @@ export default function Login() {
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-8 px-4 sm:px-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-6"
+            action="#"
+            method="POST">
             <h2 className="text-center text-3xl font-bold tracking-tight text-gray-700">
             Crea tu cuenta
             </h2>
@@ -95,7 +104,6 @@ export default function Login() {
             <div>
               <button
                 type="submit"
-                onClick={handleSubmit}
                 className="capitalize flex w-full justify-center rounded-sm border border-transparent bg-emerald/80 hover:bg-emerald/90 duration-300 py-4 px-4 text-sm font-medium text-white shadow-sm focus:outline-none"
               >
                   continuar
@@ -105,9 +113,9 @@ export default function Login() {
             <div className="flex items-center justify-center">
               <div className="text-sm font-base tracking-wide">
                 ¿Ya tienes cuenta?
-                <a href="/auth/signin" className="ml-1 text-emerald">
+                <Link href="/auth/signin" className="ml-1 text-emerald">
                  Entrar
-                </a>
+                </Link>
               </div>
             </div>
           </form>

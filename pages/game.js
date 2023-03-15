@@ -167,8 +167,6 @@ export default function Game({ colorTablero, colorUser, modelo }) {
                 ...optionSquares,
                 ...lastMoveSquares,
               }}
-              customDarkSquareStyle={{ backgroundColor: colorTablero[0] }}
-              customLightSquareStyle={{ backgroundColor: colorTablero[1] }}
             />
           </div>
           {showPromotion && (

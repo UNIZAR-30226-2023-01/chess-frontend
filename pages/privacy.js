@@ -15,7 +15,7 @@ export default function Privacy() {
           <Legal
             key={index}
             title={subsection.title}
-            desciption={subsection.desciption}
+            desciption={subsection.description}
             list={subsection.list}
           />
         ))}

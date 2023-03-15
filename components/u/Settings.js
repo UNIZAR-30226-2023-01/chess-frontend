@@ -42,6 +42,30 @@ const colores = [
     color2: '#ad8d8f', // esmeraldaB
   },
 ];
+
+const modelos = [
+  {
+    id: 1,
+    name: 'Piezas chess',
+    model: 'normal',
+  },
+  {
+    id: 2,
+    name: 'Piezas marroquies',
+    model: 'fea',
+  },
+  {
+    id: 3,
+    name: 'Piezas maya',
+    model: 'maya',
+  },
+  {
+    id: 4,
+    name: 'Piezas árabes',
+    model: 'arabe',
+  },
+];
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
@@ -49,6 +73,81 @@ function classNames(...classes) {
 export default function Settings() {
   const [visibility, setvisibility] = useState(true);
   const [color, setColor] = useState(['#B88B4A', '#E3C16F']);
+  const [modelo, setModelo] = useState('normal');
+  const customPieces = {
+    wK: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/rey-white.png`}
+      />
+    ),
+    wQ: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/reina-white.png`}
+      />
+    ),
+    wR: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/torre-white.png`}
+      />
+    ),
+    wB: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/alfil-white.png`}
+      />
+    ),
+    wN: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/juan-white.png`}
+      />
+    ),
+    wP: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/peon-white.png`}
+      />
+    ),
+    bK: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/rey-black.png`}
+      />
+    ),
+    bQ: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/reina-black.png`}
+      />
+    ),
+    bR: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/torre-black.png`}
+      />
+    ),
+    bB: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/alfil-black.png`}
+      />
+    ),
+    bN: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/juan-black.png`}
+      />
+    ),
+    bP: ({ squareWidth }) => (
+      <img
+        style={{ width: squareWidth, height: squareWidth }}
+        src= {`/assets/piezas/${modelo}/peon-black.png`}
+      />
+    ),
+  };
   return (
     <div className='space-y-16'>
       {/* Profile details */}
@@ -235,12 +334,12 @@ export default function Settings() {
                   </p>
                 </div>
                 <div className="mt-6 grid grid-cols-2 gap-6">
-                  <div className='w-56 h-56 bg-gray-50/20 select-none relative col-span-1'>
-                    <div className='w-56 h-56 absolute top-0 left-0 z-10'/>
+                  <div className='w-60 h-60 bg-gray-50/20 select-none relative col-span-1'>
+                    <div className='w-60 h-60 absolute top-0 left-0 z-10'/>
                     <Chessboard
                       id="BasicBoard"
-                      position='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
                       boardOrientation='white'
+                      customPieces={customPieces}
                       customDarkSquareStyle={{ backgroundColor: color[0] }}
                       customLightSquareStyle={{ backgroundColor: color[1] }}
                     />
@@ -269,17 +368,17 @@ export default function Settings() {
 
                     <div>
                       <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
-                      Pizarros
+                      Modelo de piezas
                       </label>
                       <select
                         id="board"
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
+                        onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
                       >
-                        {colores.map((color, index) => (
-                          <option key={index}>{color.name}</option>
+                        {modelos.map((modelo, index) => (
+                          <option key={index}>{modelo.name}</option>
                         ))}
                       </select>
                     </div>
