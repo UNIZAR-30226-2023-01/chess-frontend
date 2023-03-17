@@ -1,27 +1,30 @@
 export const PrivacyContent = {
   title: 'Privacy',
-  introduction: 'At CoinMarketCap, we’re strongly committed to protecting and respecting your privacy. This Privacy Policy (“Privacy Policy”) covers your access and use of this Website, coinmarketcap.com (the “Website”), as well as associated content, software, and mobile applications (collectively, the “Service”). This Privacy Policy explains when and why and how we collect and use personal information about people who visit our Website or use our Services, the conditions under which we may disclose your personal information to others, and how we keep your personal information secure. We may change this Privacy Policy from time to time so please check this page occasionally to ensure that you are happy with any changes. By using our Website or our Services, you are agreeing to be bound by this Privacy Policy.',
+  introduction: 'En Reign, nos tomamos muy en serio la privacidad de nuestros usuarios y nos comprometemos a proteger sus datos personales. Esta Política de Privacidad explica cómo recopilamos, usamos y protegemos su información personal en relación con el uso de nuestro sitio web.',
   subsections: [
     {
-      title: 'What Information Do We Collect?',
-      desciption: 'CoinMarketCap (“CoinMarketCap”, “we” or “us”) collects (a) the e-mail addresses of those who communicate with us via email; (b) aggregate information concerning what pages users access or visit; (c) information given by the user (such as survey information and/or site registrations); and (d) information related to your use of the Website and/or the mobile application, including IP address, Device ID, geographic location, and date and time of your request; (e) any other information that you might provide voluntarily. We might also collect your email address and your Wallet ID if you decide to participate to one of our campaigns.',
+      title: 'Recopilación de información',
+      description: 'Podemos recopilar información personal de los usuarios cuando se registran en nuestro sitio, se suscriben a nuestro boletín informativo, participan en concursos o encuestas, o realizan una compra a través de nuestro sitio. Esta información puede incluir su nombre, dirección de correo electrónico, dirección postal, número de teléfono y fecha de nacimiento.También podemos recopilar información no personal, como la dirección IP del usuario, el tipo de navegador, la página de referencia y las páginas visitadas en nuestro sitio.',
     },
     {
-      title: 'How Do We Use the Information?',
-      desciption: 'We may collect, store and use the following kinds of personal information:',
-      list: [
-        'To fulfill a contract or take steps linked to a contract such as processing your registration on our Website or sending you information about changes to our terms or policies;',
-        'to provide you with information about other products or services we offer that are similar to those that you have already purchased or enquired about;',
-        'Where we are legally required to do so. We may also provide access to your personally identifiable information when legally required to do so, to cooperate with police investigations or other legal proceedings, to protect against misuse or unauthorized use of our Website, to limit our legal liability and protect our rights, or to protect the rights, property or safety of visitors of the Website or the public. In those instances, the information is provided only for that purpose.',
-      ],
+      title: 'Uso de la información',
+      description: 'La información personal que recopilamos se utiliza para procesar transacciones, enviar correos electrónicos informativos y promocionales, y mejorar la experiencia del usuario en nuestro sitio web. También podemos utilizar información no personal para analizar el tráfico del sitio y mejorar nuestro servicio.',
     },
     {
-      title: 'What information do we collect?',
-      desciption: 'We may collect, store and use the following kinds of personal information:',
+      title: 'Divulgación de información',
+      description: 'No vendemos, intercambiamos ni transferimos información personal a terceros sin su consentimiento, excepto para cumplir con la ley, proteger nuestros derechos o propiedad, o hacer cumplir nuestras políticas del sitio.',
     },
     {
-      title: 'What information do we collect?',
-      desciption: 'We may collect, store and use the following kinds of personal information:',
+      title: 'Seguridad de la información',
+      description: 'Nos esforzamos por proteger la información personal de nuestros usuarios mediante medidas de seguridad adecuadas, como la encriptación de datos y el acceso restringido a la información personal.Sin embargo, ninguna medida de seguridad puede garantizar la seguridad absoluta de la información. Por lo tanto, no podemos garantizar la seguridad de la información personal del usuario en todo momento.',
+    },
+    {
+      title: 'Cambios en la política de privacidad',
+      description: 'Podemos actualizar esta Política de Privacidad de vez en cuando. Se recomienda a los usuarios que revisen periódicamente esta página para estar informados de cualquier cambio. Al continuar utilizando nuestro sitio web después de la publicación de cambios en esta política, los usuarios aceptan los cambios.',
+    },
+    {
+      title: 'Contacto',
+      description: 'Si tiene preguntas o inquietudes sobre esta Política de Privacidad, por favor contáctenos a través de help@gracehopper.es .',
     },
   ],
 };
