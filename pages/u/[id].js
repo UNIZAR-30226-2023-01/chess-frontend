@@ -39,18 +39,6 @@ export default function User() {
                           <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white">{profile.name}</h1>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-black shadow-sm hover:bg-gray-100 duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                          >
-                            <span>Añadir amigo</span>
-                          </button>
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-black shadow-sm hover:bg-gray-100 duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                          >
-                            <span>Desafiar</span>
-                          </button>
                         </div>
                       </div>
                     </div>

@@ -112,10 +112,11 @@ export default function Index() {
           <div className="mx-auto grid max-w-2xl grid-cols-1 gap-y-16 gap-x-8 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start">
             <div className="lg:pt-4 lg:pr-4">
               <div className="lg:max-w-lg">
-                <h2 className="text-base font-semibold leading-7 text-indigo-600">Juegue comodamete</h2>
+                <h2 className="text-base font-semibold leading-7 text-indigo-600">Juega comodamete</h2>
                 <p className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Una interfaz nueva</p>
                 <p className="mt-6 text-lg leading-8 text-gray-600">
-                  Juega partidas de ajedrez online con jugadores de todo el mundo. Disfruta de partidas emocionantes y desafiantes con este nuevo programa de ajedrez.
+                  Juega partidas de ajedrez online con jugadores de todo el mundo. Disfruta de partidas emocionantes y desafiantes con este nuevo programa de ajedrez en el que
+                  puedes elegir entre distintos modos de juego y aumentar tu nivel.
                 </p>
                 <div className="mt-8">
                   <a
@@ -126,28 +127,11 @@ export default function Index() {
                   </a>
                 </div>
                 <figure className="mt-16 border-l border-gray-200 pl-8 text-gray-600">
-                  <blockquote className="text-base leading-7">
-                    <p>
-                    “Me encanta usar esta aplicación, aprender a jugar al ajedrez y jugar contra otros jugadores en línea,
-                    lo que me ayuda a mejorar mis habilidades y a tener una experiencia más emocionante y desafiante en el juego.
-                     En resumen, esta aplicación se ha convertido en mi aplicación favorita para jugar al ajedrez.”
-                    </p>
-                  </blockquote>
-                  <figcaption className="mt-6 flex gap-x-4 text-sm leading-6">
-                    <img
-                      src="https://images.unsplash.com/photo-1509783236416-c9ad59bae472?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                      alt=""
-                      className="h-6 w-6 flex-none rounded-full"
-                    />
-                    <div>
-                      <span className="font-semibold text-gray-900">Maria Hill</span> – Marketing Manager
-                    </div>
-                  </figcaption>
                 </figure>
               </div>
             </div>
             <img
-              src="https://tailwindui.com/img/component-images/dark-project-app-screenshot.png"
+              src="/assets/images/web_screenshot.png"
               alt="Product screenshot"
               className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:ml-0"
               width={2432}
@@ -174,7 +158,7 @@ export default function Index() {
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Listo para empezar?
             <br />
-          Prueba ahora gratis la aplicación.
+          Descarga ya la app o quédate en la web.
           </h2>
           <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
             <Link

@@ -4,7 +4,7 @@ export default function login() {
   return (
     <div className="h-screen flex flex-col justify-center items-center space-y-1 bg-gray-800 text-gray-200">
       <div className="w-fit h-fit">
-        <img src="/vercel_light.svg" className="w-24 h-16 mx-auto" />
+        <img src="/assets/images/Logo_white.png" className=" h-20 mx-auto" />
       </div>
       <h1 className="font-medium tracking-wide">Welcome to Reign</h1>
       <p className="tracking-wide">Log in with your Reign account to continue</p>
