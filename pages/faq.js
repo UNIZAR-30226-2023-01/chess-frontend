@@ -1,4 +1,5 @@
 import Navbar from '@/components/Navbar';
+import Layout from '@/components/Layout';
 import Footer from '@/components/Footer';
 import { Disclosure } from '@headlessui/react';
 import { MinusSmallIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
@@ -42,13 +43,17 @@ export default function FAQ() {
 }
 
 FAQ.getLayout = (page) => {
-  return (
-    <div className='w-full'>
-      <Navbar/>
-      <main className='container mx-auto'>
-        {page}
-      </main>
-      <Footer/>
-    </div>
-  );
+  const isAuthenticated = false;
+  if (!isAuthenticated) {
+    return (
+      <div className='w-full'>
+        <Navbar/>
+        <main className='container mx-auto'>
+          {page}
+        </main>
+        <Footer/>
+      </div>
+    );
+  }
+  return <Layout>{page}</Layout>;
 };

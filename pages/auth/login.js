@@ -6,8 +6,8 @@ export default function login() {
       <div className="w-fit h-fit">
         <img src="/assets/images/Logo_white.png" className=" h-20 mx-auto" />
       </div>
-      <h1 className="font-medium tracking-wide">Welcome to Reign</h1>
-      <p className="tracking-wide">Log in with your Reign account to continue</p>
+      <h1 className="font-medium tracking-wide">Bienvenido a Reign</h1>
+      <p className="tracking-wide">Conéctese con su cuenta Reign para continuar</p>
       <div className="flex gap-x-4 py-4">
         <Link
           href='/auth/signin'

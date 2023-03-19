@@ -9,7 +9,7 @@ const links = [
     description: 'Descubre como tratamos tus datos.',
     icon: BookOpenIcon,
   },
-  { name: 'API Reference', href: 'https://unizar-30226-2023-01.github.io/chess-backend/', description: 'Integra un servicio con nosotros', icon: QueueListIcon },
+  { name: 'Documentación de la API', href: 'https://unizar-30226-2023-01.github.io/chess-backend/', description: 'Integra un servicio con nosotros', icon: QueueListIcon },
 ];
 const social = [
   {
@@ -38,9 +38,9 @@ export default function NotFound() {
         />
         <div className="mx-auto mt-20 max-w-2xl text-center sm:mt-24">
           <p className="text-base font-semibold leading-8 text-indigo-600">404</p>
-          <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">This page does not exist</h1>
+          <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Esta página no existe</h1>
           <p className="mt-4 text-base leading-7 text-gray-600 sm:mt-6 sm:text-lg sm:leading-8">
-            Sorry, we couldn’t find the page you’re looking for.
+            Lo sentimos, no hemos podido encontrar la página que busca.
           </p>
         </div>
         <div className="mx-auto mt-16 flow-root max-w-lg sm:mt-20">
@@ -53,10 +53,10 @@ export default function NotFound() {
                 </div>
                 <div className="flex-auto">
                   <h3 className="text-sm font-semibold leading-6 text-gray-900">
-                    <a href={link.href}>
+                    <Link href={link.href}>
                       <span className="absolute inset-0" aria-hidden="true" />
                       {link.name}
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-gray-600">{link.description}</p>
                 </div>

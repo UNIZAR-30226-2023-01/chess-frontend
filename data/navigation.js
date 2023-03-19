@@ -5,7 +5,6 @@ import {
   UserIcon,
   ChartBarIcon,
   TrophyIcon,
-  ArrowTrendingUpIcon,
 } from '@heroicons/react/24/outline';
 
 export const primaryButton = {
@@ -36,10 +35,6 @@ export const navigation = [{
   name: 'Clasificación',
   href: '/ranking',
   icon: ChartBarIcon,
-}, {
-  name: 'Analíticas',
-  href: '/analytics',
-  icon: ArrowTrendingUpIcon,
 }];
 
 export const subNavigation = [{

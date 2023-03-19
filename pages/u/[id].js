@@ -5,6 +5,8 @@ import Settings from '@/components/u/Settings';
 
 import {profile} from '@/data/users';
 import { useState } from 'react';
+import Games from '@/components/u/Games';
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -76,7 +78,7 @@ export default function User() {
                 {/* Description list */}
                 <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6 lg:px-8 pb-12">
                   {currentTab === profileTabs[0].name && <Profile profile={profile}/>}
-                  {currentTab === profileTabs[1].name && <></>}
+                  {currentTab === profileTabs[1].name && <Games />}
                   {currentTab === profileTabs[2].name && <Settings/>}
                 </div>
               </article>
