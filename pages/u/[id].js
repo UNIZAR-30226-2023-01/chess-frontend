@@ -5,6 +5,8 @@ import Settings from '@/components/u/Settings';
 
 import {profile} from '@/data/users';
 import { useState } from 'react';
+import Games from '@/components/u/Games';
+
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -39,18 +41,6 @@ export default function User() {
                           <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white">{profile.name}</h1>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-black shadow-sm hover:bg-gray-100 duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                          >
-                            <span>Añadir amigo</span>
-                          </button>
-                          <button
-                            type="button"
-                            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-black shadow-sm hover:bg-gray-100 duration-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                          >
-                            <span>Desafiar</span>
-                          </button>
                         </div>
                       </div>
                     </div>
@@ -88,7 +78,7 @@ export default function User() {
                 {/* Description list */}
                 <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6 lg:px-8 pb-12">
                   {currentTab === profileTabs[0].name && <Profile profile={profile}/>}
-                  {currentTab === profileTabs[1].name && <></>}
+                  {currentTab === profileTabs[1].name && <Games />}
                   {currentTab === profileTabs[2].name && <Settings/>}
                 </div>
               </article>

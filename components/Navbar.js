@@ -17,7 +17,7 @@ export default function Navbar() {
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <img className="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="/public/assets/logo.png" />
+            <img className="h-12" src="/assets/images/logo.png" alt="/public/assets/logo.png" />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -48,7 +48,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img className="h-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="../public/assets/logo.png" />
+              <img className="h-12" src="/assets/images/logo.png" alt="../public/assets/logo.png" />
             </a>
             <button
               type="button"

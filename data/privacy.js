@@ -24,7 +24,9 @@ export const PrivacyContent = {
     },
     {
       title: 'Contacto',
-      description: 'Si tiene preguntas o inquietudes sobre esta Política de Privacidad, por favor contáctenos a través de help@gracehopper.es .',
+      description: <>
+      Si tiene preguntas o inquietudes sobre esta Política de Privacidad, por favor contáctenos a través de <a href="mailto:help@gracehopper.xyz" target="_top" rel="noreferrer">help@gracehopper.xyz</a>.
+      </>,
     },
   ],
 };

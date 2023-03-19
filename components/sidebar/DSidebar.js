@@ -12,7 +12,7 @@ export default function DSidebar() {
         <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
           <nav className="flex-1 space-y-1">
             <Link href="/" className="w-full h-fit">
-              <img src="/vercel_light.svg" className="w-24 h-16 mx-auto" />
+              <img src="/assets/images/Logo_white.png" className=" h-16 mx-auto" />
             </Link>
             <Disclosure as="div" className="space-y-1">
               {({ open }) => (

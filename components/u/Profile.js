@@ -9,13 +9,6 @@ export default function Profile({profile}) {
           <dd className="mt-1 text-sm text-gray-900 dark:text-white">{profile.fields[field]}</dd>
         </div>
       ))}
-      <div className="sm:col-span-2">
-        <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">About</dt>
-        <dd
-          className="mt-1 max-w-prose space-y-5 text-sm text-gray-900 dark:text-white text-left"
-          dangerouslySetInnerHTML={{ __html: profile.about }}
-        />
-      </div>
     </dl>
   );
 }
