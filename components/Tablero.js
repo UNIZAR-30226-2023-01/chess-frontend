@@ -4,6 +4,8 @@ import { Chess } from 'chess.js';
 import _ from 'lodash';
 import { useState } from 'react';
 import ChessPiece from 'components/ChessPiece';
+import { useChess } from '@/context/ChessContext';
+import { customPieces } from '@/components/CustomPiece';
 
 const promotionPieces= [
   {name: 'q',
@@ -20,7 +22,7 @@ const promotionPieces= [
   },
 ];
 
-export default function Tablero({ colorTablero, colorUser, modelo }) {
+export default function Tablero({colorUser}) {
   const time = new Date();
   const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
   const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
@@ -33,6 +35,7 @@ export default function Tablero({ colorTablero, colorUser, modelo }) {
   const [showPromotion, setShowPromotion] = useState(false);
   const movimiento = 'rgba(255, 255, 0, 0.4)';
   const newSquares = {};
+  const { data } = useChess();
 
   function onPieceDragBegin(piece, sourceSquare) {
     const moves = game.moves({
@@ -165,12 +168,13 @@ export default function Tablero({ colorTablero, colorUser, modelo }) {
               onPieceDragBegin={onPieceDragBegin}
               animationDuration={500}
               boardOrientation={colorUser}
+              customPieces={customPieces(data)}
               customSquareStyles={{
                 ...optionSquares,
                 ...lastMoveSquares,
               }}
-              customDarkSquareStyle={{ backgroundColor: colorTablero[0] }}
-              customLightSquareStyle={{ backgroundColor: colorTablero[1] }}
+              customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
+              customLightSquareStyle={{ backgroundColor: data.whitePiece }}
             />
             {/* isGameOver && (
               <div style={{ background: 'lightgray', padding: '20px' }}>
@@ -217,8 +221,8 @@ export default function Tablero({ colorTablero, colorUser, modelo }) {
                           >
                             <ChessPiece
                               piece={piece.key}
-                              modelo='normal' // modelo=modelo
-                              color='white' // color=colorUser
+                              modelo={data.model}
+                              color={colorUser}
                             />
                           </div>
                         ))}

@@ -3,6 +3,8 @@ import { Switch } from '@headlessui/react';
 import Tippy from '@tippyjs/react';
 import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import { Chessboard } from 'react-chessboard';
+import { useChess } from '@/context/ChessContext';
+import { customPieces } from '@/components/CustomPiece';
 
 const colores = [
   {
@@ -72,82 +74,7 @@ function classNames(...classes) {
 
 export default function Settings() {
   const [visibility, setvisibility] = useState(true);
-  const [color, setColor] = useState(['#B88B4A', '#E3C16F']);
-  const [modelo, setModelo] = useState('normal');
-  const customPieces = {
-    wK: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/rey-white.png`}
-      />
-    ),
-    wQ: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/reina-white.png`}
-      />
-    ),
-    wR: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/torre-white.png`}
-      />
-    ),
-    wB: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/alfil-white.png`}
-      />
-    ),
-    wN: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/juan-white.png`}
-      />
-    ),
-    wP: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/peon-white.png`}
-      />
-    ),
-    bK: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/rey-black.png`}
-      />
-    ),
-    bQ: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/reina-black.png`}
-      />
-    ),
-    bR: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/torre-black.png`}
-      />
-    ),
-    bB: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/alfil-black.png`}
-      />
-    ),
-    bN: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/juan-black.png`}
-      />
-    ),
-    bP: ({ squareWidth }) => (
-      <img
-        style={{ width: squareWidth, height: squareWidth }}
-        src= {`/assets/piezas/${modelo}/peon-black.png`}
-      />
-    ),
-  };
+  const { data, saveBoard, saveColor } = useChess();
   return (
     <div className='space-y-16'>
       {/* Profile details */}
@@ -334,36 +261,34 @@ export default function Settings() {
                   </p>
                 </div>
                 <div className="mt-6 grid grid-cols-2 gap-6">
-                  <div className='w-60 h-60 bg-gray-50/20 select-none relative col-span-1'>
-                    <div className='w-60 h-60 absolute top-0 left-0 z-10'/>
+                  <div className='w-2/3 h-2/3 bg-gray-50/20 select-none relative col-span-1'>
+                    <div className='absolute top-0 left-0 z-10'/>
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces}
-                      customDarkSquareStyle={{ backgroundColor: color[0] }}
-                      customLightSquareStyle={{ backgroundColor: color[1] }}
+                      customPieces={customPieces(data)}
+                      customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
+                      customLightSquareStyle={{ backgroundColor: data.whitePiece }}
                     />
                   </div>
                   <div className='col-span-1 flex flex-col justify-around'>
 
                     <div>
-                      <React.Fragment key={color.id}>
-                        <label htmlFor="board" className="block text-sm font-medium text-gray-700">
-                          Tablero
-                        </label>
-                        <select
-                          id="board"
-                          name="board"
-                          autoComplete="board"
-                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                          onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
-                        >
-                          {colores.map((color, index) => (
-                            <option key={index}>{color.name}</option>
-                          ))}
-                        </select>
+                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                        Tablero
+                      </label>
+                      <select
+                        id="board"
+                        name="board"
+                        autoComplete="board"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        onChange={(event) => saveColor(colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2)}
+                      >
+                        {colores.map((color, index) => (
+                          <option key={index}>{color.name}</option>
+                        ))}
+                      </select>
 
-                      </React.Fragment>
                     </div>
 
                     <div>
@@ -375,7 +300,7 @@ export default function Settings() {
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
+                        onChange={(event) => saveBoard(modelos[event.target.selectedIndex].model)}
                       >
                         {modelos.map((modelo, index) => (
                           <option key={index}>{modelo.name}</option>

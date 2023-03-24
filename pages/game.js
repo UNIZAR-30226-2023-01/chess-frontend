@@ -4,7 +4,7 @@ import Tablero from '@/components/Tablero';
 
 export default function Game() {
   return (
-    <Tablero colorTablero={['#6f73d2', '#9dacff']} colorUser='white' modelo='normal'></Tablero>
+    <Tablero colorUser={'white'}></Tablero>
   );
 }
 
