@@ -6,6 +6,7 @@ import { useState } from 'react';
 import ChessPiece from 'components/ChessPiece';
 import { useChess } from '@/context/ChessContext';
 import { customPieces } from '@/components/CustomPiece';
+import { GameSocket } from './communications/socket_io';
 
 const promotionPieces= [
   {name: 'q',
@@ -27,13 +28,15 @@ export default function Tablero({colorUser}) {
   const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
   const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
 
+  const s = new GameSocket();
+  let movement = '';
   const [game, setGame] = useState(new Chess());
   const [pausedgame, setPausedGame] = useState({});
   const [isGameOver, setIsGameOver] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const [showPromotion, setShowPromotion] = useState(false);
-  const movimiento = 'rgba(255, 255, 0, 0.4)';
+  const cMov = 'rgba(255, 255, 0, 0.4)';
   const newSquares = {};
   const { data } = useChess();
 
@@ -58,7 +61,7 @@ export default function Tablero({colorUser}) {
     });
 
     newSquares[sourceSquare] = {
-      background: movimiento,
+      background: cMov,
     };
     setOptionSquares(newSquares);
     // setLastMoveSquares({});
@@ -83,21 +86,23 @@ export default function Tablero({colorUser}) {
         setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
         return true;
       }
+      movement = {move: move.san};
+      s.socket.emmit('move', movement);
       setGame(gameCopy);
       if (gameCopy.isGameOver()) {
         setIsGameOver(true);
       }
       newSquares[sourceSquare] = {
-        background: movimiento,
+        background: cMov,
       };
       newSquares[targetSquare] = {
-        background: movimiento,
+        background: cMov,
       };
       setOptionSquares(newSquares);
       sound();
       setLastMoveSquares({
-        [move.from]: { background: movimiento },
-        [move.to]: { background: movimiento },
+        [move.from]: { background: cMov },
+        [move.to]: { background: cMov },
       });
       return true;
     } catch (error) {
@@ -113,11 +118,13 @@ export default function Tablero({colorUser}) {
   function onPromotion(piece) { // Cuando se quiera promocionar movemos el juego origen
     console.log(isGameOver);
     setShowPromotion(false);
-    game.move({
+    const moves = game.move({
       from: pausedgame.sourceSquare,
       to: pausedgame.targetSquare,
       promotion: piece,
     });
+    movement = {move: moves.san};
+    s.socket.emmit('move', movement);
     setLastMoveSquares({});
   }
 

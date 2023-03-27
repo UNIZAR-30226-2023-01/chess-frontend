@@ -34,9 +34,12 @@ export default function Login() {
     })
         .then(async (res) => {
           if (res.ok && res.status === 200) {
-            console.log('res', res);
-            console.log('res headers', res.headers);
-            console.log('res parsed', await res.json());
+            const data = await res.json();
+            const { id, username, email, token } = data; // extraer los datos del usuario del cuerpo de la respuesta
+            console.log('id:', id);
+            console.log('correo:', email);
+            console.log('username:', username);
+            console.log('token:', token);
             // router.push('/home');
             return;
           }
