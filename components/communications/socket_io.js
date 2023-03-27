@@ -18,7 +18,7 @@ export class GameSocket {
   }
 }
 
-export const startGame = (context, type) => {
+export const startGame = (type) => {
   const s = new GameSocket();
   s.socket.on('connect', () => {
     console.log('Conectado al servidor');
@@ -42,37 +42,17 @@ export const startGame = (context, type) => {
         jsonData = {};
         break;
     }
-
-    s.socket.emit('find_room', jsonData);
+    s.socket.on('error', (data) => {
+      console.log('error', data);
+    });
 
     s.socket.once('room', (data) => {
-      s.room = data[0]['roomID'];
-      s.iAmWhite = data[0]['color'] == 'LIGHT';
-      game.move(data[0]['move']);
-      resolve();
+      console.log('encontrada', data);
+      s.room = data.roomID;
+      s.iAmWhite = data.color == 'LIGHT';
+      resolve(true);
     });
-
-    s.socket.on('game_state', (data) => {
-      console.log('a');
-    });
-
-    s.socket.on('moved', (data) => {
-      if (data[0]['turn'] == (!s.iAmWhite ? 'DARK' : 'LIGHT')) {
-        game.move(data[0]['move']);
-      }
-    });
-
-    s.socket.on('game_over', (data) => {
-      if (
-        data[0]['endState'] == 'CHECKMATE' &&
-        data[0]['winner'] == (!s.iAmWhite ? 'LIGHT' : 'DARK')
-      ) {
-        // alertWinner(context, !s.iAmWhite);
-      }
-    });
-
-    s.socket.on('disconnect', (_) => {});
-    s.socket.on('fromServer', (_) => {});
+    s.socket.emit('find_room', jsonData);
   });
 
   return completer;
@@ -81,15 +61,15 @@ export const startGame = (context, type) => {
 export const listenGame = (context) => {
   const s = new GameSocket();
 
-  s.on('connect', () => {
+  s.socket.on('connect', () => {
     console.log('connected');
   });
 
-  s.on('error', (data) => {
+  s.socket.on('error', (data) => {
     console.log(data);
   });
 
-  s.on('game_state', (data) => {
+  s.socket.on('game_state', (data) => {
     console.log(data);
   });
 
@@ -100,7 +80,7 @@ export const listenGame = (context) => {
     console.log(data);
   });
 
-  s.on('game_over', (data) => {
+  s.socket.on('game_over', (data) => {
     if (data[0]['endState'] == 'CHECKMATE' &&
         (data[0]['winner'] == (!s.iAmWhite ? 'LIGHT' : 'DARK'))) {
       // alertWinner(context, !s.iAmWhite);
@@ -112,7 +92,7 @@ export const listenGame = (context) => {
     console.log('disconnected');
   });
 
-  s.on('fromServer', (_) => {
+  s.socket.on('fromServer', (_) => {
     console.log(_);
   });
 };

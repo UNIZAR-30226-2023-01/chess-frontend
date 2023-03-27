@@ -81,6 +81,7 @@ export default function Tablero({colorUser}) {
         to: targetSquare,
         promotion: 'q', // ponemos reina pero luego se modifica
       });
+      console.log('He movido');
       if (move && move.promotion) {
         setShowPromotion(true);
         setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
@@ -109,14 +110,13 @@ export default function Tablero({colorUser}) {
       setOptionSquares({});
       if (game.isGameOver() || game.isDraw()) {
         <div className='bg-black h-full'> </div>;
-        console.log('sacabu');
+        console.log(isGameOver);
       }
       return false;
     }
   }
 
   function onPromotion(piece) { // Cuando se quiera promocionar movemos el juego origen
-    console.log(isGameOver);
     setShowPromotion(false);
     const moves = game.move({
       from: pausedgame.sourceSquare,

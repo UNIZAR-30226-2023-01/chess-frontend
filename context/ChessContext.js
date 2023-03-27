@@ -19,7 +19,6 @@ export function ChessProvider({children}) {
 
   useEffect(() => {
     const _data = localStorage.getItem('ChangeData');
-    console.log(_data);
     if (_data) {
       try {
         const parsedData = JSON.parse(_data);

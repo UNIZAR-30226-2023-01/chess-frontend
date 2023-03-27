@@ -13,15 +13,15 @@ export const primaryButton = {
   link: [
     {
       name: 'Contra la IA',
-      href: '/game',
+      href: '/gameAI',
       icon: ArrowTopRightOnSquareIcon,
     }, {
       name: 'Competitiva',
-      href: '/game',
+      href: '/gameCompetitive',
       icon: ArrowTopRightOnSquareIcon,
     }, {
       name: 'Amistosa',
-      href: '/game',
+      href: '/gameFriendly',
       icon: ArrowTopRightOnSquareIcon,
     },
   ],

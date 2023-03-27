@@ -72,9 +72,18 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
+
 export default function Settings() {
   const [visibility, setvisibility] = useState(true);
   const { data, saveBoard, saveColor } = useChess();
+  function searchColor() {
+    const find = colores.find((c) => c.color2 === data.whitePiece);
+    return find.name;
+  }
+  function searchModel() {
+    const find = modelos.find((c) => c.model === data.model);
+    return find.name;
+  }
   return (
     <div className='space-y-16'>
       {/* Profile details */}
@@ -283,6 +292,7 @@ export default function Settings() {
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
                         onChange={(event) => saveColor(colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2)}
+                        value={searchColor()}
                       >
                         {colores.map((color, index) => (
                           <option key={index}>{color.name}</option>
@@ -300,6 +310,7 @@ export default function Settings() {
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        value={searchModel()}
                         onChange={(event) => saveBoard(modelos[event.target.selectedIndex].model)}
                       >
                         {modelos.map((modelo, index) => (
