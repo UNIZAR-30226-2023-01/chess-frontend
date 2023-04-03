@@ -7,11 +7,6 @@ export function useChess() {
 }
 
 export function ChessProvider({children}) {
-// {
-// model:  ...
-// fichas_negras: /...
-// fichas blancas: /....
-// }*/
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true); // nuevo estado isLoading
   const saveBoard = (newModel) => setData({...data, model: newModel});

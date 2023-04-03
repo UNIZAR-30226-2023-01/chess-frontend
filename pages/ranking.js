@@ -73,7 +73,7 @@ export default function Ranking() {
             </table>
           </div>
         </div>
-        <nav className="max-w-5xl bg-white dark:bg-gray-800 pb-12 w-full flex items-center justify-between  border-gray-200 px-4 sm:px-0 fixed bottom-0 border-t">
+        <nav className="max-w-5xl bg-white dark:bg-gray-800 pb-12 w-full flex items-center justify-between border-gray-200 px-4 sm:px-0 fixed bottom-0 border-t">
           <div className="-mt-px flex w-0 flex-1">
             <a
               href="#"
@@ -142,3 +142,23 @@ export default function Ranking() {
 
 
 Ranking.getLayout = (page) =><Layout>{page}</Layout>;
+
+export async function getServerSideProps() {
+  const res = fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
+    method: 'POST',
+    credentials: 'include',
+  }).catch((err)=>console.log(err));
+
+  if (process.env.NODE_ENV === 'production' && !(res.ok && res.status === 200)) {
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+}

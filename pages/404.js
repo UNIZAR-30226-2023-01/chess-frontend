@@ -1,5 +1,5 @@
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
-import { BookOpenIcon, QueueListIcon } from '@heroicons/react/24/solid';
+import { BookOpenIcon, QueueListIcon, RssIcon } from '@heroicons/react/24/solid';
 import Link from 'next/link';
 
 const links = [
@@ -9,8 +9,17 @@ const links = [
     description: 'Descubre como tratamos tus datos.',
     icon: BookOpenIcon,
   },
-  { name: 'Documentación de la API', href: 'https://unizar-30226-2023-01.github.io/chess-backend/', description: 'Integra un servicio con nosotros', icon: QueueListIcon },
-];
+  {
+    name: 'Documentación de la API',
+    href: 'https://unizar-30226-2023-01.github.io/chess-backend/',
+    description: 'Integra un servicio con nosotros',
+    icon: QueueListIcon },
+  {
+    name: 'Estado del servicio',
+    href: 'https://status.gracehopper.xyz',
+    description: 'Verifica el estado de nuestros servicios en',
+    icon: RssIcon,
+  }];
 const social = [
   {
     name: 'GitHub',

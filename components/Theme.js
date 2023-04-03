@@ -1,30 +1,8 @@
-import {useState, useEffect} from 'react';
 import { SunIcon, MoonIcon} from '@heroicons/react/24/outline';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function Theme() {
-  const [theme, setTheme] = useState();
-
-  useEffect(() => {
-    const localTheme = localStorage.getItem('editor-theme');
-    if (localTheme !== 'null' && localTheme !== 'undefined') {
-      setTheme(localTheme);
-    }
-  }, []);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    localStorage.setItem('editor-theme', theme);
-  }, [theme]);
-
-  const handleThemeChange = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-  };
+  const { theme, handleThemeChange } = useTheme();
 
   return (
     <button

@@ -48,5 +48,11 @@ export const subNavigation = [{
 }, {
   name: 'Log out',
   icon: ArrowRightOnRectangleIcon,
-  onClick: () => {},
+  onClick: () => {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-out`, {
+      method: 'POST',
+      credentials: 'include',
+    })
+        .catch((err) => console.log(err));
+  },
 }];

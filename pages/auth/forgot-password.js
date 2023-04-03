@@ -1,36 +1,33 @@
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
-export default function Login() {
+export default function ForgotPassword() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-in`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: e.target.elements?.username?.value,
-        password: e.target.elements?.password?.value,
-      }),
-    })
-        .then(async (res) => {
-          if (res.ok && res.status === 200) {
-            const data = await res.json();
-            const { id, username, email, token } = data; // extraer los datos del usuario del cuerpo de la respuesta
-            console.log('id:', id);
-            console.log('correo:', email);
-            console.log('username:', username);
-            console.log('token:', token);
-            // router.push('/home');
-            return;
-          }
-          throw new Error('Network response was not ok.');
-        })
-        .catch((error) => {
-          console.error('There has been a problem with your fetch operation:', error);
-        });
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/forgot-password`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: e.target.elements?.email?.value,
+        }),
+      })
+          .then(async (res) => {
+            if (res.ok && res.status === 200) {
+              const data = await res.json();
+              console.log(data);
+              resolve('ok');
+            }
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(new Error('Network response was not ok.'));
+          });
+    });
   };
 
   return (
@@ -43,7 +40,16 @@ export default function Login() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-8 px-4 sm:px-10">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              toast.promise(
+                  handleSubmit(e),
+                  {
+                    loading: 'Solicitando cambio de contraseña...',
+                    success: 'Por favor, revisa tu correo',
+                    error: 'Error al solicitar cambio de contraseña',
+                  },
+              ).catch(() => {});
+            }}
             className="space-y-6"
             action="#"
             method="POST"

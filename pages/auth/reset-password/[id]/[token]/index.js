@@ -1,36 +1,40 @@
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
+export default function ResetPassword({ id, token}) {
+  const router = useRouter();
 
-export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-in`, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: e.target.elements?.username?.value,
-        password: e.target.elements?.password?.value,
-      }),
-    })
-        .then(async (res) => {
-          if (res.ok && res.status === 200) {
-            const data = await res.json();
-            const { id, username, email, token } = data; // extraer los datos del usuario del cuerpo de la respuesta
-            console.log('id:', id);
-            console.log('correo:', email);
-            console.log('username:', username);
-            console.log('token:', token);
-            // router.push('/home');
-            return;
-          }
-          throw new Error('Network response was not ok.');
-        })
-        .catch((error) => {
-          console.error('There has been a problem with your fetch operation:', error);
-        });
+    if (e.target.elements?.password?.value !== e.target.elements?.confirmPassword?.value) {
+      toast.error('Las contraseñas no coinciden');
+      return;
+    }
+
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/reset-password/${id}/${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: e.target.elements?.password?.value,
+        }),
+      })
+          .then(async (res) => {
+            if (res.ok && res.status === 200) {
+              const data = await res.json();
+              console.log(data);
+              resolve('ok');
+            }
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch((error) => {
+            console.error('There has been a problem with your fetch operation:', error);
+            throw new Error('Network response was not ok.');
+          });
+    });
   };
 
   return (
@@ -43,7 +47,18 @@ export default function Login() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-8 px-4 sm:px-10">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              toast.promise(
+                  handleSubmit(e),
+                  {
+                    loading: 'Cambiando la contraseña...',
+                    success: 'Contraseña cambiada con exito',
+                    error: 'Error al cambiar la contraseña',
+                  },
+              ).then(() => {
+                router.push('/home');
+              }).catch(() => {});
+            }}
             className="space-y-6"
             action="#"
             method="POST"
@@ -68,10 +83,10 @@ export default function Login() {
               </div>
               <div className="mt-2">
                 <input
-                  id="confirm-password"
-                  name="confirm-password"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type="password"
-                  autoComplete="confirm-password"
+                  autoComplete="confirmPassword"
                   placeholder="Confirmar nueva contraseña"
                   required
                   className="block w-full appearance-none rounded-sm border border-gray-300 px-3 py-4 placeholder-gray-400 shadow-sm focus:outline-none sm:text-sm"
@@ -94,4 +109,27 @@ export default function Login() {
       <div/>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const { id, token } = context.params;
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/reset-password/${id}/${token}`)
+      .catch(()=> {});
+
+  if (process.env.NODE_ENV === 'production' && (!res.ok || res.status !== 200)) {
+    return {
+      redirect: {
+        destination: '/auth/sign-in',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      id,
+      token,
+    },
+  };
 }
