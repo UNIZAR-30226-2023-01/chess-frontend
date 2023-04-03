@@ -4,6 +4,9 @@ import { Chess } from 'chess.js';
 import _ from 'lodash';
 import { useState } from 'react';
 import ChessPiece from 'components/ChessPiece';
+import { useChess } from '@/context/ChessContext';
+import { customPieces } from '@/components/CustomPiece';
+import { GameSocket } from './communications/socket_io';
 
 const promotionPieces= [
   {name: 'q',
@@ -20,19 +23,22 @@ const promotionPieces= [
   },
 ];
 
-export default function Tablero({ colorTablero, colorUser, modelo }) {
+export default function Tablero({colorUser}) {
   const time = new Date();
   const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
   const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
 
+  const s = new GameSocket();
+  let movement = '';
   const [game, setGame] = useState(new Chess());
   const [pausedgame, setPausedGame] = useState({});
   const [isGameOver, setIsGameOver] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const [showPromotion, setShowPromotion] = useState(false);
-  const movimiento = 'rgba(255, 255, 0, 0.4)';
+  const cMov = 'rgba(255, 255, 0, 0.4)';
   const newSquares = {};
+  const { data } = useChess();
 
   function onPieceDragBegin(piece, sourceSquare) {
     const moves = game.moves({
@@ -55,7 +61,7 @@ export default function Tablero({ colorTablero, colorUser, modelo }) {
     });
 
     newSquares[sourceSquare] = {
-      background: movimiento,
+      background: cMov,
     };
     setOptionSquares(newSquares);
     // setLastMoveSquares({});
@@ -75,46 +81,50 @@ export default function Tablero({ colorTablero, colorUser, modelo }) {
         to: targetSquare,
         promotion: 'q', // ponemos reina pero luego se modifica
       });
+      console.log('He movido');
       if (move && move.promotion) {
         setShowPromotion(true);
         setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
         return true;
       }
+      movement = {move: move.san};
+      s.socket.emmit('move', movement);
       setGame(gameCopy);
       if (gameCopy.isGameOver()) {
         setIsGameOver(true);
       }
       newSquares[sourceSquare] = {
-        background: movimiento,
+        background: cMov,
       };
       newSquares[targetSquare] = {
-        background: movimiento,
+        background: cMov,
       };
       setOptionSquares(newSquares);
       sound();
       setLastMoveSquares({
-        [move.from]: { background: movimiento },
-        [move.to]: { background: movimiento },
+        [move.from]: { background: cMov },
+        [move.to]: { background: cMov },
       });
       return true;
     } catch (error) {
       setOptionSquares({});
       if (game.isGameOver() || game.isDraw()) {
         <div className='bg-black h-full'> </div>;
-        console.log('sacabu');
+        console.log(isGameOver);
       }
       return false;
     }
   }
 
   function onPromotion(piece) { // Cuando se quiera promocionar movemos el juego origen
-    console.log(isGameOver);
     setShowPromotion(false);
-    game.move({
+    const moves = game.move({
       from: pausedgame.sourceSquare,
       to: pausedgame.targetSquare,
       promotion: piece,
     });
+    movement = {move: moves.san};
+    s.socket.emmit('move', movement);
     setLastMoveSquares({});
   }
 
@@ -165,12 +175,13 @@ export default function Tablero({ colorTablero, colorUser, modelo }) {
               onPieceDragBegin={onPieceDragBegin}
               animationDuration={500}
               boardOrientation={colorUser}
+              customPieces={customPieces(data)}
               customSquareStyles={{
                 ...optionSquares,
                 ...lastMoveSquares,
               }}
-              customDarkSquareStyle={{ backgroundColor: colorTablero[0] }}
-              customLightSquareStyle={{ backgroundColor: colorTablero[1] }}
+              customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
+              customLightSquareStyle={{ backgroundColor: data.whitePiece }}
             />
             {/* isGameOver && (
               <div style={{ background: 'lightgray', padding: '20px' }}>
@@ -217,8 +228,8 @@ export default function Tablero({ colorTablero, colorUser, modelo }) {
                           >
                             <ChessPiece
                               piece={piece.key}
-                              modelo='normal' // modelo=modelo
-                              color='white' // color=colorUser
+                              modelo={data.model}
+                              color={colorUser}
                             />
                           </div>
                         ))}

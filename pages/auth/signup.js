@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
+import toast from 'react-hot-toast';
 import Link from 'next/link';
 
 export default function Login() {
@@ -7,7 +8,7 @@ export default function Login() {
 
   const handleGoogle = async () => {
     let timer = null;
-    const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/sign-in/google`, 'popup', 'width=600,height=600');
+    const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/v1/sign-in/google`, 'popup', 'width=600,height=600');
     if (popup) {
       timer = setInterval(() => {
         if (popup.closed) {
@@ -20,29 +21,29 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: e.target.elements?.email?.value,
-        username: e.target.elements?.username?.value,
-        password: e.target.elements?.password?.value,
-      }),
-    })
-        .then(async (res) => {
-          if (res.ok && res.status === 201) {
-            console.log('res', res);
-            console.log('res parsed', await res.json());
-            // router.push('/home');
-            return;
-          }
-          throw new Error('Network response was not ok.');
-        })
-        .catch((error) => {
-          console.error('There has been a problem with your fetch operation:', error);
-        });
+
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-up`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: e.target.elements?.email?.value,
+          username: e.target.elements?.username?.value,
+          password: e.target.elements?.password?.value,
+        }),
+      })
+          .then((res) => {
+            if (res.ok && res.status === 201) {
+              resolve('ok');
+            }
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch((error) => {
+            reject(new Error('Network response was not ok.'));
+          });
+    });
   };
 
   return (
@@ -55,7 +56,18 @@ export default function Login() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="py-8 px-4 sm:px-10">
           <form
-            onSubmit={handleSubmit}
+            onSubmit={(e) => {
+              toast.promise(
+                  handleSubmit(e),
+                  {
+                    loading: 'Creando la cuenta...',
+                    success: 'Cuenta creada con exito',
+                    error: 'Error al crear la cuenta',
+                  },
+              ).then(() => {
+                router.push('/home');
+              }).catch(() => {});
+            }}
             className="space-y-6"
             action="#"
             method="POST">

@@ -119,12 +119,12 @@ export default function Index() {
                   puedes elegir entre distintos modos de juego y aumentar tu nivel.
                 </p>
                 <div className="mt-8">
-                  <a
+                  <Link
                     href="/home"
                     className="inline-flex rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Empezar a jugar
-                  </a>
+                  </Link>
                 </div>
                 <figure className="mt-16 border-l border-gray-200 pl-8 text-gray-600">
                 </figure>
@@ -141,19 +141,7 @@ export default function Index() {
         </div>
       </div>
 
-      <div className="relative isolate bg-white pt-24 pb-32 sm:pt-32">
-
-        <div className="absolute inset-x-0 top-0 -z-10 flex transform-gpu overflow-hidden pt-32 opacity-25 blur-3xl sm:pt-40 xl:justify-end">
-          <svg
-            viewBox="0 0 1313 771"
-            aria-hidden="true"
-            className="ml-[-22rem] w-[82.0625rem] flex-none origin-top-right rotate-[30deg] xl:ml-0 xl:mr-[calc(50%-12rem)]"
-          >
-            <use href="#bc169a03-3518-42d4-ab1e-d3eadac65edc" />
-          </svg>
-        </div>
-      </div>
-      <div className="bg-white">
+      <div className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:justify-between lg:px-8">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Listo para empezar?
