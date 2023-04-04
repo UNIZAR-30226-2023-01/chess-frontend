@@ -6,7 +6,6 @@ import { useState } from 'react';
 import ChessPiece from 'components/ChessPiece';
 import { useChess } from '@/context/ChessContext';
 import { customPieces } from '@/components/CustomPiece';
-import { GameSocket } from './communications/socket_io';
 
 const promotionPieces= [
   {name: 'q',
@@ -23,14 +22,21 @@ const promotionPieces= [
   },
 ];
 
-export default function Tablero({colorUser}) {
+export let game = new Chess();
+
+export function sound() {
+  const audio = document.getElementById('myAudio');
+  audio.play();
+}
+export default function Tablero({colorUser,Socket}) {
+  
   const time = new Date();
   const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
   const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
 
-  const s = new GameSocket();
+
+
   let movement = '';
-  const [game, setGame] = useState(new Chess());
   const [pausedgame, setPausedGame] = useState({});
   const [isGameOver, setIsGameOver] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
@@ -67,11 +73,6 @@ export default function Tablero({colorUser}) {
     // setLastMoveSquares({});
   }
 
-  function sound() {
-    const audio = document.getElementById('myAudio');
-    audio.play();
-  }
-
   function onDrop(sourceSquare, targetSquare) {
     const gameCopy = _.cloneDeep(game);
     let move = undefined;
@@ -81,15 +82,14 @@ export default function Tablero({colorUser}) {
         to: targetSquare,
         promotion: 'q', // ponemos reina pero luego se modifica
       });
-      console.log('He movido');
       if (move && move.promotion) {
         setShowPromotion(true);
         setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
         return true;
       }
       movement = {move: move.san};
-      s.socket.emmit('move', movement);
-      setGame(gameCopy);
+      Socket.socket.emit('move', movement,);
+      game = (gameCopy);
       if (gameCopy.isGameOver()) {
         setIsGameOver(true);
       }
@@ -124,7 +124,7 @@ export default function Tablero({colorUser}) {
       promotion: piece,
     });
     movement = {move: moves.san};
-    s.socket.emmit('move', movement);
+    Socket.socket.emit('move', movement);
     setLastMoveSquares({});
   }
 
@@ -173,7 +173,7 @@ export default function Tablero({colorUser}) {
               arePiecesDraggable="true"
               onPieceDrop={onDrop}
               onPieceDragBegin={onPieceDragBegin}
-              animationDuration={500}
+              animationDuration={400}
               boardOrientation={colorUser}
               customPieces={customPieces(data)}
               customSquareStyles={{
