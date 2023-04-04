@@ -48,7 +48,6 @@ export const startGame = (type) => {
         break;
     }
 
-
     s.socket.once('room', (data) => {
       s.room = data.roomID;
       // s.pendingMovements = data.moves;

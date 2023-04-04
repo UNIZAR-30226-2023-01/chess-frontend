@@ -6,15 +6,16 @@ const Bracket = dynamic(
     { ssr: false },
 );
 
-export default function Tournaments() {
+export default function Rounds() {
   return (
     <div className="px-0 sm:px-6 lg:px-8 py-12 mx-auto flex items-center justify-center">
       <Bracket/>
     </div>
+
   );
 }
 
-Tournaments.getLayout = (page) => <Layout>{page}</Layout>;
+Rounds.getLayout = (page) => <Layout>{page}</Layout>;
 
 export async function getServerSideProps() {
   const res = fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
@@ -35,3 +36,4 @@ export async function getServerSideProps() {
     props: {},
   };
 }
+
