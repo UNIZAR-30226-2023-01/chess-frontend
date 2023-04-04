@@ -11,8 +11,13 @@ const randomChar = () => {
 
 export class GameSocket {
   constructor() {
-    this.socket = io('http://reign-chess.duckdns.org:4001/');
+    this.socket = io('http://reign-chess.duckdns.org:4001/', {
+      extraHeaders: {
+        'token': '',
+      },
+    });
     this.room = '-1';
+    this.pendingMovements = [];
     this.iAmWhite = false;
     this.name = randomChar();
   }
@@ -42,16 +47,20 @@ export const startGame = (type) => {
         jsonData = {};
         break;
     }
-    s.socket.on('error', (data) => {
-      console.log('error', data);
-    });
+
 
     s.socket.once('room', (data) => {
-      console.log('encontrada', data);
+      // console.log('encontrada', data);
       s.room = data.roomID;
+      s.pendingMovements = data.moves;
       s.iAmWhite = data.color == 'LIGHT';
       resolve(true);
     });
+
+    s.socket.on('error', (data) => {
+      // console.log('error', data);
+    });
+
     s.socket.emit('find_room', jsonData);
   });
 
@@ -73,7 +82,7 @@ export const listenGame = (context) => {
     console.log(data);
   });
 
-  s.on('moved', (data) => {
+  s.socket.on('moved', (data) => {
     if (data[0]['turn'] == (!s.iAmWhite ? 'DARK' : 'LIGHT')) {
       game.move(data[0]['move']);
     }
@@ -88,7 +97,7 @@ export const listenGame = (context) => {
     console.log(data);
   });
 
-  s.on('disconnect', () => {
+  s.socket.on('disconnect', () => {
     console.log('disconnected');
   });
 

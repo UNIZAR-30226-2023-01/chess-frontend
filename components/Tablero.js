@@ -6,7 +6,7 @@ import { useState } from 'react';
 import ChessPiece from 'components/ChessPiece';
 import { useChess } from '@/context/ChessContext';
 import { customPieces } from '@/components/CustomPiece';
-import { GameSocket } from './communications/socket_io';
+import { GameSocket} from './communications/socket_io';
 
 const promotionPieces= [
   {name: 'q',
@@ -81,7 +81,6 @@ export default function Tablero({colorUser}) {
         to: targetSquare,
         promotion: 'q', // ponemos reina pero luego se modifica
       });
-      console.log('He movido');
       if (move && move.promotion) {
         setShowPromotion(true);
         setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
