@@ -6,7 +6,7 @@ import { listenGame, startGame } from '@/components/communications/socket_io';
 
 export default function GameAI() {
   const [isLoading, setIsLoading] = useState(true);
-  const [idRoom, setIdRoom] = useState(null);
+  const [setIdRoom] = useState(null);
   const [isWhite, setIsWhite] = useState(null);
 
   const [gameData, setGameData] = useState(null);
@@ -30,7 +30,7 @@ export default function GameAI() {
           setIsWhite(data.isWhite);
           listenGame(data.socket);
         } catch (error) {
-          console.error("Error :",error);
+          console.error('Error :', error);
         }
       }
     };
