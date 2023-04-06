@@ -28,12 +28,10 @@ export function sound() {
   const audio = document.getElementById('myAudio');
   audio.play();
 }
-export default function Tablero({colorUser,Socket}) {
-  
+export default function Tablero({colorUser, Socket}) {
   const time = new Date();
   const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
   const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
-
 
 
   let movement = '';
@@ -88,7 +86,7 @@ export default function Tablero({colorUser,Socket}) {
         return true;
       }
       movement = {move: move.san};
-      Socket.socket.emit('move', movement,);
+      Socket.socket.emit('move', movement);
       game = (gameCopy);
       if (gameCopy.isGameOver()) {
         setIsGameOver(true);
