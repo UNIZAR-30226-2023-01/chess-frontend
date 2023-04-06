@@ -2,8 +2,10 @@ import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
+import { useAuth } from '@/context/userContext';
 
 export default function Login() {
+  const { setIsAuthenticated } = useAuth();
   const router = useRouter();
 
   const handleGoogle = async () => {
@@ -37,6 +39,7 @@ export default function Login() {
           .then((res) => {
             if (res.ok && res.status === 200) {
               resolve('ok');
+              setIsAuthenticated(true);
               return;
             }
             reject(new Error('Network response was not ok.'));

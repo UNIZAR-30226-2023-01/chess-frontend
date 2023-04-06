@@ -1,11 +1,22 @@
 import Layout from '@/components/Layout';
+import { useAuth } from '@/context/userContext';
 
 export default function Home() {
-  return (
-    <div className='w-full'>
+  const { isAuthenticated } = useAuth();
 
-    </div>
-  );
+  if (isAuthenticated) {
+    return (
+      <div>
+        <h1 className="text-xl font-semibold text-left text-gray-900 dark:text-white">estás logueado</h1>
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h1 className="text-xl font-semibold text-left text-gray-900 dark:text-white">inicia sesión plis</h1>
+      </div>
+    );
+  }
 }
 
 Home.getLayout = function getLayout(page) {

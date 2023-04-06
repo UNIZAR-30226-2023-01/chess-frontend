@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 import {ChessProvider} from '@/context/ChessContext';
 import {ThemeProvider} from '@/context/ThemeContext';
+import { AuthProvider } from '@/context/userContext';
 import { Toaster } from 'react-hot-toast';
 
 export default function MyApp({ Component, pageProps }) {
@@ -8,10 +9,12 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider>
       <ChessProvider>
-        <Toaster position="top-center" reverseOrder={false}/>
-        <div className='scroll-smooth hover:scroll-auto'>
-          {getLayout(<Component {...pageProps} />)}
-        </div>
+        <AuthProvider>
+          <Toaster position="top-center" reverseOrder={false}/>
+          <div className='scroll-smooth hover:scroll-auto'>
+            {getLayout(<Component {...pageProps} />)}
+          </div>
+        </AuthProvider>
       </ChessProvider>
     </ThemeProvider>
   );
