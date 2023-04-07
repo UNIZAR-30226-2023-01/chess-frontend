@@ -2,20 +2,19 @@ import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
 import toast from 'react-hot-toast';
 import Link from 'next/link';
-import { useAuth } from '@/context/userContext';
 
 export default function Login() {
-  const { setIsAuthenticated } = useAuth();
   const router = useRouter();
 
   const handleGoogle = async () => {
     let timer = null;
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`);
     const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`, 'popup', 'width=600,height=600');
     if (popup) {
       timer = setInterval(() => {
         if (popup.closed) {
           clearInterval(timer);
-          router.push('/home');
+          // router.push('/home');
         }
       }, 1000);
     }
@@ -39,7 +38,6 @@ export default function Login() {
           .then((res) => {
             if (res.ok && res.status === 200) {
               resolve('ok');
-              setIsAuthenticated(true);
               return;
             }
             reject(new Error('Network response was not ok.'));

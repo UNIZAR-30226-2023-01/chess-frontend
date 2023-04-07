@@ -53,6 +53,7 @@ export const subNavigation = [{
       method: 'POST',
       credentials: 'include',
     })
+        .then(() => window.location.href = '/auth')
         .catch((err) => console.log(err));
   },
 }];

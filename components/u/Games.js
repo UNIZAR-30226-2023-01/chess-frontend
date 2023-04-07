@@ -1,6 +1,7 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { Chessboard } from 'react-chessboard';
+
 const stats = [
   { name: 'Partidas ganadas', stat: '2897', previousStat: '2797', change: '12%', changeType: 'increase' },
   { name: 'Clasificación', stat: '500', previousStat: '413', change: '2.02%', changeType: 'decrease' },
@@ -27,22 +28,21 @@ export default function Games() {
 
                 <div
                   className={classNames(
-                                  item.changeType === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
-                                  'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0',
+                    item.changeType === 'increase' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800',
+                    'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium md:mt-2 lg:mt-0',
                   )}
                 >
                   {item.changeType === 'increase' ? (
-                                  <ArrowUpIcon
-                                    className="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-green-500"
-                                    aria-hidden="true"
-                                  />
-                                ) : (
-                                  <ArrowDownIcon
-                                    className="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-red-500"
-                                    aria-hidden="true"
-                                  />
-                                )}
-
+                    <ArrowUpIcon
+                      className="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-green-500"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <ArrowDownIcon
+                      className="-ml-1 mr-0.5 h-5 w-5 flex-shrink-0 self-center text-red-500"
+                      aria-hidden="true"
+                    />
+                  )}
                   <span className="sr-only"> {item.changeType === 'increase' ? 'Increased' : 'Decreased'} by </span>
                   {item.change}
                 </div>

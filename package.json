@@ -26,6 +26,7 @@
     "cm-chessboard": "^5.4.8",
     "eslint-config-next": "13.1.6",
     "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.0",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-chessboard": "^2.0.8",
