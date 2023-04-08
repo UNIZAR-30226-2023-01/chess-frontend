@@ -76,13 +76,16 @@ CreateTournament.getLayout = function getLayout(page) {
   );
 };
 
-export async function getServerSideProps() {
-  const res = fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
+export async function getServerSideProps({ req }) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
     method: 'POST',
-    credentials: 'include',
-  }).catch((err)=>console.log(err));
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  })
+      .catch((err)=>console.error(err));
 
-  if (process.env.NODE_ENV === 'production' && !(res.ok && res.status === 200)) {
+  if (!res.ok || res.status !== 200) {
     return {
       redirect: {
         destination: '/auth',
@@ -92,6 +95,6 @@ export async function getServerSideProps() {
   }
 
   return {
-    props: {},
+    props: { },
   };
 }

@@ -1,5 +1,3 @@
-
-
 export default function Table() {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-10 py-10 border-gray-100  ">
@@ -68,5 +66,3 @@ export default function Table() {
     </div>
   );
 }
-
-

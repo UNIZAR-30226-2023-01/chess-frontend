@@ -36,7 +36,7 @@ export default function Tablero({colorUser, Socket}) {
 
   let movement = '';
   const [pausedgame, setPausedGame] = useState({});
-  const [isGameOver, setIsGameOver] = useState(false);
+  // const [isGameOver, setIsGameOver] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const [showPromotion, setShowPromotion] = useState(false);
@@ -89,7 +89,7 @@ export default function Tablero({colorUser, Socket}) {
       Socket.socket.emit('move', movement);
       game = (gameCopy);
       if (gameCopy.isGameOver()) {
-        setIsGameOver(true);
+        // setIsGameOver(true);
       }
       newSquares[sourceSquare] = {
         background: cMov,
@@ -108,7 +108,6 @@ export default function Tablero({colorUser, Socket}) {
       setOptionSquares({});
       if (game.isGameOver() || game.isDraw()) {
         <div className='bg-black h-full'> </div>;
-        console.log(isGameOver);
       }
       return false;
     }
@@ -131,7 +130,6 @@ export default function Tablero({colorUser, Socket}) {
       <div className='h-full flex flex-col gap-y-6 max-w-3xl'>
         {/* Player 1 */}
         <div className='h-16 w-full flex gap-x-4'>
-          <div className='w-8'/>
           <div className='flex-1 flex items-end justify-between gap-x-4'>
             <div className='flex items-center gap-x-4'>
               <div className='h-16 w-16 rounded-2xl bg-pink-200 '>
@@ -159,10 +157,6 @@ export default function Tablero({colorUser, Socket}) {
         </div>
         {/* Board */}
         <div className='flex-1 w-full flex gap-x-4'>
-          <div className='w-8 shadow-lg'>
-            <div className='bg-black h-1/2 w-full rounded-t'/>
-            <div className='bg-white h-1/2 w-full rounded-b'/>
-          </div>
           <div className='flex-1 bg-white/20'>
             <Chessboard
               id="BasicBoard"
@@ -241,7 +235,6 @@ export default function Tablero({colorUser, Socket}) {
         </div>
         {/* Player 2 */}
         <div className='h-16 w-full flex gap-x-4'>
-          <div className='w-8'/>
           <div className='flex-1 flex items-start justify-between gap-x-4'>
             <div className='flex items-center gap-x-4'>
               <div className='h-16 w-16 rounded-2xl bg-pink-200 '>

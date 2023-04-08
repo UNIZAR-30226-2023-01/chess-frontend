@@ -22,16 +22,13 @@ export default function ResetPassword({ id, token}) {
           password: e.target.elements?.password?.value,
         }),
       })
-          .then(async (res) => {
+          .then((res) => {
             if (res.ok && res.status === 200) {
-              const data = await res.json();
-              console.log(data);
               resolve('ok');
             }
             reject(new Error('Network response was not ok.'));
           })
-          .catch((error) => {
-            console.error('There has been a problem with your fetch operation:', error);
+          .catch(() => {
             throw new Error('Network response was not ok.');
           });
     });
@@ -41,7 +38,11 @@ export default function ResetPassword({ id, token}) {
     <div className="flex min-h-screen flex-col justify-around sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="w-fit h-fit mx-auto py-4">
-          <img src="/assets/images/Logo_black.png" className=" h-20 mx-auto" />
+          <img
+            src="/assets/images/Logo_black.png"
+            alt=""
+            className="h-20 mx-auto"
+          />
         </div>
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

@@ -11,7 +11,7 @@ export default function Game({user, data}) {
 
   return (
     <div>
-      <Tablero colorUser={'black'}></Tablero>
+      <Tablero colorUser={'black'}/>
     </div>
   );
 }
@@ -35,7 +35,7 @@ export async function getServerSideProps(context) {
       Cookie: req.headers.cookie,
     },
   })
-      .catch((err)=>console.log(err));
+      .catch((err)=>console.error(err));
 
   const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/games/${id}`, {
     method: 'GET',
@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
       Cookie: req.headers.cookie,
     },
   })
-      .catch((err)=>console.log(err));
+      .catch((err)=>console.error(err));
 
   if (!res2.ok || res2.status !== 200) {
     return {
