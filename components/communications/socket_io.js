@@ -10,10 +10,10 @@ const randomChar = () => {
 };
 
 export class GameSocket {
-  constructor() {
+  constructor(token) {
     this.socket = io('http://reign-chess.duckdns.org:4001/', {
       extraHeaders: {
-        'token': '',
+        'token': token,
       },
     });
     this.room = '-1';
@@ -23,8 +23,8 @@ export class GameSocket {
   }
 }
 
-export const startGame = (type) => {
-  const s = new GameSocket();
+export const startGame = (type, token) => {
+  const s = new GameSocket(token);
   s.socket.on('connect', () => {
     console.log('Conectado al servidor');
   });

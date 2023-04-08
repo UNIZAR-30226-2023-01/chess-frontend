@@ -21,6 +21,12 @@ export default function login() {
         >
           Registrarse
         </Link>
+        <Link
+          href='/home'
+          className="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium leading-4 text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 "
+        >
+          Entrar como anónimo
+        </Link>
       </div>
     </div>
   );

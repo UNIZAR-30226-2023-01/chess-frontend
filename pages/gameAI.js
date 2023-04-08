@@ -3,12 +3,10 @@ import Tablero from '@/components/Tablero';
 import { useState, useEffect} from 'react';
 import { listenGame, startGame } from '@/components/communications/socket_io';
 
-
-export default function GameAI() {
+export default function GameAI({token}) {
   const [isLoading, setIsLoading] = useState(true);
-  const [setIdRoom] = useState(null);
   const [isWhite, setIsWhite] = useState(null);
-
+  const [idRoom, setIdRoom] = useState(null);
   const [gameData, setGameData] = useState(null);
   const [isCalled, setIsCalled] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -23,10 +21,11 @@ export default function GameAI() {
       if (isMounted && !isCalled) {
         setIsCalled(true);
         try {
-          const data = await startGame('AI');
+          const data = await startGame('AI', token);
           setGameData(data);
           setIsLoading(false);
           setIdRoom(data.roomID);
+          console.log(idRoom);
           setIsWhite(data.isWhite);
           listenGame(data.socket);
         } catch (error) {
@@ -52,3 +51,12 @@ export default function GameAI() {
 
 
 GameAI.getLayout=(page) => <Layout>{page}</Layout>;
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+
+
+  const token = req.headers.cookie?.split('=')[1];
+  console.log(token);
+  return { props: { token } };
+}
