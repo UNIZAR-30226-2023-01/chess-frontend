@@ -8,12 +8,13 @@ export default function Login() {
 
   const handleGoogle = async () => {
     let timer = null;
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`);
     const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`, 'popup', 'width=600,height=600');
     if (popup) {
       timer = setInterval(() => {
         if (popup.closed) {
           clearInterval(timer);
-          router.push('/home');
+          // router.push('/home');
         }
       }, 1000);
     }

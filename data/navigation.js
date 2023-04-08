@@ -29,7 +29,7 @@ export const primaryButton = {
 
 export const navigation = [{
   name: 'Torneos',
-  href: '/tournaments',
+  href: '/tournament/tournaments',
   icon: TrophyIcon,
 }, {
   name: 'Clasificación',
@@ -53,6 +53,7 @@ export const subNavigation = [{
       method: 'POST',
       credentials: 'include',
     })
+        .then(() => window.location.href = '/auth')
         .catch((err) => console.log(err));
   },
 }];

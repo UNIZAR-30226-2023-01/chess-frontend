@@ -303,7 +303,25 @@ export default function Settings() {
 
                     <div>
                       <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
-                      Modelo de piezas
+                      Modelo de piezas claras
+                      </label>
+                      <select
+                        id="board"
+                        name="board"
+                        autoComplete="board"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        value={searchModel()}
+                        onChange={(event) => saveBoard(modelos[event.target.selectedIndex].model)}
+                      >
+                        {modelos.map((modelo, index) => (
+                          <option key={index}>{modelo.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
+                      Modelo de piezas oscuras
                       </label>
                       <select
                         id="board"

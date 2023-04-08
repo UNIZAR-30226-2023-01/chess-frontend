@@ -43,7 +43,6 @@ export default function DSidebar() {
                 </>
               )}
             </Disclosure>
-
             {navigation.map((item) => (
               <Link
                 key={item.id}
@@ -57,6 +56,7 @@ export default function DSidebar() {
                 {item.name}
               </Link>
             ))}
+
           </nav>
         </div>
         <div className="flex flex-col flex-shrink-0 border-gray-200 py-4">
@@ -64,32 +64,32 @@ export default function DSidebar() {
             {subNavigation.map((item) => (
               <>
                 {item.theme ? (
-                  <Theme/>
-                ) : item.onClick ? (
-                  <button
-                    key={item.name}
-                    onClick={item.onClick}
-                    className='cursor-pointer w-full text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-                  >
-                    <item.icon
-                      className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </button>
-                ) : (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-                  >
-                    <item.icon
-                      className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
-                      aria-hidden="true"
-                    />
-                    {item.name}
-                  </Link>
-                )}
+                        <Theme/>
+                      ) : item.onClick ? (
+                        <button
+                          key={item.name}
+                          onClick={item.onClick}
+                          className='cursor-pointer w-full text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
+                        >
+                          <item.icon
+                            className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </button>
+                      ) : (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
+                        >
+                          <item.icon
+                            className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </Link>
+                      )}
               </>
             ))}
           </nav>
