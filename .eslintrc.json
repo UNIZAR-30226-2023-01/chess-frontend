@@ -38,6 +38,7 @@
         "valid-jsdoc": "warn",
         "object-curly-spacing": "off",
         "semi": "error",
-        "max-len": "off"
+        "max-len": "off",
+        "@next/next/no-img-element": "off"
     }
 }

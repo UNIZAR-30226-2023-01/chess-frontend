@@ -38,12 +38,10 @@ export default function Login() {
           .then((res) => {
             if (res.ok && res.status === 200) {
               resolve('ok');
-              return;
             }
             reject(new Error('Network response was not ok.'));
           })
-          .catch((error) => {
-            console.error('There has been a problem with your fetch operation:', error);
+          .catch(() => {
             reject(new Error('Network response was not ok.'));
           });
     });

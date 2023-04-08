@@ -1,73 +1,28 @@
 import Layout from '@/components/Layout';
+import Game from '@/components/Game';
+import useSWR from 'swr';
+
+const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
 export default function Home() {
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=30`, fetcher);
+
   return (
-    <div className="container px-6 py-10 mx-auto">
-      <h1 className="text-3xl font-semibold text-gray-800  lg:text-4xl dark:text-white">Partidas en curso</h1>
-
-      <div className="grid grid-cols-1 gap-10 mt-8 justify-items-center md:grid-cols-2">
-
-        <div className=" mt-20 h-45 w-2/3 bg-white border rounded-lg shadow -xl dark:bg-gray-800 dark:border-gray-900" >
-          <img className=" ml-10 pl-10 mt-10 object-cover w-50 h-50 rounded-lg lg:w-64" src="/assets/images/board.png" alt="" />
-          <div className="p-5 text-center">
-            <a href="#">
-              <h5 className="text-xl font-semibold text-gray-800 hover:underline dark:text-white">persona a  persona b</h5>
-            </a>
-            <span className="text-sm text-gray-500 dark:text-gray-300">On: 15:40</span>
-          </div>
+    <div className="py-12 max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">
+      <div className="sm:flex sm:items-center">
+        <div className="sm:flex-auto">
+          <h1 className="text-xl font-semibold text-left text-gray-900 dark:text-white">Partidas</h1>
+          <p className="mt-2 text-sm text-left text-gray-700 dark:text-gray-200">
+            Listado de partidas competitivas en curso.
+          </p>
         </div>
-
-
-        <div className=" mt-20 h-45 w-2/3 bg-white border rounded-lg shadow -xl dark:bg-gray-800 dark:border-gray-900" >
-          <img className=" ml-10 pl-10 mt-10 object-cover w-50 h-50 rounded-lg lg:w-64" src="/assets/images/board.png" alt="" />
-          <div className="p-5 text-center">
-            <a href="#">
-              <h5 className="text-xl font-semibold text-gray-800 hover:underline dark:text-white">persona a  persona b</h5>
-            </a>
-            <span className="text-sm text-gray-500 dark:text-gray-300">On: 15:40</span>
-          </div>
-        </div>
-
-        <div className=" mt-20 h-45 w-2/3 bg-white border rounded-lg shadow -xl dark:bg-gray-800 dark:border-gray-900" >
-          <img className=" ml-10 pl-10 mt-10 object-cover w-50 h-50 rounded-lg lg:w-64" src="/assets/images/board.png" alt="" />
-          <div className="p-5 text-center">
-            <a href="#">
-              <h5 className="text-xl font-semibold text-gray-800 hover:underline dark:text-white">persona a  persona b</h5>
-            </a>
-            <span className="text-sm text-gray-500 dark:text-gray-300">On: 15:40</span>
-          </div>
-        </div>
-        <div className=" mt-20 h-45 w-2/3 bg-white border rounded-lg shadow -xl dark:bg-gray-800 dark:border-gray-900" >
-          <img className=" ml-10 pl-10 mt-10 object-cover w-50 h-50 rounded-lg lg:w-64" src="/assets/images/board.png" alt="" />
-          <div className="p-5 text-center">
-            <a href="#">
-              <h5 className="text-xl font-semibold text-gray-800 hover:underline dark:text-white">persona a  persona b</h5>
-            </a>
-            <span className="text-sm text-gray-500 dark:text-gray-300">On: 15:40</span>
-          </div>
-        </div>
-
-        <div className=" mt-20 h-45 w-2/3 bg-white border rounded-lg shadow -xl dark:bg-gray-800 dark:border-gray-900" >
-          <img className=" ml-10 pl-10 mt-10 object-cover w-50 h-50 rounded-lg lg:w-64" src="/assets/images/board.png" alt="" />
-          <div className="p-5 text-center">
-            <a href="#">
-              <h5 className="text-xl font-semibold text-gray-800 hover:underline dark:text-white">persona a  persona b</h5>
-            </a>
-            <span className="text-sm text-gray-500 dark:text-gray-300">On: 15:40</span>
-          </div>
-        </div>
-        <div className=" mt-20 h-45 w-2/3 bg-white border rounded-lg shadow -xl dark:bg-gray-800 dark:border-gray-900" >
-          <img className=" ml-10 pl-10 mt-10 object-cover w-50 h-50 rounded-lg lg:w-64" src="/assets/images/board.png" alt="" />
-          <div className="p-5 text-center">
-            <a href="#">
-              <h5 className="text-xl font-semibold text-gray-800 hover:underline dark:text-white">persona a  persona b</h5>
-            </a>
-            <span className="text-sm text-gray-500 dark:text-gray-300">On: 15:40</span>
-          </div>
+      </div>
+      <div className="mt-8 flex flex-col">
+        <div className="flex flex-wrap gap-6 justify-items-center md:grid-cols-2 mt-6">
+          {data?.data.map((item) => <Game key={item.id}>{item}</Game>)}
         </div>
       </div>
     </div>
-
   );
 }
 
@@ -80,7 +35,7 @@ export async function getServerSideProps({ req }) {
       Cookie: req.headers.cookie,
     },
   })
-      .catch((err)=>console.log(err));
+      .catch((err)=> console.error(err));
 
   if (!res.ok || res.status !== 200) {
     return {

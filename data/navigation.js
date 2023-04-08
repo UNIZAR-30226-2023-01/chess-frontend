@@ -54,6 +54,6 @@ export const subNavigation = [{
       credentials: 'include',
     })
         .then(() => window.location.href = '/auth')
-        .catch((err) => console.log(err));
+        .catch(() => {});
   },
 }];

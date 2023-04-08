@@ -120,7 +120,7 @@ export async function getServerSideProps({ req }) {
       Cookie: req.headers.cookie,
     },
   })
-      .catch((err)=>console.log(err));
+      .catch((err)=>console.error(err));
 
   if (!res.ok || res.status !== 200) {
     return {

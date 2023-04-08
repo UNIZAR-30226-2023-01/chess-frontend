@@ -36,7 +36,7 @@ export default function Tablero({colorUser, Socket}) {
 
   let movement = '';
   const [pausedgame, setPausedGame] = useState({});
-  const [isGameOver, setIsGameOver] = useState(false);
+  // const [isGameOver, setIsGameOver] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const [showPromotion, setShowPromotion] = useState(false);
@@ -89,7 +89,7 @@ export default function Tablero({colorUser, Socket}) {
       Socket.socket.emit('move', movement);
       game = (gameCopy);
       if (gameCopy.isGameOver()) {
-        setIsGameOver(true);
+        // setIsGameOver(true);
       }
       newSquares[sourceSquare] = {
         background: cMov,
@@ -108,7 +108,6 @@ export default function Tablero({colorUser, Socket}) {
       setOptionSquares({});
       if (game.isGameOver() || game.isDraw()) {
         <div className='bg-black h-full'> </div>;
-        console.log(isGameOver);
       }
       return false;
     }

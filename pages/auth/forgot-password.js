@@ -15,16 +15,13 @@ export default function ForgotPassword() {
           email: e.target.elements?.email?.value,
         }),
       })
-          .then(async (res) => {
+          .then((res) => {
             if (res.ok && res.status === 200) {
-              const data = await res.json();
-              console.log(data);
               resolve('ok');
             }
             reject(new Error('Network response was not ok.'));
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             reject(new Error('Network response was not ok.'));
           });
     });
@@ -34,7 +31,11 @@ export default function ForgotPassword() {
     <div className="flex min-h-screen flex-col justify-around sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="w-fit h-fit mx-auto py-4">
-          <img src="/assets/images/Logo_black.png" className=" h-20 mx-auto" />
+          <img
+            src="/assets/images/Logo_black.png"
+            alt=''
+            className=" h-20 mx-auto"
+          />
         </div>
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -73,7 +74,6 @@ export default function ForgotPassword() {
                 />
               </div>
             </div>
-
             <div>
               <button
                 type="submit"
@@ -82,7 +82,6 @@ export default function ForgotPassword() {
                   Continuar
               </button>
             </div>
-
             <div className="flex items-center justify-center">
               <div className="text-sm font-base tracking-wide">
                 ¿No tienes cuenta?
@@ -95,7 +94,6 @@ export default function ForgotPassword() {
               </div>
             </div>
           </form>
-
         </div>
       </div>
       <div/>
