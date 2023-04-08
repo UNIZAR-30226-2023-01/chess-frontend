@@ -1,10 +1,18 @@
 import Layout from '@/components/Layout';
+import { useState } from 'react';
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid';
 import { ranking } from '@/data/stats';
+import useSWR from 'swr';
+import { getElo } from '@/lib/elo';
+
+const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
 export default function Ranking() {
+  const [pageIndex, setPageIndex] = useState(1);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}`, fetcher);
+
   return (
-    <div className="px-0 sm:px-6 lg:px-8 py-12 max-w-5xl mx-auto">
+    <div className="py-12 max-w-5xl mx-auto px-0 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-left text-gray-900 dark:text-white">Clasificación</h1>
@@ -14,8 +22,8 @@ export default function Ranking() {
         </div>
       </div>
       <div className="mt-8 flex flex-col">
-        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8 mb-6">
-          <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8 ">
+        <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8 mb-1">
+          <div className="inline-block min-w-full align-middle md:px-6 lg:px-8 ">
             <table className="min-w-full divide-y divide-gray-300 relative">
               <thead>
                 <tr>
@@ -43,96 +51,58 @@ export default function Ranking() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {ranking.map((person) => (
-                  <tr key={person.email}>
+                {data?.data.map((user, index) => (
+                  <tr key={user.id}>
                     <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
                       <span className='px-2 py-1 rounded-md bg-gray-100 font-medium'>
-                        # {person.calification}
+                        # {(pageIndex - 1) * 10 + index + 1}
                       </span>
                     </td>
                     <td className="select-none whitespace-nowrap py-4 px-3 text-sm text-gray-500 dark:text-gray-200">
                       <div className="flex items-center">
                         <div className="h-8 w-8 flex-shrink-0">
-                          <img className="h-8 w-8 rounded-full" src={person.player.image} alt="" />
+                          <img className="h-8 w-8 rounded-full" src={user.avatar} alt="" />
                         </div>
                         <div className="ml-4 flex items-center gap-x-2">
-                          <div className="font-medium bg-red-500 px-1 py-0.5 rounded-md text-gray-50 text-xs uppercase">
-                            {person.tag}
-                          </div>
-                          <div className="text-gray-500 dark:text-gray-200">{person.player.name}</div>
+                          {getElo(user.elo) !== null &&
+                            <div className="font-medium bg-red-500 px-1 py-0.5 rounded-md text-gray-50 text-xs uppercase">
+                              {getElo(user.elo)}
+                            </div>
+                          }
+                          <div className="text-gray-500 dark:text-gray-200">{user.username}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{person.score}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{person.victories}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{person.draws}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{person.defeats}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.elo}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].victories}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].draws}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].defeats}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
         </div>
-        <nav className="max-w-5xl bg-white dark:bg-gray-800 pb-12 w-full flex items-center justify-between border-gray-200 px-4 sm:px-0 fixed bottom-0 border-t">
+        <nav className="max-w-5xl bg-white dark:bg-gray-800 pb-12 w-full flex items-center justify-between border-gray-200 border-t">
           <div className="-mt-px flex w-0 flex-1">
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700"
+            <button
+              onClick={() => setPageIndex(pageIndex - 1)}
+              className={`${data?.meta.nextPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
+              disabled={data?.meta.previousPage === null || pageIndex === 1}
             >
               <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-200" aria-hidden="true" />
               Previous
-            </a>
-          </div>
-          <div className="hidden md:-mt-px md:flex">
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700"
-            >
-              1
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-indigo-500 dark:border-indigo-00 px-4 pt-4 text-sm font-medium text-indigo-600 dark:text-indigo-400"
-              aria-current="page"
-            >
-              2
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700"
-            >
-              3
-            </a>
-            <span className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 dark:text-gray-200">
-              ...
-            </span>
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700"
-            >
-              8
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700"
-            >
-              9
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700"
-            >
-              10
-            </a>
+            </button>
           </div>
           <div className="-mt-px flex w-0 flex-1 justify-end">
-            <a
-              href="#"
-              className="inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700"
+            <button
+              onClick={() => setPageIndex(pageIndex + 1)}
+              className={`${data?.meta.nextPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
+              disabled={data?.meta.nextPage === null || pageIndex === data?.meta.pages}
             >
               Next
               <ArrowLongRightIcon className="ml-3 h-5 w-5 text-gray-400 dark:text-gray-200" aria-hidden="true" />
-            </a>
+            </button>
           </div>
         </nav>
       </div>

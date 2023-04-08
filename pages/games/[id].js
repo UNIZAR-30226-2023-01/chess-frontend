@@ -11,7 +11,7 @@ export default function Game({user, data}) {
 
   return (
     <div>
-      <Tablero colorUser={'black'}></Tablero>
+      <Tablero colorUser={'black'}/>
     </div>
   );
 }
@@ -55,6 +55,7 @@ export async function getServerSideProps(context) {
   }
 
   const game = await res2.json();
+  console.log(game);
 
   return {
     props: {
