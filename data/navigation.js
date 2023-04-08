@@ -29,7 +29,7 @@ export const primaryButton = {
 
 export const navigation = [{
   name: 'Torneos',
-  href: '/tournament/tournaments',
+  href: '/tournaments',
   icon: TrophyIcon,
 }, {
   name: 'Clasificación',
