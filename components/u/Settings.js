@@ -73,7 +73,7 @@ function classNames(...classes) {
 }
 
 
-export default function Settings() {
+export default function Settings({whitePiece, modelPiece}) {
   const [visibility, setvisibility] = useState(true);
   const { data, saveBoard, saveColor } = useChess();
   function searchColor() {
@@ -269,13 +269,25 @@ export default function Settings() {
                   Personaliza tu tablero de juego y tus piezas. Tenga en cuenta que la actualización sus piezas afectará a como sus rivales verán sus piezas.
                   </p>
                 </div>
-                <div className="mt-6 grid grid-cols-2 gap-6">
-                  <div className='w-2/3 h-2/3 bg-gray-50/20 select-none relative col-span-1'>
+                <div className="mt-6 grid grid-cols-3 gap-6">
+                  <div className='bg-gray-50/20 select-none relative col-span-1'>
                     <div className='absolute top-0 left-0 z-10'/>
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
                       customPieces={customPieces(data)}
+                      arePiecesDraggable={false}
+                      customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
+                      customLightSquareStyle={{ backgroundColor: data.whitePiece }}
+                    />
+                  </div>
+                  <div className='bg-gray-50/20 select-none relative col-span-1'>
+                    <div className='absolute top-0 left-0 z-10'/>
+                    <Chessboard
+                      id="BasicBoard"
+                      boardOrientation='white'
+                      customPieces={customPieces(data)}
+                      arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
                       customLightSquareStyle={{ backgroundColor: data.whitePiece }}
                     />
@@ -303,25 +315,7 @@ export default function Settings() {
 
                     <div>
                       <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
-                      Modelo de piezas claras
-                      </label>
-                      <select
-                        id="board"
-                        name="board"
-                        autoComplete="board"
-                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        value={searchModel()}
-                        onChange={(event) => saveBoard(modelos[event.target.selectedIndex].model)}
-                      >
-                        {modelos.map((modelo, index) => (
-                          <option key={index}>{modelo.name}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
-                      Modelo de piezas oscuras
+                      Modelo de piezas
                       </label>
                       <select
                         id="board"
