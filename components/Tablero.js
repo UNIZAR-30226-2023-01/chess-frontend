@@ -134,7 +134,7 @@ export default function Tablero({colorUser, Socket}) {
               onPieceDragBegin={onPieceDragBegin}
               animationDuration={400}
               boardOrientation={colorUser}
-              customPieces={customPieces(data)}
+              customPieces={customPieces(data.model)}
               customSquareStyles={{
                 ...optionSquares,
                 ...lastMoveSquares,

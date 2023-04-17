@@ -75,14 +75,13 @@ function classNames(...classes) {
 
 export default function Settings({whitePiece, modelPiece}) {
   const [visibility, setvisibility] = useState(true);
+  const [color, setColor] = useState(['#B88B4A', '#E3C16F']);
+  const [modelo, setModelo] = useState('normal');
   const { data, saveBoard, saveColor } = useChess();
-  function searchColor() {
-    const find = colores.find((c) => c.color2 === data.whitePiece);
-    return find.name;
-  }
-  function searchModel() {
-    const find = modelos.find((c) => c.model === data.model);
-    return find.name;
+
+  function saveContext(colorBlack, colorWhite, model) {
+    saveBoard(model);
+    saveColor(colorBlack, colorWhite);
   }
   return (
     <div className='space-y-16'>
@@ -272,10 +271,11 @@ export default function Settings({whitePiece, modelPiece}) {
                 <div className="mt-6 grid grid-cols-3 gap-6">
                   <div className='bg-gray-50/20 select-none relative col-span-1'>
                     <div className='absolute top-0 left-0 z-10'/>
+                    <span> Tablero Actual </span>
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(data)}
+                      customPieces={customPieces(data.model)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
                       customLightSquareStyle={{ backgroundColor: data.whitePiece }}
@@ -283,54 +283,51 @@ export default function Settings({whitePiece, modelPiece}) {
                   </div>
                   <div className='bg-gray-50/20 select-none relative col-span-1'>
                     <div className='absolute top-0 left-0 z-10'/>
+                    <span> Nuevo tablero </span>
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(data)}
+                      customPieces={customPieces(modelo)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
-                      customLightSquareStyle={{ backgroundColor: data.whitePiece }}
+                      customDarkSquareStyle={{ backgroundColor: color[0] }}
+                      customLightSquareStyle={{ backgroundColor: color[1] }}
                     />
                   </div>
                   <div className='col-span-1 flex flex-col justify-around'>
-
                     <div>
-                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
-                        Tablero
-                      </label>
-                      <select
-                        id="board"
-                        name="board"
-                        autoComplete="board"
-                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(event) => saveColor(colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2)}
-                        value={searchColor()}
-                      >
-                        {colores.map((color, index) => (
-                          <option key={index}>{color.name}</option>
-                        ))}
-                      </select>
-
+                      <React.Fragment key={color.id}>
+                        <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                          Color tablero
+                        </label>
+                        <select
+                          id="board"
+                          name="board"
+                          autoComplete="board"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                          onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
+                        >
+                          {colores.map((color, index) => (
+                            <option key={index}>{color.name}</option>
+                          ))}
+                        </select>
+                      </React.Fragment>
+                      <React.Fragment key={modelo.id}>
+                        <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                          Modelo piezas
+                        </label>
+                        <select
+                          id="board"
+                          name="board"
+                          autoComplete="board"
+                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                          onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
+                        >
+                          {modelos.map((modelo, index) => (
+                            <option key={index}>{modelo.name}</option>
+                          ))}
+                        </select>
+                      </React.Fragment>
                     </div>
-
-                    <div>
-                      <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
-                      Modelo de piezas
-                      </label>
-                      <select
-                        id="board"
-                        name="board"
-                        autoComplete="board"
-                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        value={searchModel()}
-                        onChange={(event) => saveBoard(modelos[event.target.selectedIndex].model)}
-                      >
-                        {modelos.map((modelo, index) => (
-                          <option key={index}>{modelo.name}</option>
-                        ))}
-                      </select>
-                    </div>
-
                   </div>
                 </div>
               </div>
@@ -338,6 +335,7 @@ export default function Settings({whitePiece, modelPiece}) {
                 <button
                   type="submit"
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+                  onClick = { (e) => saveContext(color[0], color[1], modelo)}
                 >
                   Guardar
                 </button>

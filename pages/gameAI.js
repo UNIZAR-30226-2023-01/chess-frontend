@@ -5,7 +5,7 @@ import { useState, useEffect} from 'react';
 import { listenGame, startGame } from '@/components/communications/socket_io';
 import jwt from 'jsonwebtoken';
 
-export default function GameAI({token}) {
+export default function GameAI({user, token}) {
   const [isLoading, setIsLoading] = useState(true);
   const [color, setColor] = useState(null);
   const [idRoom, setIdRoom] = useState(null);
@@ -27,7 +27,6 @@ export default function GameAI({token}) {
           setGameData(data);
           setIsLoading(false);
           setIdRoom(data.roomID);
-          console.log(idRoom);
           const aux = (data.isWhite)? 'white' : 'black';
           setColor(aux);
           listenGame(data.socket);
@@ -37,7 +36,7 @@ export default function GameAI({token}) {
       }
     };
     findGame();
-  }, [isCalled, isMounted]);
+  }, [idRoom, isCalled, isMounted, token]);
 
   return (
     <>
@@ -45,9 +44,9 @@ export default function GameAI({token}) {
         <p>Loading...</p>
       ) :
       <>
-        <Player UserData={''}></Player>
+        <Player UserData={'IA'}></Player>
         <Tablero colorUser={color} Socket={gameData.socket}></Tablero>
-        <Player UserData={''}></Player>
+        <Player UserData={user}></Player>
       </>
       }
     </>
@@ -62,7 +61,12 @@ export async function getServerSideProps(context) {
 
   const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
   const token = req.headers.cookie?.split('=')[1];
-  console.log(token);
-  console.log(decoded);
-  return { props: { token } };
+  const user = decoded.username;
+  console.log(user);
+  return {
+    props: {
+      user: user,
+      token: token,
+    },
+  };
 }
