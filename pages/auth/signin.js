@@ -8,7 +8,6 @@ export default function Login() {
 
   const handleGoogle = async () => {
     let timer = null;
-    console.log(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`);
     const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`, 'popup', 'width=600,height=600');
     if (popup) {
       timer = setInterval(() => {
@@ -67,7 +66,7 @@ export default function Login() {
                   },
               ).then(() => {
                 router.push('/home');
-              }).catch(() => {});
+              }).catch((err) => console.log(err));
             }}
             className="space-y-6"
             action="#"

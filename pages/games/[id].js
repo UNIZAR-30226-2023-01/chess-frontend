@@ -29,7 +29,7 @@ export async function getServerSideProps(context) {
 
   const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
       Cookie: req.headers.cookie,
