@@ -23,7 +23,7 @@ export default function ResetPassword({ id, token}) {
               Cuenta verificada
             </h2>
             <p className='text-sm text-center'>
-             Su nueva contraseña debe ser segura y diferente a la anterior.
+             Su cuenta ha sido verificada con éxito, ya puede iniciar sesión.
             </p>
             <div>
               <Link
