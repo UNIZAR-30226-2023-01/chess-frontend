@@ -1,6 +1,5 @@
 import Layout from '@/components/Layout';
 import Achivement from '@/components/Achivement';
-
 const logros = [
   {
     id: 1,

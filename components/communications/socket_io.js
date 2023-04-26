@@ -26,7 +26,7 @@ export class GameSocket {
 export const startGame = (type, token) => {
   const s = new GameSocket(token);
   s.socket.on('connect', () => {
-    console.log('Conectado al servidor');
+    // console.log('Conectado al servidor');
   });
   const completer = new Promise((resolve, reject) => {
     let jsonData = {};
@@ -87,6 +87,13 @@ export const listenGame = (s) => {
     if (data.endState == 'CHECKMATE' &&
         (data.winner == (!s.iAmWhite ? 'LIGHT' : 'DARK'))) {
       // alertWinner(context, !s.iAmWhite);
+    } else if (data.endState == 'SURRENDER' &&
+    (data.winner == (!s.iAmWhite ? 'LIGHT' : 'DARK'))) {
+    // alertWinner(context, s.iAmWhite,"Se ha rendido el jugador con las fichas ");
+    } else if (data.endState == 'TIMEOUT') {
+    // alertWinner(context, !s.iAmWhite,  "Ha ganado por tiempo el jugador con las fichas ");
+    } else if (data.endState == 'DRAW') {
+    // alertDraw(context);
     }
   });
 
@@ -96,4 +103,13 @@ export const listenGame = (s) => {
   s.socket.on('fromServer', (_) => {
     console.log(_);
   });
+};
+
+export const surrender = (s) => {
+  s.socket.emit('surrender', {});
+};
+
+export const draw = (s) => {
+  const jsonData = {'color': s.iAmWhite ? 'LIGHT' : 'DARK'};
+  s.socket.emit('vote_draw', jsonData);
 };
