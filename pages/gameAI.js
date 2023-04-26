@@ -23,6 +23,7 @@ export default function GameAI({token}) {
         try {
           const data = await startGame('AI', token);
           setGameData(data);
+          console.log(data);
           setIsLoading(false);
           setIdRoom(data.roomID);
           console.log(idRoom);

@@ -6,7 +6,7 @@ import {
   ChartBarIcon,
   TrophyIcon,
 } from '@heroicons/react/24/outline';
-
+import {SlBadge} from 'react-icons/Sl';
 export const primaryButton = {
   name: 'Jugar partida',
   icon: PlayIcon,
@@ -35,6 +35,10 @@ export const navigation = [{
   name: 'Clasificación',
   href: '/ranking',
   icon: ChartBarIcon,
+}, {
+  name: 'Logros',
+  href: '/rachievemnts',
+  icon: SlBadge,
 }];
 
 export const subNavigation = [{
