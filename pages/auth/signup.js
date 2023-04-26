@@ -65,7 +65,7 @@ export default function Login() {
                     error: 'Error al crear la cuenta',
                   },
               ).then(() => {
-                router.push('/home');
+                router.push('/auth/signin');
               }).catch(() => {});
             }}
             className="space-y-6"

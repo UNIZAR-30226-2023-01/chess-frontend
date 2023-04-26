@@ -77,7 +77,7 @@ CreateTournament.getLayout = function getLayout(page) {
 };
 
 export async function getServerSideProps({ req }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
       Cookie: req.headers.cookie,
