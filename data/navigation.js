@@ -33,6 +33,10 @@ export const navigation = [{
   name: 'Clasificación',
   href: '/ranking',
   icon: ChartBarIcon,
+}, {
+  name: 'Logros',
+  href: '/rachievemnts',
+  icon: ChartBarIcon,
 }];
 
 export const subNavigation = [{
