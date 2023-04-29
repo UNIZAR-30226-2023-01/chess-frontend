@@ -1,14 +1,181 @@
-import React from 'react';
+import Link from 'next/link';
+import Achivement from '@/components/Achivement';
+import { Chessboard } from 'react-chessboard';
 
-export default function Profile({profile}) {
+const stats = [
+  { name: 'Partidas ganadas', value: [123, 123, 13], text: ['bullet', 'blitz', 'fast'], type: 'victories' },
+  { name: 'Clasificación', value: [1200], text: ['GM'], type: 'ranking' },
+  { name: 'Logros obtenidos', value: [3], text: 'fast', type: 'achievements' },
+];
+
+const logros = [
+  {
+    id: 1,
+    name: 'Logro 1',
+    imagen: '/assets/achievements/1.png',
+  },
+  {
+    id: 2,
+    name: 'Logro 2',
+    imagen: '/assets/achievements/2.png',
+  },
+  {
+    id: 3,
+    name: 'Logro 3',
+    imagen: '/assets/achievements/3.png',
+  },
+  {
+    id: 5,
+    name: 'Logro 4',
+    imagen: '/assets/achievements/4.png',
+  },
+  {
+    id: 6,
+    name: 'Logro 4',
+    imagen: '/assets/achievements/5.png',
+  },
+  {
+    id: 7,
+    name: 'Logro 4',
+    imagen: '/assets/achievements/6.png',
+  },
+  {
+    id: 8,
+    name: 'Logro 4',
+    imagen: '/assets/achievements/7.png',
+  },
+];
+
+export function Stats({
+  name, value, text, type,
+}) {
   return (
-    <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-      {Object.keys(profile.fields).map((field) => (
-        <div key={field} className="sm:col-span-1">
-          <dt className="text-sm font-medium text-gray-700 dark:text-gray-200">{field}</dt>
-          <dd className="mt-1 text-sm text-gray-900 dark:text-white">{profile.fields[field]}</dd>
+    <div className="px-4 py-5 sm:p-6">
+      <dt className="text-base font-medium text-gray-900">{name}</dt>
+      <dd className="mt-1 flex items-baseline justify-between md:block lg:flex">
+        {type === 'victories' && (
+          <>
+            <div className="flex items-baseline text-xl font-semibold text-indigo-600">
+              {value[0]}
+              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[0]}</span>
+            </div>
+            /
+            <div className="flex items-baseline text-xl font-semibold text-indigo-600">
+              {value[1]}
+              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[1]}</span>
+            </div>
+            /
+            <div className="flex items-baseline text-xl font-semibold text-indigo-600">
+              {value[2]}
+              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[2]}</span>
+            </div>
+          </>
+        )}
+        {type === 'ranking' && (
+          <div className="flex items-baseline text-xl font-semibold text-indigo-600">
+            {value[0]}
+            <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[0]}</span>
+          </div>
+        )}
+        {type === 'achievements' && (
+          <div className="flex items-baseline text-xl font-semibold text-indigo-600">
+            {Math.floor(value[0]/ 13 * 100)}%
+            <span className="ml-1 text-xs font-medium text-gray-500 capitalize">Desbloqueados</span>
+          </div>
+        )}
+      </dd>
+    </div>
+  );
+}
+
+export function Game({
+  key,
+  type,
+  orientation,
+  position,
+  date,
+  state,
+  duration,
+}) {
+  return (
+    <Link
+      href="#"
+      className='cursor-pointer relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
+    >
+      {/* <div className='w-28 h-28 bg-gray-800'/> */}
+      <div className='w-24 h-24 bg-gray-50/20 select-none relative'>
+        <div className='w-24 h-24 absolute top-0 left-0 z-10'/>
+        <Chessboard
+          id="BasicBoard"
+          position='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+          boardOrientation='white'
+        />
+      </div>
+      <div className='flex flex-col justify-around space-y-3' >
+        <div>
+          <div className='font-semibold'>
+            Competitiva
+          </div>
+          <div className='text-sm'>
+            Hace un mes
+          </div>
         </div>
-      ))}
-    </dl>
+        <div>
+          <div className='font-semibold'>
+            Victoria
+          </div>
+          <div className='text-sm'>
+            11m 21s
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+export default function Profile() {
+  return (
+    <>
+      <ul className="flex flex-wrap justify-between gap-x-10">
+        {logros.map((logro) => (
+          <li
+            key={logro.id}
+            className="col-span-1 flex flex-col text-center"
+          >
+            <Achivement
+              name={logro.name}
+              imgSrc={logro.imagen}
+              unlocked={logro.id % 2 === 0}
+            />
+          </li>
+        ))}
+      </ul>
+      <div>
+        <dl className="mt-5 grid grid-cols-1 divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow md:grid-cols-3 md:divide-y-0 md:divide-x">
+          {stats.map((item) => (
+            <Stats
+              key={item.name}
+              name={item.name}
+              value={item.value}
+              text={item.text}
+              type={item.type}
+            />
+          ))}
+        </dl>
+      </div>
+      <div className="mt-5 grid grid-cols-1 gap-y-4overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
+        {[1, 2, 3].map((item) => (
+          <Game
+            key={item}
+            type=''
+            orientation=''
+            position=''
+            date=''
+            state=''
+            duration=''
+          />
+        ))}
+      </div>
+    </>
   );
 }

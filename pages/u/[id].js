@@ -3,16 +3,13 @@ import { profileTabs } from '@/data/tabs';
 import Profile from '@/components/u/Profile';
 import Settings from '@/components/u/Settings';
 import jwt from 'jsonwebtoken';
-import {profile} from '@/data/users';
 import { useState } from 'react';
-import Games from '@/components/u/Games';
-
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function User() {
+export default function User({profile}) {
   const [currentTab, setCurrentTab] = useState(profileTabs[0].name);
 
   return (
@@ -24,25 +21,20 @@ export default function User() {
               <article>
                 {/* Profile header */}
                 <div>
-                  <div>
-                    <img
-                      src={profile.coverImageUrl}
-                      alt=""
-                      className="h-32 w-full object-cover lg:h-48"
-                    />
-                  </div>
+                  <div className="h-32 w-full lg:h-48 bg-gradient-to-r from-indigo-500 via-30% via-sky-500 to-emerald to-90%"/>
                   <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                     <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                       <div className="flex">
                         <img
                           className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src={profile.imageUrl}
+                          src={profile.avatar}
                           alt=""
                         />
                       </div>
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
-                          <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white">{profile.name}</h1>
+                          <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white">{profile.username}</h1>
+                          <span className="truncate text-xs font-mono uppercase rounded-full text-left text-gray-900 dark:text-white bg-gray-200 px-2 py-0.5">{profile.id}</span>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                         </div>
@@ -82,8 +74,7 @@ export default function User() {
                 {/* Description list */}
                 <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6 lg:px-8 pb-12">
                   {currentTab === profileTabs[0].name && <Profile profile={profile}/>}
-                  {currentTab === profileTabs[1].name && <Games />}
-                  {currentTab === profileTabs[2].name && <Settings/>}
+                  {currentTab === profileTabs[1].name && <Settings profile={profile} />}
                 </div>
               </article>
             </div>
@@ -97,7 +88,7 @@ export default function User() {
 User.getLayout = (page) => <Layout>{page}</Layout>;
 
 export async function getServerSideProps({ req }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
+  const res1 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
       Cookie: req.headers.cookie,
@@ -105,7 +96,7 @@ export async function getServerSideProps({ req }) {
   })
       .catch((err)=>console.error(err));
 
-  if (!res.ok || res.status !== 200) {
+  if (!res1.ok || res1.status !== 200) {
     return {
       redirect: {
         destination: '/auth',
@@ -117,8 +108,28 @@ export async function getServerSideProps({ req }) {
   const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
   const token = req.headers.cookie?.split('=')[1];
 
+  const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${decoded.id}`, {
+    method: 'GET',
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  })
+      .catch((err) => console.error(err));
+
+  if (!res2.ok || res2.status !== 200) {
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false,
+      },
+    };
+  }
+
+  const profile = await res2.json();
+
   return {
     props: {
+      profile: profile.data,
       user: {
         id: decoded.id,
         username: decoded.username,

@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import { Switch } from '@headlessui/react';
-import Tippy from '@tippyjs/react';
-import { QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import { Chessboard } from 'react-chessboard';
 import { useChess } from '@/context/ChessContext';
 import { customPieces } from '@/components/CustomPiece';
@@ -68,13 +65,7 @@ const modelos = [
   },
 ];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
-
-export default function Settings({whitePiece, modelPiece}) {
-  const [visibility, setvisibility] = useState(true);
+export default function Settings({profile: user}) {
   const [color, setColor] = useState(['#B88B4A', '#E3C16F']);
   const [modelo, setModelo] = useState('normal');
   const { customization, saveBoard, saveColor } = useChess();
@@ -101,31 +92,22 @@ export default function Settings({whitePiece, modelPiece}) {
                 </div>
 
                 <div className="mt-6 grid grid-cols-4 gap-6">
-                  <div className="col-span-4 sm:col-span-2">
-                    <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
-                      Nombre
+                  <div className="col-span-4 ">
+                    <label htmlFor="company-website" className="block text-sm font-medium leading-6 text-gray-900">
+                      Avatar
                     </label>
-                    <input
-                      type="text"
-                      name="first-name"
-                      id="first-name"
-                      placeholder=''
-                      autoComplete="cc-given-name"
-                      className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                    />
-                  </div>
-
-                  <div className="col-span-4 sm:col-span-2">
-                    <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
-                      Apellido
-                    </label>
-                    <input
-                      type="text"
-                      name="last-name"
-                      id="last-name"
-                      autoComplete="cc-family-name"
-                      className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                    />
+                    <div className="mt-2 flex rounded-md shadow-sm">
+                      <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
+                        https://
+                      </span>
+                      <input
+                        type="text"
+                        name="company-website"
+                        id="company-website"
+                        className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        placeholder={String(user.avatar).replace('https://', '') ?? 'api.gracehopper.xyz/assets/avatar'}
+                      />
+                    </div>
                   </div>
 
                   <div className="col-span-4 sm:col-span-2">
@@ -137,6 +119,7 @@ export default function Settings({whitePiece, modelPiece}) {
                       name="username"
                       id="username"
                       autoComplete="username"
+                      defaultValue={user.username ?? 'johndoe'}
                       className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
                     />
                   </div>
@@ -150,99 +133,19 @@ export default function Settings({whitePiece, modelPiece}) {
                       name="email-address"
                       id="email-address"
                       autoComplete="email"
+                      defaultValue={user.email ?? 'johndoe@example.com'}
                       className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
                     />
                   </div>
-
-                  <div className="col-span-4 sm:col-span-1">
-                    <label htmlFor="birthday" className="block text-sm font-medium text-gray-700">
-                      Cumpleaños
-                    </label>
-                    <input
-                      type="text"
-                      name="birthday"
-                      id="birthday"
-                      autoComplete="cc-exp"
-                      className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                      placeholder="MM / YY"
-                    />
-                  </div>
-
-                  <div className="col-span-4 sm:col-span-1">
-                    <label
-                      htmlFor="invitation-code"
-                      className="flex items-center text-sm font-medium text-gray-700"
-                    >
-                      <span>Código REIGN</span>
-                      <Tippy
-                        placement='top'
-                        duration={0}
-                        arrow={false}
-                        content={
-                          <span className="bg-gray-800/80 text-white tracking-tight font-medium text-xs py-1 px-2 rounded-md">
-                            próximamente
-                          </span>
-                        }
-                      >
-                        <QuestionMarkCircleIcon
-                          className="ml-1 h-5 w-5 flex-shrink-0 text-gray-300"
-                          aria-hidden="true"
-                        />
-                      </Tippy>
-
-                    </label>
-                    <input
-                      type="text"
-                      name="invitation-code"
-                      id="invitation-code"
-                      autoComplete="invitation-code"
-                      placeholder='J3PJ+7G'
-                      className="cursor-not-allowed mt-1 bg-gray-200/30 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                      disabled
-                    />
-                  </div>
-
-                  <div className="col-span-4 sm:col-span-2">
-                    <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-                      País
-                    </label>
-                    <select
-                      id="country"
-                      name="country"
-                      autoComplete="country-name"
-                      className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                    >
-                      <option>United States</option>
-                      <option>Canada</option>
-                      <option>Mexico</option>
-                    </select>
-                  </div>
-                </div>
-                <div className='pt-6'>
-                  <Switch.Group as="div" className="flex items-center">
-                    <Switch
-                      checked={visibility}
-                      onChange={setvisibility}
-                      className={classNames(
-                            visibility ? 'bg-emerald' : 'bg-gray-200',
-                            'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2',
-                      )}
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={classNames(
-                              visibility ? 'translate-x-5' : 'translate-x-0',
-                              'inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                        )}
-                      />
-                    </Switch>
-                    <Switch.Label as="span" className="ml-3">
-                      <span className="text-sm font-medium text-gray-900">Perfil público</span>
-                    </Switch.Label>
-                  </Switch.Group>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6">
+              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6 flex justify-between">
+                <button
+                  type="submit"
+                  className="inline-flex justify-center rounded-md border border-transparent bg-red-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
+                >
+                  Borrar cuenta
+                </button>
                 <button
                   type="submit"
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
@@ -269,9 +172,10 @@ export default function Settings({whitePiece, modelPiece}) {
                   </p>
                 </div>
                 <div className="mt-6 grid grid-cols-3 gap-6">
-                  <div className='bg-gray-50/20 select-none relative col-span-1'>
-                    <div className='absolute top-0 left-0 z-10'/>
-                    <span> Tablero Actual </span>
+                  <div className='bg-gray-50/20 select-none relative col-span-1 group'>
+                    <div className='absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full group-hover:bg-black/50 ease-in-out duration-300'>
+                      <span className='z-20 font-semibold text-lg hidden group-hover:flex text-white duration-300 ease-in-out'>Actual</span>
+                    </div>
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
@@ -281,9 +185,10 @@ export default function Settings({whitePiece, modelPiece}) {
                       customLightSquareStyle={{ backgroundColor: customization.whitePiece }}
                     />
                   </div>
-                  <div className='bg-gray-50/20 select-none relative col-span-1'>
-                    <div className='absolute top-0 left-0 z-10'/>
-                    <span> Nuevo tablero </span>
+                  <div className='bg-gray-50/20 select-none relative col-span-1 group'>
+                    <div className='absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full group-hover:bg-black/50 ease-in-out duration-300'>
+                      <span className='z-20 font-semibold text-lg hidden group-hover:flex text-white duration-300 ease-in-out'>Nuevo</span>
+                    </div>
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
@@ -293,41 +198,55 @@ export default function Settings({whitePiece, modelPiece}) {
                       customLightSquareStyle={{ backgroundColor: color[1] }}
                     />
                   </div>
-                  <div className='col-span-1 flex flex-col justify-around'>
-                    <div>
-                      <React.Fragment key={color.id}>
-                        <label htmlFor="board" className="block text-sm font-medium text-gray-700">
-                          Color tablero
-                        </label>
-                        <select
-                          id="board"
-                          name="board"
-                          autoComplete="board"
-                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                          onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
-                        >
-                          {colores.map((color, index) => (
-                            <option key={index}>{color.name}</option>
-                          ))}
-                        </select>
-                      </React.Fragment>
-                      <React.Fragment key={modelo.id}>
-                        <label htmlFor="board" className="block text-sm font-medium text-gray-700">
-                          Modelo piezas
-                        </label>
-                        <select
-                          id="board"
-                          name="board"
-                          autoComplete="board"
-                          className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                          onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
-                        >
-                          {modelos.map((modelo, index) => (
-                            <option key={index}>{modelo.name}</option>
-                          ))}
-                        </select>
-                      </React.Fragment>
-                    </div>
+                  <div className='flex flex-col justify-start gap-y-2'>
+                    <React.Fragment key={color.id}>
+                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                        Tablero
+                      </label>
+                      <select
+                        id="board"
+                        name="board"
+                        autoComplete="board"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
+                      >
+                        {colores.map((color, index) => (
+                          <option key={index}>{color.name}</option>
+                        ))}
+                      </select>
+                    </React.Fragment>
+                    <React.Fragment key={modelo.id}>
+                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                        Piezas (W)
+                      </label>
+                      <select
+                        id="board"
+                        name="board"
+                        autoComplete="board"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
+                      >
+                        {modelos.map((modelo, index) => (
+                          <option key={index}>{modelo.name}</option>
+                        ))}
+                      </select>
+                    </React.Fragment>
+                    <React.Fragment key={modelo.id}>
+                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                        Piezas (B)
+                      </label>
+                      <select
+                        id="board"
+                        name="board"
+                        autoComplete="board"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
+                      >
+                        {modelos.map((modelo, index) => (
+                          <option key={index}>{modelo.name}</option>
+                        ))}
+                      </select>
+                    </React.Fragment>
                   </div>
                 </div>
               </div>
