@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Bars3Icon} from '@heroicons/react/24/outline';
 import MSidebar from '@/components/sidebar/MSidebar';
-import DSidebar from './sidebar/DSidebar';
+import DSidebar from '@/components/sidebar/DSidebar';
 import { Toaster } from 'react-hot-toast';
-import Reconnect from './Reconnect';
+import Reconnect from '@/components/Reconnect';
+import GameModal from '@/components/GameModal';
 
 export default function Layout({children}) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -32,6 +33,7 @@ export default function Layout({children}) {
             </div>
           </main>
         </div>
+        <GameModal/>
         {false && <Reconnect/>}
       </div>
     </>

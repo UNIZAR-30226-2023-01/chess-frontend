@@ -1,108 +1,56 @@
-// import Layout from '@/components/Layout';
-// import Tablero from '@/components/Tablero';
-// import jwt from 'jsonwebtoken';
-
-
 import Layout from '@/components/Layout';
 import Tablero from '@/components/Tablero';
 import Player from '@/components/Player';
-import { useState, useEffect} from 'react';
-import { listenGame, startGame } from '@/components/communications/socket_io';
 import jwt from 'jsonwebtoken';
 
-export default function GameAI({user, token}) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [color, setColor] = useState(null);
-  const [idRoom, setIdRoom] = useState(null);
-  const [gameData, setGameData] = useState(null);
-  const [isCalled, setIsCalled] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+import { useGame } from '@/context/GameContext';
 
-  useEffect(() => {
-    setIsMounted(true);
-    return () => setIsMounted(false);
-  }, []);
-
-  useEffect(() => {
-    const findGame = async () => {
-      if (isMounted && !isCalled) {
-        setIsCalled(true);
-        try {
-          const data = await startGame('AI', token);
-          setGameData(data);
-          setIsLoading(false);
-          setIdRoom(data.roomID);
-          const aux = (data.isWhite)? 'white' : 'black';
-          setColor(aux);
-          listenGame(data.socket);
-        } catch (error) {
-          console.error('Error :', error);
-        }
-      }
-    };
-    findGame();
-  }, [idRoom, isCalled, isMounted, token]);
+export default function Game({authorized, data, user}) {
+  const {
+    game, optionSquares, lastMoveSquares,
+    onPieceDragBegin, onDrop,
+  } = useGame();
 
   return (
-    <>
-      {isLoading ? (
-        <p>Loading...</p>
-      ) :
-      <>
-        <Player UserData={'IA'}></Player>
-        <Tablero colorUser={color} Socket={gameData.socket}></Tablero>
-        <Player UserData={user}></Player>
-      </>
-      }
-    </>
-  );
-}
-
-
-GameAI.getLayout=(page) => <Layout>{page}</Layout>;
-
-export async function getServerSideProps(context) {
-  const { req } = context;
-
-  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
-  const token = req.headers.cookie?.split('=')[1];
-  const user = decoded.username;
-  console.log(user);
-  return {
-    props: {
-      user: user,
-      token: token,
-    },
-  };
-}
-
-
-/* export default function Game({user, data}) {
-  const lightPlayer = data.lightPlayer === user.id;
-  const darkPlayer = data.lightPlayer === user.id;
-  const guestPlayer = !lightPlayer && !darkPlayer;
-
-  console.log(lightPlayer, darkPlayer, guestPlayer);
-
-  return (
-    <div>
-      <Tablero colorUser={'black'}/>
+    <div className="px-0 sm:px-6 lg:px-8 max-h-screen h-full max-w-5xl mx-auto flex items-start py-6 lg:py-10">
+      <div className='h-fit w-full grid grid-cols-4 sm:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 gap-y-4'>
+        <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4 flex  gap-x-4 md:gap-x-10 justify-center items-center'>
+          <Player
+            orientation='l'
+            username={data.lightPlayer.username}
+            elo={data.lightPlayer.elo}
+          />
+          <Player
+            username={data.lightPlayer.username}
+            elo={data.lightPlayer.elo}
+          />
+        </div>
+        <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
+          <Tablero
+            orientation={'white'}
+            game={game}
+            optionSquares={optionSquares}
+            lastMoveSquares={lastMoveSquares}
+            onPieceDragBegin={onPieceDragBegin}
+            onDrop={onDrop}
+          />
+        </div>
+      </div>
+      <audio id="pieceSound">
+        <source src="/assets/audio/audio.mp3" type="audio/mp3" />
+      </audio>
     </div>
   );
 }
 
-Game.getLayout = (page) => {
-  const { authorized } = page.props;
-  return authorized ?
-    <Layout>{page}</Layout> :
-    <>{page}</>;
-};
+
+Game.getLayout=(page) => <Layout>{page}</Layout>;
 
 export async function getServerSideProps(context) {
-  const {id} = context.params;
-  const {req} = context;
-
+  const { id } = context.params;
+  const { req } = context;
   const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
@@ -130,15 +78,15 @@ export async function getServerSideProps(context) {
   }
 
   const game = await res2.json();
-
   return {
     props: {
-      authorized: !res.ok || res.status !== 200,
+      authorized: res.ok && res.status === 200,
       data: game.data,
       user: {
         id: decoded.id,
         username: decoded.username,
+        token,
       },
     },
   };
-}*/
+}

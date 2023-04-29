@@ -1,12 +1,15 @@
+import Link from 'next/link';
+import jwt from 'jsonwebtoken';
+import useSWR from 'swr';
 import Layout from '@/components/Layout';
 import { useState } from 'react';
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid';
-import useSWR from 'swr';
-import Link from 'next/link';
+import TournamentModal from '@/components/TournamentModal';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
 export default function Tournaments() {
+  const [open, setOpen] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}`, fetcher);
 
@@ -23,6 +26,7 @@ export default function Tournaments() {
         </div>
         <button
           type="button"
+          onClick={() => setOpen(true)}
           className="w-fit rounded-md bg-indigo-600 px-2.5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
           Crear torneo
@@ -99,13 +103,14 @@ export default function Tournaments() {
           </div>
         </nav>
       </div>
+      <TournamentModal open={open} setOpen={setOpen} />
     </div>
   );
 }
 
 Tournaments.getLayout = (page) => <Layout>{page}</Layout>;
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({req}) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
@@ -123,7 +128,16 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
+
   return {
-    props: { },
+    props: {
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        token,
+      },
+    },
   };
 }

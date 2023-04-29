@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import { profileTabs } from '@/data/tabs';
 import Profile from '@/components/u/Profile';
 import Settings from '@/components/u/Settings';
-
+import jwt from 'jsonwebtoken';
 import {profile} from '@/data/users';
 import { useState } from 'react';
 import Games from '@/components/u/Games';
@@ -114,7 +114,16 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
+
   return {
-    props: { },
+    props: {
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        token,
+      },
+    },
   };
 }

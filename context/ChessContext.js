@@ -7,19 +7,25 @@ export function useChess() {
 }
 
 export function ChessProvider({children}) {
-  const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true); // nuevo estado isLoading
-  const saveBoard = (newModel) => setData({...data, model: newModel});
-  const saveColor = (newBlack, newWhite) => setData({...data, whitePiece: newWhite, blackPiece: newBlack});
+  // ----- SEARCH -----
+  // Para la creación de partidas
+  const [gameType, setGameType] = useState(null);
+  const [selModal, openSelModal] = useState(false);
+
+  const switchModal = () => openSelModal(!selModal);
+
+  // ----- CUSTOMIZATION -----
+  const [customization, setData] = useState();
+  const saveBoard = (newModel) => setData({...customization, model: newModel});
+  const saveColor = (newBlack, newWhite) => setData({...customization, whitePiece: newWhite, blackPiece: newBlack});
 
   useEffect(() => {
-    const _data = localStorage.getItem('ChangeData');
+    const _data = localStorage.getItem('customization-reign');
     if (_data) {
       try {
         const parsedData = JSON.parse(_data);
         setData(parsedData);
       } catch (error) {
-        console.error('Error parsing JSON:', error);
         setData({model: 'normal', whitePiece: '#E3C16F', blackPiece: '#B88B4A'});
       }
     } else {
@@ -29,18 +35,22 @@ export function ChessProvider({children}) {
 
 
   useEffect(() => {
-    if (data && data.blackPiece && data.whitePiece && data.model) {
-      setIsLoading(false);
-      localStorage.setItem('ChangeData', JSON.stringify(data));
+    if (customization && customization.blackPiece && customization.whitePiece && customization.model) {
+      localStorage.setItem('customization-reign', JSON.stringify(customization));
     }
-  }, [data]);
+  }, [customization]);
 
-  if (isLoading) {
-    return <div>Cargando...</div>; // o cualquier otro indicador de carga
+  if (!customization) {
+    return null;
   }
+
   return (
     <ChessContext.Provider value={{
-      data,
+      // ----- SEARCH -----
+      gameType, setGameType,
+      selModal, switchModal,
+      // ----- CUSTOMIZATION -----
+      customization,
       saveBoard,
       saveColor,
     }}>

@@ -77,7 +77,7 @@ export default function Settings({whitePiece, modelPiece}) {
   const [visibility, setvisibility] = useState(true);
   const [color, setColor] = useState(['#B88B4A', '#E3C16F']);
   const [modelo, setModelo] = useState('normal');
-  const { data, saveBoard, saveColor } = useChess();
+  const { customization, saveBoard, saveColor } = useChess();
 
   function saveContext(colorBlack, colorWhite, model) {
     saveBoard(model);
@@ -275,10 +275,10 @@ export default function Settings({whitePiece, modelPiece}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(data.model)}
+                      customPieces={customPieces(customization.model)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: data.blackPiece }}
-                      customLightSquareStyle={{ backgroundColor: data.whitePiece }}
+                      customDarkSquareStyle={{ backgroundColor: customization.blackPiece }}
+                      customLightSquareStyle={{ backgroundColor: customization.whitePiece }}
                     />
                   </div>
                   <div className='bg-gray-50/20 select-none relative col-span-1'>

@@ -11,6 +11,18 @@ export const primaryButton = {
   name: 'Jugar partida',
   href: '/games',
   icon: PlayIcon,
+  link: [
+    {
+      name: 'Contra la IA',
+      state: 'AI',
+    }, {
+      name: 'Competitiva',
+      state: 'COMPETITIVE',
+    }, {
+      name: 'Amistosa',
+      state: 'CUSTOM',
+    },
+  ],
 };
 
 export const navigation = [{

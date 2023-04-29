@@ -1,4 +1,4 @@
-Sitemap: http://localhost:3000/api/sitemap
+Sitemap: https://reign.gracehopper.xyz/api/sitemap
 
 User-agent: *
 Allow: /

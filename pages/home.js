@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout';
 import Game from '@/components/Game';
 import useSWR from 'swr';
+import jwt from 'jsonwebtoken';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
@@ -46,7 +47,16 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
+
   return {
-    props: { },
+    props: {
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        token,
+      },
+    },
   };
 }
