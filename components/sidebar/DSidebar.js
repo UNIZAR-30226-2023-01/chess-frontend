@@ -7,7 +7,7 @@ import { useChess } from '@/context/ChessContext';
 import { useGame } from '@/context/GameContext';
 import { useState } from 'react';
 
-export default function DSidebar() {
+export default function DSidebar({userId}) {
   const {setGameType, switchModal} = useChess();
   const [options, setOptions] = useState({ roomID: ''});
   const { findRoom } = useGame();
@@ -116,7 +116,7 @@ export default function DSidebar() {
                 ) : (
                   <Link
                     key={item.name}
-                    href={item.href}
+                    href={item.href.replace(':id', userId)}
                     className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
                   >
                     <item.icon

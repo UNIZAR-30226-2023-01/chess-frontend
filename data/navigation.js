@@ -33,15 +33,11 @@ export const navigation = [{
   name: 'Clasificación',
   href: '/ranking',
   icon: ChartBarIcon,
-}, {
-  name: 'Logros',
-  href: '/rachievemnts',
-  icon: ChartBarIcon,
 }];
 
 export const subNavigation = [{
   name: 'Perfil',
-  href: '/u/username',
+  href: '/u/:id',
   icon: UserIcon,
 }, { theme: true }, {
   name: 'Upgrades & FAQ',

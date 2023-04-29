@@ -8,14 +8,15 @@ import GameModal from '@/components/GameModal';
 
 export default function Layout({children}) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const id = children.props.user.id;
 
   return (
     <>
       <Toaster position='top-right' />
       <div className='h-screen overflow-hidden'>
-        <MSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+        <MSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} userId={id} />
         {/* Static sidebar for desktop */}
-        <DSidebar/>
+        <DSidebar userId={id}/>
         <div className="flex flex-1 flex-col lg:pl-64 h-full">
           <div className="sticky top-0 z-10 pl-1 pt-1 sm:pl-3 sm:pt-3 lg:hidden bg-gray-800 border-b border-white/20">
             <button

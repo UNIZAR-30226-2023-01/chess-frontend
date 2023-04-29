@@ -7,7 +7,7 @@ import { Disclosure } from '@headlessui/react';
 import { primaryButton, navigation, subNavigation } from '@/data/navigation';
 import { CubeIcon } from '@heroicons/react/24/outline';
 
-export default function MSidebar({ sidebarOpen, setSidebarOpen }) {
+export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog as="div" className="relative z-40 lg:hidden" onClose={setSidebarOpen}>
@@ -124,7 +124,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen }) {
                         ) : (
                           <Link
                             key={item.name}
-                            href={item.href}
+                            href={item.href.replace(':id', userId)}
                             className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
                           >
                             <item.icon
