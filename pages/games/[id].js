@@ -2,7 +2,6 @@ import Layout from '@/components/Layout';
 import Tablero from '@/components/Tablero';
 import Player from '@/components/Player';
 import jwt from 'jsonwebtoken';
-
 import { useGame } from '@/context/GameContext';
 
 export default function Game({authorized, data, user}) {
@@ -17,12 +16,12 @@ export default function Game({authorized, data, user}) {
         <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4 flex  gap-x-4 md:gap-x-10 justify-center items-center'>
           <Player
             orientation='l'
-            username={data.lightPlayer.username}
-            elo={data.lightPlayer.elo}
+            username={data?.lightPlayer?.username}
+            elo={data?.lightPlayer?.elo}
           />
           <Player
-            username={data.lightPlayer.username}
-            elo={data.lightPlayer.elo}
+            username={data?.darkPlayer?.username}
+            elo={data?.lightPlayer?.elo}
           />
         </div>
         <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
