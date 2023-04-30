@@ -188,6 +188,36 @@ export default function GameModal() {
                       Buscar partida
                     </button>
                   </div>
+                  <div className="mt-4 space-y-4">
+                    <div className="relative">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-gray-400" />
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="bg-white px-2 text-gray-600 select-none">O</span>
+                      </div>
+                    </div>
+
+                    <div className="relative flex items-center">
+                      <input
+                        type="text"
+                        name="search"
+                        id="search"
+                        onChange={(e) => setOptions({ ...options, roomID: e.target.value })}
+                        placeholder='Room id ...'
+                        className="block bg-transparent w-full rounded-md border-0 py-2.5 pr-14 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-400/20 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-300/20 sm:text-sm sm:leading-6"
+                      />
+                      <button
+                        type="submit"
+                        onClick={()=>{}}
+                        className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
+                      >
+                        <kbd className="inline-flex items-center rounded border border-gray-300 px-1 font-sans text-sm text-gray-500">
+                          ⌘ Enter
+                        </kbd>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

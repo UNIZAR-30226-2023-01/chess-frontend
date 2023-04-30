@@ -27,14 +27,14 @@ export default function User({profile}) {
                       <div className="flex">
                         <img
                           className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src={profile.avatar}
+                          src={profile.avatar ?? '/assets/profile/animales/12.png'}
                           alt=""
                         />
                       </div>
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
-                          <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white">{profile.username}</h1>
-                          <span className="truncate text-xs font-mono uppercase rounded-full text-left text-gray-900 dark:text-white bg-gray-200 px-2 py-0.5">{profile.id}</span>
+                          <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white capitalize">{profile.username}</h1>
+                          <span className="truncate text-xs font-mono uppercase rounded-full text-left text-gray-900  bg-gray-200 px-2 py-0.5">{profile.id}</span>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                         </div>
