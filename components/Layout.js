@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Bars3Icon} from '@heroicons/react/24/outline';
 import MSidebar from '@/components/sidebar/MSidebar';
 import DSidebar from '@/components/sidebar/DSidebar';
-import { Toaster } from 'react-hot-toast';
 import Reconnect from '@/components/Reconnect';
 import GameModal from '@/components/GameModal';
 
@@ -12,7 +11,6 @@ export default function Layout({children}) {
 
   return (
     <>
-      <Toaster position='top-right' />
       <div className='h-screen overflow-hidden'>
         <MSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} userId={id} />
         {/* Static sidebar for desktop */}

@@ -26,6 +26,16 @@ export default function login() {
           Registrarse
         </Link>
       </div>
+      <div className="mt-6">
+        <div className="flex flex-col gap-y-2 mt-4">
+          <Link
+            href='/auth/forgot-password'
+            className='text-sm text-white/60'
+          >
+            ¿Has olvidado tu contraseña?
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
