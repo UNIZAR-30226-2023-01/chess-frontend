@@ -133,7 +133,7 @@ export default function Settings({profile: user}) {
                       className="scroll-smooth mt-2 w-full mx-2 flex flex-nowrap justify-start items-center space-x-3 overflow-x-auto rounded drop-shadow-xl"
                     >
                       {avatares.map((src, i) => (
-                        <li key={i} className="flex flex-none flex-col items-center space-y-1">
+                        <li key={i} className="flex flex-none flex-col items-center space-y-1 select-none cursor-pointer">
                           <div className="bg-gradient-to-tr from-yellow-400 to-fuchsia-600 p-1 rounded-full" >
                             <div className="block bg-white p-1 rounded-full relative">
                               <img
