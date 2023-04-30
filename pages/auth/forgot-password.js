@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 export default function ForgotPassword() {
   const handleSubmit = (e) => {
@@ -29,7 +29,6 @@ export default function ForgotPassword() {
 
   return (
     <div className="flex min-h-screen flex-col justify-around sm:px-6 lg:px-8">
-      <Toaster position='top-right' />
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="w-fit h-fit mx-auto py-4">
           <img

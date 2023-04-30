@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { FcGoogle } from 'react-icons/fc';
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import Link from 'next/link';
 
 export default function Login() {
@@ -48,7 +48,6 @@ export default function Login() {
 
   return (
     <div className="flex min-h-screen flex-col justify-around sm:px-6 lg:px-8">
-      <Toaster position='top-right' />;
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="w-fit h-fit mx-auto py-4">
           <img src="/assets/images/Logo_black.png" className=" h-20 mx-auto" />
