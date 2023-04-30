@@ -77,7 +77,8 @@ export default function Settings({profile: user}) {
 
   const humanAvatars = new Array(24).fill(null).map((i, id) => `/assets/profile/humanos/${id + 1}.png`);
   const animalAvatars = new Array(50).fill(null).map((i, id) => `/assets/profile/animales/${id + 1}.png`);
-  const avatares = [...humanAvatars, ...animalAvatars];
+  const memojisAvatars = new Array(28).fill(null).map((i, id) => `/assets/profile/memojis/${id + 1}.png`);
+  const avatares = [...memojisAvatars, ...animalAvatars, ...humanAvatars];
 
   const sliderRef = useRef();
   let mouseDown = false;
