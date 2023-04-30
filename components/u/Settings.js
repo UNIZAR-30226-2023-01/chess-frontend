@@ -75,9 +75,9 @@ export default function Settings({profile: user}) {
     saveColor(colorBlack, colorWhite);
   }
 
-  const humanAvatars = new Array(24).fill(null).map((i, id) => `/assets/profile/humanos/${id + 1}.png`);
-  const animalAvatars = new Array(50).fill(null).map((i, id) => `/assets/profile/animales/${id + 1}.png`);
-  const memojisAvatars = new Array(28).fill(null).map((i, id) => `/assets/profile/memojis/${id + 1}.png`);
+  const humanAvatars = new Array(24).fill(null).map((i, id) => `/assets/profile/humanos/${id + 1}.webp`);
+  const animalAvatars = new Array(50).fill(null).map((i, id) => `/assets/profile/animales/${id + 1}.webp`);
+  const memojisAvatars = new Array(28).fill(null).map((i, id) => `/assets/profile/memojis/${id + 1}.webp`);
   const avatares = [...memojisAvatars, ...animalAvatars, ...humanAvatars];
 
   const sliderRef = useRef();
