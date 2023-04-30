@@ -2,13 +2,23 @@ import Layout from '@/components/Layout';
 import Tablero from '@/components/Tablero';
 import Player from '@/components/Player';
 import jwt from 'jsonwebtoken';
+import { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
+import { whoami, getOrientation } from '@/lib/cmd';
 
 export default function Game({authorized, data, user}) {
   const {
     game, optionSquares, lastMoveSquares,
-    onPieceDragBegin, onDrop,
+    onPieceDragBegin, onDrop, updateGame,
+    setPlayer,
   } = useGame();
+
+  useEffect(() => {
+    updateGame(data.board);
+    setPlayer(user.player);
+    console.log('board', data.board);
+    console.log('game', game.fen());
+  }, []);
 
   return (
     <div className="px-0 sm:px-6 lg:px-8 max-h-screen h-full max-w-5xl mx-auto flex items-start py-6 lg:py-10">
@@ -26,7 +36,7 @@ export default function Game({authorized, data, user}) {
         </div>
         <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
           <Tablero
-            orientation={'white'}
+            orientation={getOrientation(user.player)}
             game={game}
             optionSquares={optionSquares}
             lastMoveSquares={lastMoveSquares}
@@ -47,6 +57,7 @@ Game.getLayout=(page) => <Layout>{page}</Layout>;
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
+  console.log('id', id);
   const { req } = context;
   const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
   const token = req.headers.cookie?.split('=')[1];
@@ -67,16 +78,11 @@ export async function getServerSideProps(context) {
   })
       .catch((err)=>console.error(err));
 
-  if (!res2.ok || res2.status !== 200) {
-    return {
-      redirect: {
-        destination: '/home',
-        permanent: false,
-      },
-    };
-  }
-
   const game = await res2.json();
+  const player = whoami(game.data, decoded);
+  console.log('player', player);
+  console.log('game', game.data.board);
+
   return {
     props: {
       authorized: res.ok && res.status === 200,
@@ -85,6 +91,7 @@ export async function getServerSideProps(context) {
         id: decoded.id,
         username: decoded.username,
         token,
+        player,
       },
     },
   };

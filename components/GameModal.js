@@ -22,17 +22,17 @@ const times = [
   {
     id: 1,
     name: 'bullet (3 min)',
-    value: 3,
+    value: 180,
   },
   {
     id: 2,
     name: 'blitz (5 min)',
-    value: 5,
+    value: 300,
   },
   {
     id: 3,
     name: 'fast (10 min)',
-    value: 10,
+    value: 600,
   },
 ];
 
@@ -139,12 +139,14 @@ export default function GameModal() {
                       label="Tiempo"
                       items={times}
                       setter={(value) => setTime(value)}
+                      defaultValue={times[1].value}
                     />
                     {gameType === 'AI' && (
                       <ListBox
                         label="Dificultad"
                         items={levels}
                         setter={(value) => setLevel(value)}
+                        defaultValue={levels[1].value}
                       />
                     )}
                     {(gameType === 'AI' || gameType === 'CUSTOM') && (
@@ -153,6 +155,7 @@ export default function GameModal() {
                           label="Set piezas"
                           items={pieces}
                           setter={(value) => setColor(value)}
+                          defaultValue={pieces[0].value}
                         />
                         <InputLabel
                           id='number'
@@ -160,6 +163,7 @@ export default function GameModal() {
                           type='number'
                           placeholder='Incremento'
                           setter={(e) => setIncrement(e.target.value)}
+                          defaultValue={5}
                         />
                       </>
                     )}

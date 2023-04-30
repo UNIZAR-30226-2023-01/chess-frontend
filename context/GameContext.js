@@ -19,7 +19,13 @@ export function GameProvider({token, children}) {
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const cMov = 'rgba(255, 255, 0, 0.4)';
 
-  const [player] = useState('LIGHT');
+  const [player, setP] = useState();
+
+  const updateGame = (fen) => {
+    console.log('inside fen', fen);
+    setGame(new Chess(fen));
+  };
+  const setPlayer = (player) => setP(player);
 
   useEffect(() => {
     const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
@@ -63,7 +69,7 @@ export function GameProvider({token, children}) {
     });
 
     // You canceled the search
-    socket.on('canceled', (message) => {
+    socket.on('cancelled', (message) => {
       console.log('canceled message', message);
     });
 
@@ -235,6 +241,8 @@ export function GameProvider({token, children}) {
       lastMoveSquares,
       onPieceDragBegin,
       onDrop,
+      updateGame,
+      setPlayer,
     }}>
       {children}
     </GameContext.Provider>
