@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { useChess } from '@/context/ChessContext';
 import { customPieces } from '@/components/CustomPiece';
@@ -74,6 +74,34 @@ export default function Settings({profile: user}) {
     saveBoard(model);
     saveColor(colorBlack, colorWhite);
   }
+
+  const humanAvatars = new Array(24).fill(null).map((i, id) => `/assets/profile/humanos/${id + 1}.png`);
+  const animalAvatars = new Array(50).fill(null).map((i, id) => `/assets/profile/animales/${id + 1}.png`);
+  const avatares = [...humanAvatars, ...animalAvatars];
+
+  const sliderRef = useRef();
+  let mouseDown = false;
+  let startX; let scrollLeft;
+
+  const startDragging = (e) => {
+    mouseDown = true;
+    startX = e.pageX - sliderRef.current.offsetLeft;
+    scrollLeft = sliderRef.current.scrollLeft;
+  };
+
+  const stopDragging = (event) => {
+    mouseDown = false;
+  };
+
+  const handleMouseMove = (e) => {
+    e.preventDefault();
+    if (!mouseDown) {
+      return;
+    }
+    const x = e.pageX - sliderRef.current.offsetLeft;
+    const scroll = x - startX;
+    sliderRef.current.scrollLeft = scrollLeft - scroll;
+  };
   return (
     <div className='space-y-16'>
       {/* Profile details */}
@@ -96,18 +124,28 @@ export default function Settings({profile: user}) {
                     <label htmlFor="company-website" className="block text-sm font-medium leading-6 text-gray-900">
                       Avatar
                     </label>
-                    <div className="mt-2 flex rounded-md shadow-sm">
-                      <span className="inline-flex items-center rounded-l-md border border-r-0 border-gray-300 px-3 text-gray-500 sm:text-sm">
-                        https://
-                      </span>
-                      <input
-                        type="text"
-                        name="company-website"
-                        id="company-website"
-                        className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        placeholder={String(user.avatar).replace('https://', '') ?? 'api.gracehopper.xyz/assets/avatar'}
-                      />
-                    </div>
+                    <ul
+                      ref={sliderRef}
+                      onMouseDown={startDragging}
+                      onMouseUp={stopDragging}
+                      onMouseLeave={stopDragging}
+                      onMouseMove={handleMouseMove}
+                      className="scroll-smooth mt-2 w-full mx-2 flex flex-nowrap justify-start items-center space-x-3 overflow-x-auto rounded drop-shadow-xl"
+                    >
+                      {avatares.map((src, i) => (
+                        <li key={i} className="flex flex-none flex-col items-center space-y-1">
+                          <div className="bg-gradient-to-tr from-yellow-400 to-fuchsia-600 p-1 rounded-full" >
+                            <div className="block bg-white p-1 rounded-full relative">
+                              <img
+                                src={src}
+                                alt=""
+                                className="w-10 h-10 rounded-full object-cover"
+                              />
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
                   <div className="col-span-4 sm:col-span-2">
