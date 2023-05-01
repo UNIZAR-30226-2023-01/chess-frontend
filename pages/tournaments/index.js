@@ -102,9 +102,9 @@ export default function Tournaments({user}) {
                                 toast.promise(
                                     handleURI(item.leave),
                                     {
-                                      loading: 'Creando la cuenta...',
-                                      success: 'Cuenta creada con exito',
-                                      error: 'Error al crear la cuenta',
+                                      loading: 'Abandonando el torneo...',
+                                      success: 'Has abandonado el torneo',
+                                      error: 'Error al abandonar el torneo',
                                     },
                                 ).catch(() => {});
                               }}
@@ -118,9 +118,9 @@ export default function Tournaments({user}) {
                                 toast.promise(
                                     handleURI(item.join),
                                     {
-                                      loading: 'Creando la cuenta...',
-                                      success: 'Cuenta creada con exito',
-                                      error: 'Error al crear la cuenta',
+                                      loading: 'Unidote al torneo...',
+                                      success: 'Te has unido al torneo',
+                                      error: 'Error al unirse al torneo',
                                     },
                                 ).catch(() => {});
                               }}
