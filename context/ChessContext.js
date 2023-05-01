@@ -16,29 +16,26 @@ export function ChessProvider({children}) {
   const switchModal = () => openSelModal(!selModal);
 
   // ----- CUSTOMIZATION -----
-  const [customization, setData] = useState();
-  const saveBoard = (newBoard) => setData({...customization, board: newBoard});
-  const savePieces = (newWhite, newBlack) => setData({...customization, whitePiece: newWhite, blackPiece: newBlack});
+  const [customization, setCustom] = useState();
+  const setData = (board, whitePiece, blackPiece) => setCustom({board, whitePiece, blackPiece});
 
   useEffect(() => {
-    const _data = localStorage.getItem('customization-reign');
-    if (_data) {
-      try {
-        const parsedData = JSON.parse(_data);
-        setData(parsedData);
-      } catch (error) {
-        setData({board: boardTypes[0], whitePiece: pieceTypes[0], blackPiece: pieceTypes[0]});
-      }
+    const data = localStorage.getItem('customization-reign');
+    if (data) {
+      setCustom(JSON.parse(data));
     } else {
-      setData({board: boardTypes[0], whitePiece: pieceTypes[0], blackPiece: pieceTypes[0]});
+      setCustom({
+        board: boardTypes[0],
+        whitePiece: pieceTypes[0],
+        blackPiece: pieceTypes[0],
+      });
     }
   }, []);
 
 
   useEffect(() => {
-    if (customization && customization.blackPiece && customization.whitePiece && customization.board) {
-      localStorage.setItem('customization-reign', JSON.stringify(customization));
-    }
+    if (!customization || typeof customization !== 'object') return;
+    localStorage.setItem('customization-reign', JSON.stringify(customization));
   }, [customization]);
 
   if (!customization) {
@@ -52,8 +49,7 @@ export function ChessProvider({children}) {
       selModal, switchModal,
       // ----- CUSTOMIZATION -----
       customization,
-      saveBoard,
-      savePieces,
+      setData,
     }}>
       {children}
     </ChessContext.Provider>

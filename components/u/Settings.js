@@ -4,12 +4,13 @@ import { useChess } from '@/context/ChessContext';
 import toast, {Toaster} from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { boardTypes, pieceTypes, customPieces } from '@/data/board';
+import { mutate } from 'swr';
 
 export default function Settings({profile: user}) {
   const router = useRouter();
   const [board, setBoard] = useState(boardTypes[0]);
   const [ptypes, setPTypes] = useState([pieceTypes[0], pieceTypes[0]]);
-  const { customization, saveBoard, savePieces } = useChess();
+  const { customization, setData } = useChess();
 
   const [profile, setProfile] = useState({avatar: user.avatar, username: user.username, email: user.email});
 
@@ -54,6 +55,7 @@ export default function Settings({profile: user}) {
       })
           .then((res) => {
             if (res.ok && res.status === 200) {
+              mutate(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, Object.assign({}, user, profile), false);
               resolve('ok');
             }
             reject(new Error('Network response was not ok.'));
@@ -66,9 +68,6 @@ export default function Settings({profile: user}) {
 
   function saveContext(e) {
     e.preventDefault();
-    console.log(board, ptypes);
-    saveBoard(board);
-    savePieces(ptypes[0], ptypes[1]);
 
     return new Promise(function(resolve, reject) {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, {
@@ -85,8 +84,7 @@ export default function Settings({profile: user}) {
       })
           .then((res) => {
             if (res.ok && res.status === 200) {
-              saveBoard(board);
-              savePieces(ptypes[0], ptypes[1]);
+              setData(board, ptypes[0], ptypes[1]);
               resolve('ok');
             }
             reject(new Error('Network response was not ok.'));
@@ -112,7 +110,7 @@ export default function Settings({profile: user}) {
     scrollLeft = sliderRef.current.scrollLeft;
   };
 
-  const stopDragging = (event) => {
+  const stopDragging = (e) => {
     mouseDown = false;
   };
 
@@ -250,7 +248,9 @@ export default function Settings({profile: user}) {
                           success: 'Perfil actualizado con exito',
                           error: 'Error al actualizar el perfil',
                         },
-                    ).catch(() => {});
+                    )
+                        .then(() => mutate(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, null))
+                        .catch(() => {});
                   }}
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
                 >
@@ -283,10 +283,10 @@ export default function Settings({profile: user}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(customization?.whitePiece.value)}
+                      customPieces={customPieces(customization?.whitePiece?.value)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: customization?.board?.black }}
-                      customLightSquareStyle={{ backgroundColor: customization?.board?.white }}
+                      customDarkSquareStyle={{ backgroundColor: customization.board.black }}
+                      customLightSquareStyle={{ backgroundColor: customization.board.white }}
                     />
                   </div>
                   <div className='bg-gray-50/20 select-none relative col-span-1 group'>
@@ -328,7 +328,7 @@ export default function Settings({profile: user}) {
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(e) => setPTypes([pieceTypes[e.target.selectedIndex], ptypes[1]])}
+                        onChange={(e) => setPTypes([ptypes[0], pieceTypes[e.target.selectedIndex]]) }
                       >
                         {pieceTypes.map((modelo, index) => (
                           <option key={index}>{modelo.name}</option>
@@ -344,7 +344,8 @@ export default function Settings({profile: user}) {
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(e) => setPTypes([ptypes[0], pieceTypes[e.target.selectedIndex]]) }
+                        onChange={(e) => setPTypes([pieceTypes[e.target.selectedIndex], ptypes[1]])}
+
                       >
                         {pieceTypes.map((modelo, index) => (
                           <option key={index}>{modelo.name}</option>
@@ -358,7 +359,7 @@ export default function Settings({profile: user}) {
                 <button
                   type="submit"
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-                  onClick={saveContext}
+                  onClick={(e) => saveContext(e)}
                 >
                   Guardar
                 </button>
