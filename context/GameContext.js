@@ -137,6 +137,18 @@ export function GameProvider({token, children}) {
     socket.emit('find_room', message);
   };
 
+  const cancelSearch = () => {
+    socket.emit('cancel');
+  };
+
+  const joinRoomAsPlayer = (roomID) => {
+    socket.emit('find_room', {gameType: 'CUSTOM', roomID});
+  };
+
+  const joinRoomAsSpectator = (roomID) => {
+    socket.emit('join_room', {roomID});
+  };
+
   const movePiece = (mov) => {
     console.log('move', {'move': mov});
     socket.emit('move', {'move': mov});
@@ -236,6 +248,9 @@ export function GameProvider({token, children}) {
   return (
     <GameContext.Provider value={{
       findRoom,
+      cancelSearch,
+      joinRoomAsPlayer,
+      joinRoomAsSpectator,
       game,
       optionSquares,
       lastMoveSquares,

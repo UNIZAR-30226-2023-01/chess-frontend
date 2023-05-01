@@ -17,13 +17,13 @@ export default function Player({avatar, username, elo, orientation='r'}) {
                     {username}
                   </span>
                   <span className='text-sm font-mono'>
-                    {elo}
+                    {elo ? elo : 'Unranked'}
                   </span>
                 </div>
               }
               <div className='relative h-16 w-16 rounded-2xl border-2'>
                 <img
-                  src={avatar}
+                  src={avatar ? `/assets/profile${avatar}`: 'https://i.pravatar.cc/300'}
                   className="h-full w-full object-cover rounded-2xl"
                   alt="avatar image"
                 />
@@ -54,9 +54,3 @@ export default function Player({avatar, username, elo, orientation='r'}) {
     </div>
   );
 }
-
-Player.defaultProps = {
-  avatar: 'https://i.pravatar.cc/300',
-  username: 'Username',
-  elo: 1200,
-};

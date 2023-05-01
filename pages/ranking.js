@@ -10,7 +10,7 @@ const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.
 
 export default function Ranking() {
   const [pageIndex, setPageIndex] = useState(1);
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}`, fetcher);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}&sort=-elo`, fetcher);
 
   return (
     <div className="py-12 max-w-5xl mx-auto px-0 sm:px-6 lg:px-8">
@@ -32,22 +32,22 @@ export default function Ranking() {
                     scope="col"
                     className="select-none py-3.5 pl-4 pr-3 text-left text-sm font-semibold capitalize text-gray-900 dark:text-white sm:pl-6 md:pl-0"
                   >
-                    calification
+                    Clasificación
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold capitalize text-gray-900 dark:text-white">
-                    Player
+                    Jugador
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
-                    Score
+                    Elo
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
-                    Victory
+                    Victorias
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
-                    Draw
+                    Empates
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 sm:pr-6 md:pr-0 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-gray-200">
-                    Defeat
+                    Derrotas
                   </th>
                 </tr>
               </thead>

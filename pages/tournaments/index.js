@@ -12,7 +12,7 @@ const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.
 export default function Tournaments({user}) {
   const [open, setOpen] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}`, fetcher, {refreshInterval: 1000});
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}&sort=-createdAt`, fetcher, {refreshInterval: 1000});
 
   const handleURI = (uri) => {
     console.log(uri);

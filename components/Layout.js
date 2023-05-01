@@ -5,9 +5,11 @@ import DSidebar from '@/components/sidebar/DSidebar';
 import SearchGame from '@/components/SearchGame';
 import GameModal from '@/components/GameModal';
 import { useChess } from '@/context/ChessContext';
+import { useGame } from '@/context/GameContext';
 
 export default function Layout({children}) {
   const { inQueue, setInQueue } = useChess();
+  const { cancelSearch } = useGame();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const id = children.props.user.id;
 
@@ -35,7 +37,10 @@ export default function Layout({children}) {
           </main>
         </div>
         <GameModal/>
-        {inQueue && <SearchGame onCancel={() => setInQueue(false)}/>}
+        {inQueue && <SearchGame onCancel={() => {
+          setInQueue(false);
+          cancelSearch();
+        }}/>}
       </div>
     </>
   );

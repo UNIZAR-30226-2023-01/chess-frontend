@@ -14,14 +14,8 @@ import { useState } from 'react';
 export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
   const {setGameType, switchModal} = useChess();
   const [options, setOptions] = useState({ roomID: ''});
-  const { findRoom } = useGame();
+  const { joinRoomAsPlayer } = useGame();
 
-  const joinGame = () => {
-    return new Promise(function(resolve, reject) {
-      findRoom('CUSTOM', options);
-      resolve('ok');
-    });
-  };
 
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -86,7 +80,10 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
                       />
                       <button
                         type="submit"
-                        onClick={joinGame}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          joinRoomAsPlayer(options.roomID);
+                        }}
                         className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
                       >
                         <kbd className="inline-flex items-center rounded border border-gray-200 px-1 font-sans text-sm text-gray-400">

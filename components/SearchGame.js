@@ -28,12 +28,10 @@ export default function SearchGame({onCancel}) {
         </div>
         <div className="-mt-px flex flex-1 divide-gray-200">
           <button
-            onClick={() => {
-              onCancel();
-            }}
+            onClick={() => onCancel()}
             className="rounded-b-lg flex-1 w-full py-4 text-xs uppercase font-bold  cursor-pointer text-red-600 hover:animate-pulse duration-300"
           >
-                cancelar
+            cancelar
           </button>
         </div>
       </div>

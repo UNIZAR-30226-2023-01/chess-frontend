@@ -2,8 +2,26 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import Link from 'next/link';
 import { Chessboard } from 'react-chessboard';
+import useSWR from 'swr';
 
-export default function Game({children}) {
+const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
+
+export default function Game({game}) {
+  const { data: userW } = useSWR(game?.lightPlayer ? game?.lightPlayer : null, fetcher, { revalidateIfStale: false });
+  const { data: userB } = useSWR(game?.darkPlayer ? game?.darkPlayer : null, fetcher, { revalidateIfStale: false });
+
+  const getUsername = (type) => {
+    if (type === 'light') {
+      console.log(userB);
+      if (game?.lightPlayer) return userW?.data?.username;
+      if (game?.gameType === 'AI') return 'IA';
+    } else if (type === 'dark') {
+      if (game?.darkPlayer) return userB?.data?.username;
+      if (game?.gameType === 'AI') return 'IA';
+    }
+    return 'Desconocido';
+  };
+
   const [timeElapsed, setTimeElapsed] = useState({
     hours: 0,
     minutes: 0,
@@ -13,7 +31,7 @@ export default function Game({children}) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       const currentTime = new Date().getTime();
-      const startTime = new Date(children.createdAt).getTime();
+      const startTime = new Date(game.createdAt).getTime();
       const elapsedTime = currentTime - startTime;
       setTimeElapsed({
         hours: Math.floor(elapsedTime / 3600000),
@@ -22,23 +40,22 @@ export default function Game({children}) {
       });
     }, 1000);
     return () => clearInterval(intervalId);
-  }, [children.createdAt]);
-
+  }, [game.createdAt]);
 
   return (
-    <Link href={`/games/${children.id}`}>
+    <Link href={`/games/${game.id}`}>
       <div className="flex flex-col items-center">
         <div className='w-36 h-36 bg-gray-50/20 select-none relative'>
           <div className='w-36 h-36 absolute top-0 left-0 z-10'/>
           <Chessboard
             id="BasicBoard"
-            position={children.board}
+            position={game.board}
             boardOrientation='white'
           />
         </div>
         <div className="p-5 text-center">
-          <p className="text-lg font-medium text-gray-800 hover:underline dark:text-white">
-            LightPlayer / DarkPlayer
+          <p className="text-lg font-medium text-gray-800 hover:underline dark:text-white capitalize">
+            {getUsername('light')} / {getUsername('dark')}
           </p>
           <time className="text-sm text-gray-500 dark:text-gray-300">
             {`${timeElapsed.hours}:${timeElapsed.minutes < 10 ? `0${timeElapsed.minutes}` : timeElapsed.minutes}:${timeElapsed.seconds < 10 ? `0${timeElapsed.seconds}` : timeElapsed.seconds}`}

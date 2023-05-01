@@ -10,14 +10,8 @@ import { useState } from 'react';
 export default function DSidebar({userId}) {
   const {setGameType, switchModal} = useChess();
   const [options, setOptions] = useState({ roomID: ''});
-  const { findRoom } = useGame();
+  const { joinRoomAsSpectator } = useGame();
 
-  const joinGame = () => {
-    return new Promise(function(resolve, reject) {
-      findRoom('CUSTOM', options);
-      resolve('ok');
-    });
-  };
 
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col bg-gray-900">
@@ -34,13 +28,16 @@ export default function DSidebar({userId}) {
                   type="text"
                   name="search"
                   id="search"
-                  onChange={(e) => setOptions({ ...options, roomID: e.target.value })}
+                  onChange={(e) => setOptions({ roomID: e.target.value })}
                   placeholder='Room id ...'
                   className="block bg-transparent w-full rounded-md border-0 py-2.5 pr-14 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300/20 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-300/20 sm:text-sm sm:leading-6"
                 />
                 <button
                   type="submit"
-                  onClick={joinGame}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    joinRoomAsSpectator(options.roomID);
+                  }}
                   className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
                 >
                   <kbd className="inline-flex items-center rounded border border-gray-200 px-1 font-sans text-sm text-gray-400">
