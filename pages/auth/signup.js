@@ -40,7 +40,7 @@ export default function Login() {
             }
             reject(new Error('Network response was not ok.'));
           })
-          .catch((error) => {
+          .catch(() => {
             reject(new Error('Network response was not ok.'));
           });
     });

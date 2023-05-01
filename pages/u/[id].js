@@ -27,8 +27,8 @@ export default function User({profile}) {
                       <div className="flex">
                         <img
                           className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src={profile.avatar ?? '/assets/1.webp'}
-                          alt=""
+                          src={`/assets/profile${profile.avatar}` ?? '/assets/profile/animales/1.webp'}
+                          alt={profile.avatar}
                         />
                       </div>
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">

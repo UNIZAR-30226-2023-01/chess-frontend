@@ -1,78 +1,100 @@
 import React, { useState, useRef } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { useChess } from '@/context/ChessContext';
-import { customPieces } from '@/components/CustomPiece';
-
-const colores = [
-  {
-    id: 1,
-    name: 'Tablero de madera',
-    color1: '#B88B4A', // maderaN
-    color2: '#E3C16F', // maderaB
-  },
-  {
-    id: 2,
-    name: 'Tablero coral',
-    color1: '#70A2A3', // coralN
-    color2: '#B1E4B9', // coralB
-  },
-  {
-    id: 3,
-    name: 'Tablero oscuro',
-    color1: '#706677', // oscuroN
-    color2: '#CCB7AE', // oscuroB
-  },
-  {
-    id: 4,
-    name: 'Tablero marino',
-    color1: '#6f73d2', // marN
-    color2: '#9dacff', // marB
-  },
-  {
-    id: 5,
-    name: 'Tablero trigo',
-    color1: '#bbbe64', // trigoN
-    color2: '#eaf0ce', // trigoB
-  },
-  {
-    id: 6,
-    name: 'Tablero esmeralda',
-    color1: '#6f8f72', // esmeraldaN
-    color2: '#ad8d8f', // esmeraldaB
-  },
-];
-
-const modelos = [
-  {
-    id: 1,
-    name: 'Piezas chess',
-    model: 'normal',
-  },
-  {
-    id: 2,
-    name: 'Piezas marroquies',
-    model: 'fea',
-  },
-  {
-    id: 3,
-    name: 'Piezas maya',
-    model: 'maya',
-  },
-  {
-    id: 4,
-    name: 'Piezas árabes',
-    model: 'arabe',
-  },
-];
+import toast, {Toaster} from 'react-hot-toast';
+import { useRouter } from 'next/router';
+import { boardTypes, pieceTypes, customPieces } from '@/data/board';
 
 export default function Settings({profile: user}) {
-  const [color, setColor] = useState(['#B88B4A', '#E3C16F']);
-  const [modelo, setModelo] = useState('normal');
-  const { customization, saveBoard, saveColor } = useChess();
+  const router = useRouter();
+  const [board, setBoard] = useState(boardTypes[0]);
+  const [ptypes, setPTypes] = useState([pieceTypes[0], pieceTypes[0]]);
+  const { customization, saveBoard, savePieces } = useChess();
 
-  function saveContext(colorBlack, colorWhite, model) {
-    saveBoard(model);
-    saveColor(colorBlack, colorWhite);
+  const [profile, setProfile] = useState({avatar: user.avatar, username: user.username, email: user.email});
+
+  const deleteAccount = (e) => {
+    e.preventDefault();
+
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+          .then((res) => {
+            if (res.ok && res.status === 200) {
+              resolve('ok');
+            }
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch(() => {
+            reject(new Error('Network response was not ok.'));
+          });
+    });
+  };
+
+  const updateUser = (e) => {
+    e.preventDefault();
+
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          avatar: profile.avatar,
+          username: profile.username,
+          email: profile.email,
+        }),
+      })
+          .then((res) => {
+            if (res.ok && res.status === 200) {
+              resolve('ok');
+            }
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch(() => {
+            reject(new Error('Network response was not ok.'));
+          });
+    });
+  };
+
+  function saveContext(e) {
+    e.preventDefault();
+    console.log(board, ptypes);
+    saveBoard(board);
+    savePieces(ptypes[0], ptypes[1]);
+
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          board: board.value,
+          lightPieces: ptypes[0].value,
+          darkPieces: ptypes[1].value,
+        }),
+      })
+          .then((res) => {
+            if (res.ok && res.status === 200) {
+              saveBoard(board);
+              savePieces(ptypes[0], ptypes[1]);
+              resolve('ok');
+            }
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch(() => {
+            reject(new Error('Network response was not ok.'));
+          });
+    });
   }
 
   const humanAvatars = new Array(24).fill(null).map((i, id) => `/assets/profile/humanos/${id + 1}.webp`);
@@ -103,12 +125,14 @@ export default function Settings({profile: user}) {
     const scroll = x - startX;
     sliderRef.current.scrollLeft = scrollLeft - scroll;
   };
+
   return (
     <div className='space-y-16'>
+      <Toaster position="top-right" reverseOrder={false} />
       {/* Profile details */}
       <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
         <section aria-labelledby="payment-details-heading">
-          <form action="#" method="POST">
+          <div>
             <div className="shadow sm:overflow-hidden sm:rounded-md">
               <div className="bg-white py-6 px-4 sm:p-6">
                 <div>
@@ -134,8 +158,12 @@ export default function Settings({profile: user}) {
                       className="scroll-smooth mt-2 w-full mx-2 flex flex-nowrap justify-start items-center space-x-3 overflow-x-auto rounded drop-shadow-xl"
                     >
                       {avatares.map((src, i) => (
-                        <li key={i} className="flex flex-none flex-col items-center space-y-1 select-none cursor-pointer">
-                          <div className="bg-gradient-to-tr from-yellow-400 to-fuchsia-600 p-1 rounded-full" >
+                        <li
+                          key={i}
+                          onClick={() => setProfile({...profile, avatar: src.replace('/assets/profile/', '/')})}
+                          className="flex flex-none flex-col items-center space-y-1 select-none cursor-pointer"
+                        >
+                          <div className={`bg-gradient-to-tr ${src.endsWith(profile.avatar) ? 'from-green-400 via-blue-600 to-black/80' : 'from-yellow-400 to-fuchsia-600'} p-1 rounded-full`}>
                             <div className="block bg-white p-1 rounded-full relative">
                               <img
                                 src={src}
@@ -158,6 +186,7 @@ export default function Settings({profile: user}) {
                       name="username"
                       id="username"
                       autoComplete="username"
+                      onChange={(e) => setProfile({...profile, username: e.target.value})}
                       defaultValue={user.username ?? 'johndoe'}
                       className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
                     />
@@ -172,6 +201,7 @@ export default function Settings({profile: user}) {
                       name="email-address"
                       id="email-address"
                       autoComplete="email"
+                      onChange={(e) => setProfile({...profile, email: e.target.value})}
                       defaultValue={user.email ?? 'johndoe@example.com'}
                       className="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
                     />
@@ -181,19 +211,54 @@ export default function Settings({profile: user}) {
               <div className="bg-gray-50 px-4 py-3 text-right sm:px-6 flex justify-between">
                 <button
                   type="submit"
+                  onClick={() => {
+                    toast((t) => (
+                      <div className='space-x-2'>
+                        <span>Borrar cuenta</span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            toast.promise(
+                                deleteAccount(e),
+                                {
+                                  loading: 'Se están borrando tus datos...',
+                                  success: 'Cuenta eliminada con exito',
+                                  error: 'Error al eliminar tu cuenta',
+                                },
+                            )
+                                .then(() => router.push('/auth/login'))
+                                .catch(() => {});
+                          }}
+                          className="capitalize rounded bg-red-600 px-2 py-2 text-xs font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          Confirmar
+                        </button>
+                      </div>
+                    ));
+                  }}
                   className="inline-flex justify-center rounded-md border border-transparent bg-red-700 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
                 >
                   Borrar cuenta
                 </button>
                 <button
                   type="submit"
+                  onClick={(e) => {
+                    toast.promise(
+                        updateUser(e),
+                        {
+                          loading: 'Guardando los cambios...',
+                          success: 'Perfil actualizado con exito',
+                          error: 'Error al actualizar el perfil',
+                        },
+                    ).catch(() => {});
+                  }}
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
                 >
                   Guardar
                 </button>
               </div>
             </div>
-          </form>
+          </div>
         </section>
       </div>
       {/* Profile details */}
@@ -218,10 +283,10 @@ export default function Settings({profile: user}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(customization.model)}
+                      customPieces={customPieces(customization?.whitePiece.value)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: customization.blackPiece }}
-                      customLightSquareStyle={{ backgroundColor: customization.whitePiece }}
+                      customDarkSquareStyle={{ backgroundColor: customization?.board?.black }}
+                      customLightSquareStyle={{ backgroundColor: customization?.board?.white }}
                     />
                   </div>
                   <div className='bg-gray-50/20 select-none relative col-span-1 group'>
@@ -231,14 +296,14 @@ export default function Settings({profile: user}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(modelo)}
+                      customPieces={customPieces(ptypes[0].value)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: color[0] }}
-                      customLightSquareStyle={{ backgroundColor: color[1] }}
+                      customDarkSquareStyle={{ backgroundColor: board.black }}
+                      customLightSquareStyle={{ backgroundColor: board.white }}
                     />
                   </div>
                   <div className='flex flex-col justify-start gap-y-2'>
-                    <React.Fragment key={color.id}>
+                    <React.Fragment>
                       <label htmlFor="board" className="block text-sm font-medium text-gray-700">
                         Tablero
                       </label>
@@ -247,30 +312,14 @@ export default function Settings({profile: user}) {
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(event) => setColor([colores[event.target.selectedIndex].color1, colores[event.target.selectedIndex].color2])}
+                        onChange={(e) => setBoard(boardTypes[e.target.selectedIndex])}
                       >
-                        {colores.map((color, index) => (
+                        {boardTypes.map((color, index) => (
                           <option key={index}>{color.name}</option>
                         ))}
                       </select>
                     </React.Fragment>
-                    <React.Fragment key={modelo.id}>
-                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
-                        Piezas (W)
-                      </label>
-                      <select
-                        id="board"
-                        name="board"
-                        autoComplete="board"
-                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
-                      >
-                        {modelos.map((modelo, index) => (
-                          <option key={index}>{modelo.name}</option>
-                        ))}
-                      </select>
-                    </React.Fragment>
-                    <React.Fragment key={modelo.id}>
+                    <React.Fragment>
                       <label htmlFor="board" className="block text-sm font-medium text-gray-700">
                         Piezas (B)
                       </label>
@@ -279,9 +328,25 @@ export default function Settings({profile: user}) {
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(event) => setModelo(modelos[event.target.selectedIndex].model)}
+                        onChange={(e) => setPTypes([pieceTypes[e.target.selectedIndex], ptypes[1]])}
                       >
-                        {modelos.map((modelo, index) => (
+                        {pieceTypes.map((modelo, index) => (
+                          <option key={index}>{modelo.name}</option>
+                        ))}
+                      </select>
+                    </React.Fragment>
+                    <React.Fragment>
+                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                        Piezas (w)
+                      </label>
+                      <select
+                        id="board"
+                        name="board"
+                        autoComplete="board"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        onChange={(e) => setPTypes([ptypes[0], pieceTypes[e.target.selectedIndex]]) }
+                      >
+                        {pieceTypes.map((modelo, index) => (
                           <option key={index}>{modelo.name}</option>
                         ))}
                       </select>
@@ -293,7 +358,7 @@ export default function Settings({profile: user}) {
                 <button
                   type="submit"
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"
-                  onClick = { (e) => saveContext(color[0], color[1], modelo)}
+                  onClick={saveContext}
                 >
                   Guardar
                 </button>

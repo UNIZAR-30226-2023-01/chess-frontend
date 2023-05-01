@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
+import { boardTypes, pieceTypes } from '@/data/board';
 
 const ChessContext = React.createContext();
 
@@ -16,8 +17,8 @@ export function ChessProvider({children}) {
 
   // ----- CUSTOMIZATION -----
   const [customization, setData] = useState();
-  const saveBoard = (newModel) => setData({...customization, model: newModel});
-  const saveColor = (newBlack, newWhite) => setData({...customization, whitePiece: newWhite, blackPiece: newBlack});
+  const saveBoard = (newBoard) => setData({...customization, board: newBoard});
+  const savePieces = (newWhite, newBlack) => setData({...customization, whitePiece: newWhite, blackPiece: newBlack});
 
   useEffect(() => {
     const _data = localStorage.getItem('customization-reign');
@@ -26,16 +27,16 @@ export function ChessProvider({children}) {
         const parsedData = JSON.parse(_data);
         setData(parsedData);
       } catch (error) {
-        setData({model: 'normal', whitePiece: '#E3C16F', blackPiece: '#B88B4A'});
+        setData({board: boardTypes[0], whitePiece: pieceTypes[0], blackPiece: pieceTypes[0]});
       }
     } else {
-      setData({model: 'normal', whitePiece: '#E3C16F', blackPiece: '#B88B4A'});
+      setData({board: boardTypes[0], whitePiece: pieceTypes[0], blackPiece: pieceTypes[0]});
     }
   }, []);
 
 
   useEffect(() => {
-    if (customization && customization.blackPiece && customization.whitePiece && customization.model) {
+    if (customization && customization.blackPiece && customization.whitePiece && customization.board) {
       localStorage.setItem('customization-reign', JSON.stringify(customization));
     }
   }, [customization]);
@@ -52,7 +53,7 @@ export function ChessProvider({children}) {
       // ----- CUSTOMIZATION -----
       customization,
       saveBoard,
-      saveColor,
+      savePieces,
     }}>
       {children}
     </ChessContext.Provider>
