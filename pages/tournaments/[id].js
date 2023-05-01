@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import Layout from '@/components/Layout';
+import jwt from 'jsonwebtoken';
 
 const Bracket = dynamic(
     () => import('@/components/Bracket'),
@@ -35,7 +36,16 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
+
   return {
-    props: { },
+    props: {
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        token,
+      },
+    },
   };
 }
