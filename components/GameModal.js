@@ -3,7 +3,6 @@ import { Dialog, Transition } from '@headlessui/react';
 import { InputLabel, ListBox } from '@/components/InputItem';
 import { useChess } from '@/context/ChessContext';
 import { useGame } from '@/context/GameContext';
-import toast from 'react-hot-toast';
 
 const tabs = [
   {
@@ -54,7 +53,7 @@ function classNames(...classes) {
 }
 
 export default function GameModal() {
-  const { gameType, setGameType, selModal: open, switchModal: setOpen } = useChess();
+  const { gameType, setGameType, selModal: open, switchModal: setOpen, setInQueue } = useChess();
   const { findRoom } = useGame();
 
   const [options, setOptions] = useState({ time: 300, difficulty: 1, hostColor: 'LIGHT', increment: 5});
@@ -63,13 +62,6 @@ export default function GameModal() {
   const setLevel = (difficulty) => setOptions((prev) => ({ ...prev, difficulty }));
   const setColor = (hostColor) => setOptions((prev) => ({ ...prev, hostColor }));
   const setIncrement = (increment) => setOptions((prev) => ({ ...prev, increment }));
-
-  const handleSubmit = () => {
-    return new Promise(function(resolve, reject) {
-      findRoom(gameType, options);
-      resolve('ok');
-    });
-  };
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -172,52 +164,48 @@ export default function GameModal() {
                     <button
                       type="button"
                       className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      onClick={(e) => {
-                        toast.promise(
-                            handleSubmit(e),
-                            {
-                              loading: 'Buscando partida...',
-                              success: 'Entrando a la partida',
-                              error: 'Error al buscar partida',
-                            },
-                        )
-                            .then(() => setOpen())
-                            .catch(() => {});
+                      onClick={() => {
+                        findRoom(gameType, options);
+                        setOpen();
+                        if (gameType === 'COMPETITIVE') {
+                          setInQueue(true);
+                        }
                       }}
                     >
                       Buscar partida
                     </button>
                   </div>
-                  <div className="mt-4 space-y-4">
-                    <div className="relative">
-                      <div className="absolute inset-0 flex items-center">
-                        <div className="w-full border-t border-gray-400" />
+                  {gameType === 'CUSTOM' && (
+                    <div className="mt-4 space-y-4">
+                      <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                          <div className="w-full border-t border-gray-400" />
+                        </div>
+                        <div className="relative flex justify-center text-sm">
+                          <span className="bg-white px-2 text-gray-600 select-none">O</span>
+                        </div>
                       </div>
-                      <div className="relative flex justify-center text-sm">
-                        <span className="bg-white px-2 text-gray-600 select-none">O</span>
-                      </div>
-                    </div>
-
-                    <div className="relative flex items-center">
-                      <input
-                        type="text"
-                        name="search"
-                        id="search"
-                        onChange={(e) => setOptions({ ...options, roomID: e.target.value })}
-                        placeholder='Room id ...'
-                        className="block bg-transparent w-full rounded-md border-0 py-2.5 pr-14 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-400/20 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-300/20 sm:text-sm sm:leading-6"
-                      />
-                      <button
-                        type="submit"
-                        onClick={()=>{}}
-                        className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
-                      >
-                        <kbd className="inline-flex items-center rounded border border-gray-300 px-1 font-sans text-sm text-gray-500">
+                      <div className="relative flex items-center">
+                        <input
+                          type="text"
+                          name="search"
+                          id="search"
+                          onChange={(e) => setOptions({ ...options, roomID: e.target.value })}
+                          placeholder='Room id ...'
+                          className="block bg-transparent w-full rounded-md border-0 py-2.5 pr-14 text-gray-400 shadow-sm ring-1 ring-inset ring-gray-400/20 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-300/20 sm:text-sm sm:leading-6"
+                        />
+                        <button
+                          type="submit"
+                          onClick={()=>{}}
+                          className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
+                        >
+                          <kbd className="inline-flex items-center rounded border border-gray-300 px-1 font-sans text-sm text-gray-500">
                           ⌘ Enter
-                        </kbd>
-                      </button>
+                          </kbd>
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>

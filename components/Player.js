@@ -27,7 +27,7 @@ export default function Player({avatar, username, elo, orientation='r'}) {
                   className="h-full w-full object-cover rounded-2xl"
                   alt="avatar image"
                 />
-                <div className='absolute bottom-0 left-0 w-full h-full z-50 border-b-2 rounded-2xl flex items-end justify-center text-lg font-bold font-mono bg-gradient-to-t from-white/50 via-white/20 to-transparent'>
+                <div className='absolute bottom-0 left-0 w-full h-full z-20 border-b-2 rounded-2xl flex items-end justify-center text-lg font-bold font-mono bg-gradient-to-t from-white/50 via-white/20 to-transparent'>
                   <span>
                     {minutes.toString().padStart(2, '0')}
                   </span>

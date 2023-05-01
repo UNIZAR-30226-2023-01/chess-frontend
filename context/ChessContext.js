@@ -12,6 +12,7 @@ export function ChessProvider({children}) {
   // Para la creación de partidas
   const [gameType, setGameType] = useState(null);
   const [selModal, openSelModal] = useState(false);
+  const [inQueue, setInQueue] = useState(false);
 
   const switchModal = () => openSelModal(!selModal);
 
@@ -47,6 +48,7 @@ export function ChessProvider({children}) {
       // ----- SEARCH -----
       gameType, setGameType,
       selModal, switchModal,
+      inQueue, setInQueue,
       // ----- CUSTOMIZATION -----
       customization,
       setData,

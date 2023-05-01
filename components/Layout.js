@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Bars3Icon} from '@heroicons/react/24/outline';
 import MSidebar from '@/components/sidebar/MSidebar';
 import DSidebar from '@/components/sidebar/DSidebar';
-import Reconnect from '@/components/Reconnect';
+import SearchGame from '@/components/SearchGame';
 import GameModal from '@/components/GameModal';
+import { useChess } from '@/context/ChessContext';
 
 export default function Layout({children}) {
+  const { inQueue, setInQueue } = useChess();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const id = children.props.user.id;
 
@@ -33,7 +35,7 @@ export default function Layout({children}) {
           </main>
         </div>
         <GameModal/>
-        {false && <Reconnect/>}
+        {inQueue && <SearchGame onCancel={() => setInQueue(false)}/>}
       </div>
     </>
   );

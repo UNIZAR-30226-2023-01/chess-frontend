@@ -1,6 +1,6 @@
 import { Chessboard } from 'react-chessboard';
 import { useChess } from '@/context/ChessContext';
-import { customPieces } from '@/components/CustomPiece';
+import { customPieces } from '@/data/board';
 
 export default function Tablero({
   orientation,
@@ -23,13 +23,13 @@ export default function Tablero({
         onPieceDragBegin={onPieceDragBegin}
         animationDuration={400}
         boardOrientation={orientation}
-        customPieces={customPieces(customization.model)}
+        customPieces={customPieces(customization?.whitePiece?.value)}
         customSquareStyles={{
           ...optionSquares,
           ...lastMoveSquares,
         }}
-        customDarkSquareStyle={{ backgroundColor: customization.blackPiece }}
-        customLightSquareStyle={{ backgroundColor: customization.whitePiece }}
+        customDarkSquareStyle={{ backgroundColor: customization.board.black }}
+        customLightSquareStyle={{ backgroundColor: customization.board.white }}
       />
     </div>
   );

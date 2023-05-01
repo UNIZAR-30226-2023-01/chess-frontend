@@ -4,9 +4,11 @@ import Player from '@/components/Player';
 import jwt from 'jsonwebtoken';
 import { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
+import { useChess } from '@/context/ChessContext';
 import { whoami, getOrientation } from '@/lib/cmd';
 
 export default function Game({authorized, data, user}) {
+  const { setInQueue } = useChess();
   const {
     game, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
@@ -16,8 +18,7 @@ export default function Game({authorized, data, user}) {
   useEffect(() => {
     updateGame(data.board);
     setPlayer(user.player);
-    console.log('board', data.board);
-    console.log('game', game.fen());
+    if (user.player === 'DARK' || user.player === 'LIGHT') setInQueue(false);
   }, []);
 
   return (
@@ -57,7 +58,6 @@ Game.getLayout=(page) => <Layout>{page}</Layout>;
 
 export async function getServerSideProps(context) {
   const { id } = context.params;
-  console.log('id', id);
   const { req } = context;
   const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
   const token = req.headers.cookie?.split('=')[1];
@@ -80,8 +80,6 @@ export async function getServerSideProps(context) {
 
   const game = await res2.json();
   const player = whoami(game.data, decoded);
-  console.log('player', player);
-  console.log('game', game.data.board);
 
   return {
     props: {

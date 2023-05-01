@@ -18,7 +18,7 @@ const fetcher = (url) => fetch(url, {credentials: 'include'})
 
 export default function User({profile, user}) {
   const [currentTab, setCurrentTab] = useState(profileTabs[0].name);
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, fetcher, {
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${profile.id}`, fetcher, {
     fallbackData: profile,
   });
 
@@ -47,7 +47,7 @@ export default function User({profile, user}) {
                         />
                       </div>
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-                        <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
+                        <div className="mt-6 min-w-0 flex-1 block">
                           <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white capitalize">{data?.username}</h1>
                           <span className="truncate text-xs font-mono uppercase rounded-full text-left text-gray-900  bg-gray-200 px-2 py-0.5">{profile.id}</span>
                         </div>
@@ -106,7 +106,8 @@ export default function User({profile, user}) {
 
 User.getLayout = (page) => <Layout>{page}</Layout>;
 
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps(context) {
+  const { req } = context;
   const res1 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
@@ -127,7 +128,7 @@ export async function getServerSideProps({ req }) {
   const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
   const token = req.headers.cookie?.split('=')[1];
 
-  const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${decoded.id}`, {
+  const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${context.params.id}`, {
     method: 'GET',
     headers: {
       Cookie: req.headers.cookie,
