@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import { boardTypes, pieceTypes, customPieces } from '@/data/board';
 import { mutate } from 'swr';
 
+
 export default function Settings({profile: user}) {
   const router = useRouter();
   const [board, setBoard] = useState(boardTypes[0]);

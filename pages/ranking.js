@@ -89,7 +89,7 @@ export default function Ranking() {
             <button
               onClick={() => setPageIndex(pageIndex - 1)}
               className={`${data?.meta.nextPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
-              disabled={data?.meta.previousPage === null || pageIndex === 1}
+              disabled={data?.meta.previousPage === null || pageIndex === 0}
             >
               <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-200" aria-hidden="true" />
               Anterior
