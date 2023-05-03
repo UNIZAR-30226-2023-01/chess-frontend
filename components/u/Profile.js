@@ -2,16 +2,11 @@ import Link from 'next/link';
 import Achivement from '@/components/Achivement';
 import { Chessboard } from 'react-chessboard';
 
-const stats = [
-  { name: 'Partidas ganadas', value: [123, 123, 13], text: ['bullet', 'blitz', 'fast'], type: 'victories' },
-  { name: 'Clasificación', value: [1200], text: ['GM'], type: 'ranking' },
-  { name: 'Logros obtenidos', value: [3], text: 'fast', type: 'achievements' },
-];
 
 const logros = [
   {
     id: 1,
-    name: 'Logro 1',
+    name: 'FIRST LOGIN',
     imagen: '/assets/achievements/1.png',
   },
   {
@@ -21,7 +16,7 @@ const logros = [
   },
   {
     id: 3,
-    name: 'Logro 3',
+    name: 'TOP 1',
     imagen: '/assets/achievements/3.png',
   },
   {
@@ -41,7 +36,7 @@ const logros = [
   },
   {
     id: 8,
-    name: 'Logro 4',
+    name: 'TOP 100',
     imagen: '/assets/achievements/7.png',
   },
 ];
@@ -133,7 +128,12 @@ export function Game({
   );
 }
 
-export default function Profile() {
+export default function Profile({profile: user}) {
+  const stats = [
+    { name: 'Partidas ganadas', value: [user.stats.bulletWins, user.stats.blitzWins, user.stats.fastWins], text: ['bullet', 'blitz', 'fast'], type: 'victories' },
+    { name: 'Clasificación', value: [1200], text: ['GM'], type: 'ranking' },
+    { name: 'Logros obtenidos', value: [user.achievements.length], text: ['fast'], type: 'achievements' },
+  ];
   return (
     <>
       <ul className="flex flex-wrap justify-between gap-x-10">
@@ -145,7 +145,7 @@ export default function Profile() {
             <Achivement
               name={logro.name}
               imgSrc={logro.imagen}
-              unlocked={logro.id % 2 === 0}
+              unlocked={user.achievements.includes(logro.name)}
             />
           </li>
         ))}
