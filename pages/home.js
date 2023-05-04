@@ -38,6 +38,8 @@ export async function getServerSideProps({ req }) {
   })
       .catch((err)=> console.error(err));
 
+  console.log(res);
+
   if (!res.ok || res.status !== 200) {
     return {
       redirect: {

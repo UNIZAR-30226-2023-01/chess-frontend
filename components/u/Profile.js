@@ -47,7 +47,7 @@ export function Stats({
   return (
     <div className="px-4 py-5 sm:p-6">
       <dt className="text-base font-medium text-gray-900">{name}</dt>
-      <dd className="mt-1 flex items-baseline justify-between md:block lg:flex">
+      <dd className="mt-1 flex items-baseline justify-between flex">
         {type === 'victories' && (
           <>
             <div className="flex items-baseline text-xl font-semibold text-indigo-600">
