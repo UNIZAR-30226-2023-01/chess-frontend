@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import Layout from '@/components/Layout';
+import jwt from 'jsonwebtoken';
 
 const Bracket = dynamic(
     () => import('@/components/Bracket'),
@@ -18,7 +19,7 @@ export default function Rounds() {
 Rounds.getLayout = (page) => <Layout>{page}</Layout>;
 
 export async function getServerSideProps({ req }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
       Cookie: req.headers.cookie,
@@ -35,7 +36,16 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
+
   return {
-    props: { },
+    props: {
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        token,
+      },
+    },
   };
 }

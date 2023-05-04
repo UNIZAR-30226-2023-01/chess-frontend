@@ -118,10 +118,10 @@ export async function getServerSideProps(context) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/reset-password/${id}/${token}`)
       .catch(()=> {});
 
-  if (process.env.NODE_ENV === 'production' && (!res.ok || res.status !== 200)) {
+  if (!res.ok || res.status !== 200) {
     return {
       redirect: {
-        destination: '/auth/sign-in',
+        destination: '/auth/signin',
         permanent: false,
       },
     };

@@ -6,8 +6,17 @@ import Theme from '@/components/Theme';
 import { Disclosure } from '@headlessui/react';
 import { primaryButton, navigation, subNavigation } from '@/data/navigation';
 import { CubeIcon } from '@heroicons/react/24/outline';
+import { useChess } from '@/context/ChessContext';
+import { useGame } from '@/context/GameContext';
+import { useState } from 'react';
 
-export default function MSidebar({ sidebarOpen, setSidebarOpen }) {
+
+export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
+  const {setGameType, switchModal} = useChess();
+  const [options, setOptions] = useState({ roomID: ''});
+  const { joinRoomAsPlayer } = useGame();
+
+
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog as="div" className="relative z-40 lg:hidden" onClose={setSidebarOpen}>
@@ -59,6 +68,30 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen }) {
                   <Link href="/" className="w-full h-fit">
                     <img src="/assets/images/Logo_white.png" className="h-16 mx-auto" />
                   </Link>
+                  <form>
+                    <div className="relative flex items-center">
+                      <input
+                        type="text"
+                        name="search"
+                        id="search"
+                        onChange={(e) => setOptions({ ...options, roomID: e.target.value })}
+                        placeholder='Room id ...'
+                        className="block bg-transparent w-full rounded-md border-0 py-2.5 pr-14 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300/20 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-300/20 sm:text-sm sm:leading-6"
+                      />
+                      <button
+                        type="submit"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          joinRoomAsPlayer(options.roomID);
+                        }}
+                        className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
+                      >
+                        <kbd className="inline-flex items-center rounded border border-gray-200 px-1 font-sans text-sm text-gray-400">
+                    ⌘ Enter
+                        </kbd>
+                      </button>
+                    </div>
+                  </form>
                   <Disclosure as="div" className="space-y-1">
                     {({ open }) => (
                       <>
@@ -73,8 +106,10 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen }) {
                           {primaryButton.link.map((subItem) => (
                             <Disclosure.Button
                               key={subItem.name}
-                              as="a"
-                              href={subItem.href}
+                              onClick={() => {
+                                setGameType(subItem.state);
+                                switchModal();
+                              }}
                               className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
                             >
                               <CubeIcon
@@ -124,7 +159,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen }) {
                         ) : (
                           <Link
                             key={item.name}
-                            href={item.href}
+                            href={item.href.replace(':id', userId)}
                             className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
                           >
                             <item.icon

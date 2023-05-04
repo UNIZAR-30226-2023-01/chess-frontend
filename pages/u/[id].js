@@ -2,18 +2,30 @@ import Layout from '@/components/Layout';
 import { profileTabs } from '@/data/tabs';
 import Profile from '@/components/u/Profile';
 import Settings from '@/components/u/Settings';
-
-import {profile} from '@/data/users';
-import { useState } from 'react';
-import Games from '@/components/u/Games';
-
+import jwt from 'jsonwebtoken';
+import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function User() {
+const fetcher = (url) => fetch(url, {credentials: 'include'})
+    .then(async (res) => {
+      const data = await res.json();
+      return data?.data;
+    });
+
+export default function User({profile, user}) {
   const [currentTab, setCurrentTab] = useState(profileTabs[0].name);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${profile.id}`, fetcher, {
+    fallbackData: profile,
+  });
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
 
   return (
     <>
@@ -24,32 +36,27 @@ export default function User() {
               <article>
                 {/* Profile header */}
                 <div>
-                  <div>
-                    <img
-                      src={profile.coverImageUrl}
-                      alt=""
-                      className="h-32 w-full object-cover lg:h-48"
-                    />
-                  </div>
+                  <div className="h-32 w-full lg:h-48 bg-gradient-to-r from-indigo-500 via-30% via-sky-500 to-emerald to-90%"/>
                   <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                     <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
-                      <div className="flex">
+                      <div className="flex rounded-full">
                         <img
-                          className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src={profile.imageUrl}
-                          alt=""
+                          className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32 select-none"
+                          src={`/assets/profile${data?.avatar}`}
+                          alt={data?.avatar}
                         />
                       </div>
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
-                        <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
-                          <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white">{profile.name}</h1>
+                        <div className="mt-6 min-w-0 flex-1 block">
+                          <h1 className="truncate text-2xl font-bold text-left text-gray-900 dark:text-white capitalize">{data?.username}</h1>
+                          <span className="truncate text-xs font-mono uppercase rounded-full text-left text-gray-900  bg-gray-200 px-2 py-0.5">{profile.id}</span>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
                         </div>
                       </div>
                     </div>
                     <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
-                      <h1 className="truncate text-2xl font-bold text-gray-900 dark:text-white">{profile.name}</h1>
+                      <h1 className="truncate text-2xl font-bold text-gray-900 dark:text-white">{data?.name}</h1>
                     </div>
                   </div>
                 </div>
@@ -59,21 +66,25 @@ export default function User() {
                   <div className="border-b border-gray-200 dark:border-gray-200/50">
                     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                       <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-                        {profileTabs.map((tab, index) => (
-                          <button
-                            key={tab.name}
-                            onClick={() => setCurrentTab(tab.name)}
-                            className={classNames(
+                        {profileTabs.map((tab, index) => {
+                          if (user.id !== profile.id && index === 1) return;
+                          return (
+                            <button
+                              key={tab.name}
+                              onClick={() => setCurrentTab(tab.name)}
+                              className={classNames(
                               currentTab === tab.name ?
                                 'border-indigo-500 text-gray-900 dark:text-white' :
                                 'border-transparent text-gray-500 dark:text-white/60 hover:text-gray-700 hover:border-gray-300',
                               'whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm',
-                            )}
-                            aria-current={currentTab === tab.name}
-                          >
-                            {tab.name}
-                          </button>
-                        ))}
+
+                              )}
+                              aria-current={currentTab === tab.name}
+                            >
+                              {tab.name}
+                            </button>
+                          );
+                        })}
                       </nav>
                     </div>
                   </div>
@@ -82,8 +93,7 @@ export default function User() {
                 {/* Description list */}
                 <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6 lg:px-8 pb-12">
                   {currentTab === profileTabs[0].name && <Profile profile={profile}/>}
-                  {currentTab === profileTabs[1].name && <Games />}
-                  {currentTab === profileTabs[2].name && <Settings/>}
+                  {currentTab === profileTabs[1].name && <Settings profile={profile} />}
                 </div>
               </article>
             </div>
@@ -96,8 +106,9 @@ export default function User() {
 
 User.getLayout = (page) => <Layout>{page}</Layout>;
 
-export async function getServerSideProps({ req }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const res1 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
       Cookie: req.headers.cookie,
@@ -105,7 +116,7 @@ export async function getServerSideProps({ req }) {
   })
       .catch((err)=>console.error(err));
 
-  if (!res.ok || res.status !== 200) {
+  if (!res1.ok || res1.status !== 200) {
     return {
       redirect: {
         destination: '/auth',
@@ -114,7 +125,36 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
+
+  const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${context.params.id}`, {
+    method: 'GET',
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  })
+      .catch((err) => console.error(err));
+
+  if (!res2.ok || res2.status !== 200) {
+    return {
+      redirect: {
+        destination: '/auth',
+        permanent: false,
+      },
+    };
+  }
+
+  const profile = await res2.json();
+
   return {
-    props: { },
+    props: {
+      profile: profile.data,
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        token,
+      },
+    },
   };
 }

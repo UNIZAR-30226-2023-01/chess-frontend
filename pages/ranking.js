@@ -4,12 +4,13 @@ import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid
 import { ranking } from '@/data/stats';
 import useSWR from 'swr';
 import { getElo } from '@/lib/elo';
+import jwt from 'jsonwebtoken';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
 export default function Ranking() {
   const [pageIndex, setPageIndex] = useState(1);
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}`, fetcher);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}&sort=-elo`, fetcher);
 
   return (
     <div className="py-12 max-w-5xl mx-auto px-0 sm:px-6 lg:px-8">
@@ -31,22 +32,22 @@ export default function Ranking() {
                     scope="col"
                     className="select-none py-3.5 pl-4 pr-3 text-left text-sm font-semibold capitalize text-gray-900 dark:text-white sm:pl-6 md:pl-0"
                   >
-                    calification
+                    Clasificación
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold capitalize text-gray-900 dark:text-white">
-                    Player
+                    Jugador
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
-                    Score
+                    Elo
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
-                    Victory
+                    Victorias
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
-                    Draw
+                    Empates
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 sm:pr-6 md:pr-0 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-gray-200">
-                    Defeat
+                    Derrotas
                   </th>
                 </tr>
               </thead>
@@ -61,7 +62,7 @@ export default function Ranking() {
                     <td className="select-none whitespace-nowrap py-4 px-3 text-sm text-gray-500 dark:text-gray-200">
                       <div className="flex items-center">
                         <div className="h-8 w-8 flex-shrink-0">
-                          <img className="h-8 w-8 rounded-full" src={user.avatar} alt="" />
+                          <img className="h-8 w-8 rounded-full" src={`/assets/profile${user?.avatar}`} alt={user?.avatar} />
                         </div>
                         <div className="ml-4 flex items-center gap-x-2">
                           {getElo(user.elo) !== null &&
@@ -88,10 +89,10 @@ export default function Ranking() {
             <button
               onClick={() => setPageIndex(pageIndex - 1)}
               className={`${data?.meta.nextPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
-              disabled={data?.meta.previousPage === null || pageIndex === 1}
+              disabled={data?.meta.previousPage === null || pageIndex === 0}
             >
               <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-200" aria-hidden="true" />
-              Previous
+              Anterior
             </button>
           </div>
           <div className="-mt-px flex w-0 flex-1 justify-end">
@@ -100,7 +101,7 @@ export default function Ranking() {
               className={`${data?.meta.nextPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pl-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
               disabled={data?.meta.nextPage === null || pageIndex === data?.meta.pages}
             >
-              Next
+              Siguiente
               <ArrowLongRightIcon className="ml-3 h-5 w-5 text-gray-400 dark:text-gray-200" aria-hidden="true" />
             </button>
           </div>
@@ -114,7 +115,7 @@ export default function Ranking() {
 Ranking.getLayout = (page) =><Layout>{page}</Layout>;
 
 export async function getServerSideProps({ req }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {
     method: 'POST',
     headers: {
       Cookie: req.headers.cookie,
@@ -131,7 +132,16 @@ export async function getServerSideProps({ req }) {
     };
   }
 
+  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
+  const token = req.headers.cookie?.split('=')[1];
+
   return {
-    props: { },
+    props: {
+      user: {
+        id: decoded.id,
+        username: decoded.username,
+        token,
+      },
+    },
   };
 }

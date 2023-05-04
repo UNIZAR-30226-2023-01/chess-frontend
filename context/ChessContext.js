@@ -1,4 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react';
+import { boardTypes, pieceTypes } from '@/data/board';
 
 const ChessContext = React.createContext();
 
@@ -7,42 +8,50 @@ export function useChess() {
 }
 
 export function ChessProvider({children}) {
-  const [data, setData] = useState();
-  const [isLoading, setIsLoading] = useState(true); // nuevo estado isLoading
-  const saveBoard = (newModel) => setData({...data, model: newModel});
-  const saveColor = (newBlack, newWhite) => setData({...data, whitePiece: newWhite, blackPiece: newBlack});
+  // ----- SEARCH -----
+  // Para la creación de partidas
+  const [gameType, setGameType] = useState(null);
+  const [selModal, openSelModal] = useState(false);
+  const [inQueue, setInQueue] = useState(false);
+
+  const switchModal = () => openSelModal(!selModal);
+
+  // ----- CUSTOMIZATION -----
+  const [customization, setCustom] = useState();
+  const setData = (board, whitePiece, blackPiece) => setCustom({board, whitePiece, blackPiece});
 
   useEffect(() => {
-    const _data = localStorage.getItem('ChangeData');
-    if (_data) {
-      try {
-        const parsedData = JSON.parse(_data);
-        setData(parsedData);
-      } catch (error) {
-        console.error('Error parsing JSON:', error);
-        setData({model: 'normal', whitePiece: '#E3C16F', blackPiece: '#B88B4A'});
-      }
+    const data = localStorage.getItem('customization-reign');
+    if (data) {
+      setCustom(JSON.parse(data));
     } else {
-      setData({model: 'normal', whitePiece: '#E3C16F', blackPiece: '#B88B4A'});
+      setCustom({
+        board: boardTypes[0],
+        whitePiece: pieceTypes[0],
+        blackPiece: pieceTypes[0],
+      });
     }
   }, []);
 
 
   useEffect(() => {
-    if (data && data.blackPiece && data.whitePiece && data.model) {
-      setIsLoading(false);
-      localStorage.setItem('ChangeData', JSON.stringify(data));
-    }
-  }, [data]);
+    if (!customization || typeof customization !== 'object') return;
+    localStorage.setItem('customization-reign', JSON.stringify(customization));
+  }, [customization]);
 
-  if (isLoading) {
-    return <div>Cargando...</div>; // o cualquier otro indicador de carga
+  if (!customization) {
+    return null;
   }
+
   return (
     <ChessContext.Provider value={{
-      data,
-      saveBoard,
-      saveColor,
+      // ----- SEARCH -----
+      gameType, setGameType,
+      selModal, switchModal,
+      inQueue, setInQueue,
+      // ----- CUSTOMIZATION -----
+      customization,
+      setData,
     }}>
       {children}
     </ChessContext.Provider>
