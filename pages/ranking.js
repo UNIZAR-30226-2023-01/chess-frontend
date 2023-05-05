@@ -66,12 +66,12 @@ export default function Ranking() {
                           <img className="h-8 w-8 rounded-full" src={`/assets/profile${user?.avatar}`} alt={user?.avatar} />
                         </div>
                         <div className="ml-4 flex items-center gap-x-2">
-                          {getElo(user.elo) !== null &&
+                          {getElo(user.elo) &&
                             <div className="font-medium bg-red-500 px-1 py-0.5 rounded-md text-gray-50 text-xs uppercase">
                               {getElo(user.elo)}
                             </div>
                           }
-                          <div className="text-gray-500 dark:text-gray-200">{user.username}</div>
+                          <div className="text-gray-500 dark:text-gray-200 capitalize">{user.username}</div>
                         </div>
                       </Link>
                     </td>
