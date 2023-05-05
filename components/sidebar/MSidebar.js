@@ -2,20 +2,25 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon} from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import Theme from '@/components/Theme';
 import { Disclosure } from '@headlessui/react';
-import { primaryButton, navigation, subNavigation } from '@/data/navigation';
-import { CubeIcon } from '@heroicons/react/24/outline';
+import { primaryButton, navigation } from '@/data/navigation';
 import { useChess } from '@/context/ChessContext';
 import { useGame } from '@/context/GameContext';
 import { useState } from 'react';
+import useSWR from 'swr';
+import Dropdown from '@/components/Dropdowns';
 
+const fetcher = (url) => fetch(url, {credentials: 'include'})
+    .then(async (res) => {
+      const data = await res.json();
+      return data?.data;
+    });
 
-export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
-  const {setGameType, switchModal} = useChess();
+export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
+  const { switchModal } = useChess();
   const [options, setOptions] = useState({ roomID: ''});
-  const { joinRoomAsPlayer } = useGame();
-
+  const { joinRoomAsSpectator } = useGame();
+  const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, fetcher);
 
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -65,16 +70,13 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
               </Transition.Child>
               <div className="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
                 <nav className="space-y-2 px-2">
-                  <Link href="/" className="w-full h-fit">
-                    <img src="/assets/images/Logo_white.png" className="h-16 mx-auto" />
-                  </Link>
                   <form>
                     <div className="relative flex items-center">
                       <input
                         type="text"
                         name="search"
                         id="search"
-                        onChange={(e) => setOptions({ ...options, roomID: e.target.value })}
+                        onChange={(e) => setOptions({ roomID: e.target.value })}
                         placeholder='Room id ...'
                         className="block bg-transparent w-full rounded-md border-0 py-2.5 pr-14 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300/20 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-300/20 sm:text-sm sm:leading-6"
                       />
@@ -82,7 +84,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
                         type="submit"
                         onClick={(e) => {
                           e.preventDefault();
-                          joinRoomAsPlayer(options.roomID);
+                          joinRoomAsSpectator(options.roomID);
                         }}
                         className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
                       >
@@ -95,31 +97,17 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
                   <Disclosure as="div" className="space-y-1">
                     {({ open }) => (
                       <>
-                        <Disclosure.Button className='cursor-pointer mb-2 w-full text-gray-200 hover:bg-gray-500/10 transition-colors duration-200 group flex items-center px-3 py-3 text-sm font-medium rounded-md border border-white/20'>
+                        <Disclosure.Button
+                          onClick={() => switchModal()}
+                          className='w-full cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
+                        >
                           <primaryButton.icon
                             className='text-gray-200 mr-3 flex-shrink-0 h-5 w-5'
                             aria-hidden="true"
                           />
                           {primaryButton.name}
                         </Disclosure.Button>
-                        <Disclosure.Panel className="space-y-1">
-                          {primaryButton.link.map((subItem) => (
-                            <Disclosure.Button
-                              key={subItem.name}
-                              onClick={() => {
-                                setGameType(subItem.state);
-                                switchModal();
-                              }}
-                              className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-                            >
-                              <CubeIcon
-                                className='opacity-0 mr-3 flex-shrink-0 h-5 w-5'
-                                aria-hidden="true"
-                              />
-                              {subItem.name}
-                            </Disclosure.Button>
-                          ))}
-                        </Disclosure.Panel>
+
                       </>
                     )}
                   </Disclosure>
@@ -139,39 +127,12 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, userId }) {
                 </nav>
               </div>
               <div className="flex flex-col flex-shrink-0 border-gray-200 py-4 border-t border-white/20">
-                <nav className="space-y-2 px-2">
-                  {subNavigation.map((item) => (
-                    <>
-                      {item.theme ? (
-                          <Theme/>
-                        ) : item.onClick ? (
-                          <button
-                            key={item.name}
-                            onClick={item.onClick}
-                            className='cursor-pointer w-full text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-                          >
-                            <item.icon
-                              className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </button>
-                        ) : (
-                          <Link
-                            key={item.name}
-                            href={item.href.replace(':id', userId)}
-                            className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-                          >
-                            <item.icon
-                              className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
-                              aria-hidden="true"
-                            />
-                            {item.name}
-                          </Link>
-                        )}
-                    </>
-                  ))}
-                </nav>
+                <Dropdown
+                  isLoading={isLoading}
+                  id={data?.id || user.id}
+                  avatar={data?.avatar}
+                  username={data?.username || user.username}
+                />
               </div>
             </Dialog.Panel>
           </Transition.Child>

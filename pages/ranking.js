@@ -2,7 +2,6 @@ import Layout from '@/components/Layout';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid';
-import { ranking } from '@/data/stats';
 import useSWR from 'swr';
 import { getElo } from '@/lib/elo';
 import jwt from 'jsonwebtoken';
@@ -76,9 +75,9 @@ export default function Ranking() {
                       </Link>
                     </td>
                     <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.elo}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].victories}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].draws}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].defeats}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.stats.bulletWins + user.stats.blitzWins + user.stats.fastWins}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.stats.bulletDraws + user.stats.blitzDraws + user.stats.fastDraws}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.stats.bulletDefeats + user.stats.blitzDefeats + user.stats.fastDefeats}</td>
                   </tr>
                 ))}
               </tbody>

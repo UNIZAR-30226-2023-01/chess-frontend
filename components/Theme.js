@@ -1,29 +1,29 @@
 import { SunIcon, MoonIcon} from '@heroicons/react/24/outline';
 import { useTheme } from '@/context/ThemeContext';
 
-export default function Theme() {
+export default function Theme({active}) {
   const { theme, handleThemeChange } = useTheme();
 
   return (
     <button
       key={theme}
       onClick={handleThemeChange}
-      className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md w-full'
+      className='flex items-center text-sm'
     >
       {theme === 'dark' ?
       <>
         <SunIcon
-          className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
+          className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
           aria-hidden="true"
         />
-        Light mode
+        Modo claro
       </> :
        <>
          <MoonIcon
-           className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
+           className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500'
            aria-hidden="true"
          />
-        Dark mode
+        Modo oscuro
        </>
       }
     </button>

@@ -3,7 +3,7 @@ import { profileTabs } from '@/data/tabs';
 import Profile from '@/components/u/Profile';
 import Settings from '@/components/u/Settings';
 import jwt from 'jsonwebtoken';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
 
 function classNames(...classes) {
@@ -18,14 +18,9 @@ const fetcher = (url) => fetch(url, {credentials: 'include'})
 
 export default function User({profile, user}) {
   const [currentTab, setCurrentTab] = useState(profileTabs[0].name);
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${profile.id}`, fetcher, {
+  const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${profile.id}`, fetcher, {
     fallbackData: profile,
   });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
 
   return (
     <>
@@ -42,7 +37,7 @@ export default function User({profile, user}) {
                       <div className="flex rounded-full">
                         <img
                           className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32 select-none"
-                          src={`/assets/profile${data?.avatar}`}
+                          src={isLoading ? '/assets/profile/animales/1.webp' : `/assets/profile${data?.avatar}`}
                           alt={data?.avatar}
                         />
                       </div>

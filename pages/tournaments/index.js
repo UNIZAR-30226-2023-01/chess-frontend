@@ -15,7 +15,6 @@ export default function Tournaments({user}) {
   const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}&sort=-createdAt`, fetcher, {refreshInterval: 1000});
 
   const handleURI = (uri) => {
-    console.log(uri);
     return new Promise(function(resolve, reject) {
       fetch(uri, {
         method: 'GET',
@@ -92,7 +91,7 @@ export default function Tournaments({user}) {
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200 space-x-2">
                         <Link
                           href={`/tournaments/${item.id}`}
-                          className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300'
+                          className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
                         >
                         ver
                         </Link>
@@ -108,7 +107,7 @@ export default function Tournaments({user}) {
                                     },
                                 ).catch(() => {});
                               }}
-                              className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300'
+                              className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
                             >
                               Abandonar
                             </button>
@@ -124,7 +123,7 @@ export default function Tournaments({user}) {
                                     },
                                 ).catch(() => {});
                               }}
-                              className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300'
+                              className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
                             >
                               Registrarse
                             </button>

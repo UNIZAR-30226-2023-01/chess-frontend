@@ -64,9 +64,9 @@ export default function Login() {
                     success: 'Bienvenido, te estabamos esperando .',
                     error: 'Error al inicar sesión.',
                   },
-              ).then(() => {
-                router.push('/home');
-              }).catch((err) => console.log(err));
+              )
+                  .then(() => router.push('/home'))
+                  .catch((err) => console.error(err));
             }}
             className="space-y-6"
             action="#"
