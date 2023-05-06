@@ -13,7 +13,7 @@ export default function Login() {
       timer = setInterval(() => {
         if (popup.closed) {
           clearInterval(timer);
-          // router.push('/home');
+          router.push('/home');
         }
       }, 1000);
     }
@@ -64,16 +64,15 @@ export default function Login() {
                     success: 'Bienvenido, te estabamos esperando .',
                     error: 'Error al inicar sesión.',
                   },
-              ).then(() => {
-                router.push('/home');
-              }).catch((err) => console.log(err));
+              )
+                  .then(() => router.push('/home'))
+                  .catch((err) => console.error(err));
             }}
             className="space-y-6"
-            action="#"
             method="POST"
           >
             <h2 className="mb-10 text-center text-3xl font-bold tracking-tight text-gray-700">
-                Bienvenido de nuevo
+              Bienvenido de nuevo
             </h2>
             <div>
               <div className="mt-1">

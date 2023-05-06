@@ -7,7 +7,6 @@ const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.
 
 export default function Home() {
   const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=30&filter={"gameType":"COMPETITIVE"}`, fetcher);
-  console.log[data];
   return (
     <div className="py-12 max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">

@@ -11,14 +11,14 @@ export default function Layout({children}) {
   const { inQueue, setInQueue } = useChess();
   const { cancelSearch } = useGame();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const id = children.props.user.id;
+  const {user} = children.props;
 
   return (
     <>
       <div className='h-screen overflow-hidden'>
-        <MSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} userId={id} />
+        <MSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} user={user} />
         {/* Static sidebar for desktop */}
-        <DSidebar userId={id}/>
+        <DSidebar user={user}/>
         <div className="flex flex-1 flex-col lg:pl-64 h-full">
           <div className="sticky top-0 z-10 pl-1 pt-1 sm:pl-3 sm:pt-3 lg:hidden bg-gray-800 border-b border-white/20">
             <button

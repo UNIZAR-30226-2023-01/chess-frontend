@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
+import Link from 'next/link';
 import { useState } from 'react';
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid';
-import { ranking } from '@/data/stats';
 import useSWR from 'swr';
 import { getElo } from '@/lib/elo';
 import jwt from 'jsonwebtoken';
@@ -60,24 +60,24 @@ export default function Ranking() {
                       </span>
                     </td>
                     <td className="select-none whitespace-nowrap py-4 px-3 text-sm text-gray-500 dark:text-gray-200">
-                      <div className="flex items-center">
+                      <Link href={`/u/${user.id}`} className="flex items-center">
                         <div className="h-8 w-8 flex-shrink-0">
                           <img className="h-8 w-8 rounded-full" src={`/assets/profile${user?.avatar}`} alt={user?.avatar} />
                         </div>
                         <div className="ml-4 flex items-center gap-x-2">
-                          {getElo(user.elo) !== null &&
+                          {getElo(user.elo) &&
                             <div className="font-medium bg-red-500 px-1 py-0.5 rounded-md text-gray-50 text-xs uppercase">
                               {getElo(user.elo)}
                             </div>
                           }
-                          <div className="text-gray-500 dark:text-gray-200">{user.username}</div>
+                          <div className="text-gray-500 dark:text-gray-200 capitalize">{user.username}</div>
                         </div>
-                      </div>
+                      </Link>
                     </td>
                     <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.elo}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].victories}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].draws}</td>
-                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{ranking[0].defeats}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.stats.bulletWins + user.stats.blitzWins + user.stats.fastWins}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.stats.bulletDraws + user.stats.blitzDraws + user.stats.fastDraws}</td>
+                    <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{user.stats.bulletDefeats + user.stats.blitzDefeats + user.stats.fastDefeats}</td>
                   </tr>
                 ))}
               </tbody>

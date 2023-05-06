@@ -22,7 +22,6 @@ export function GameProvider({token, children}) {
   const [player, setP] = useState();
 
   const updateGame = (fen) => {
-    console.log('inside fen', fen);
     setGame(new Chess(fen));
   };
   const setPlayer = (player) => setP(player);
@@ -220,14 +219,10 @@ export function GameProvider({token, children}) {
   }
 
   function moved(m) {
-    console.log('game', game);
-    console.log('game turno', game.turn());
-    console.log('move gg', m);
     try {
       const gameCopy = _.cloneDeep(game);
       const move = gameCopy.move(m);
       setGame(gameCopy);
-      console.log('game pp', game);
 
       setOptionSquares({
         [move.from]: { background: cMov },
@@ -240,7 +235,6 @@ export function GameProvider({token, children}) {
       });
       return true;
     } catch (error) {
-      console.log(error);
       return false;
     }
   }

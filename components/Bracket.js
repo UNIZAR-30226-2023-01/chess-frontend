@@ -1,7 +1,6 @@
 import { SingleEliminationBracket, Match } from '@g-loot/react-tournament-brackets';
-import { matches } from '@/data/matches';
 
-export default function SingleElimination() {
+export default function SingleElimination({ matches }) {
   return (
     <SingleEliminationBracket
       matches={matches}
@@ -12,7 +11,6 @@ export default function SingleElimination() {
           connectorColorHighlight: '#CED1F2',
         },
       }}
-
     />
   );
 }

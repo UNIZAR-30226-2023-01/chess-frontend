@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import Achivement from '@/components/Achivement';
 import { Chessboard } from 'react-chessboard';
-
+import { getElo } from '@/lib/elo';
+import useSWR from 'swr';
+import useTimeAgo from '@/hooks/useTimeAgo';
+import useDateTimeFormat from '@/hooks/useDateTimeFormat';
 
 const logros = [
   {
@@ -47,7 +50,7 @@ export function Stats({
   return (
     <div className="px-4 py-5 sm:p-6">
       <dt className="text-base font-medium text-gray-900">{name}</dt>
-      <dd className="mt-1 flex items-baseline justify-between md:block lg:flex">
+      <dd className="mt-1 flex items-baseline justify-between flex">
         {type === 'victories' && (
           <>
             <div className="flex items-baseline text-xl font-semibold text-indigo-600">
@@ -83,17 +86,29 @@ export function Stats({
   );
 }
 
-export function Game({
+export function ExampleGame({
   key,
   type,
   orientation,
   position,
-  date,
+  createdAt,
+  updatedAt,
   state,
-  duration,
 }) {
+  const timeago = useTimeAgo(createdAt);
+  const createdAtFormated = useDateTimeFormat(createdAt);
+
+  const created = new Date(createdAt);
+  const updated = new Date(updatedAt);
+
+  const diff = new Date(updated - created);
+  const hours = diff.getUTCHours().toString().padStart(2, '0');
+  const minutes = diff.getUTCMinutes().toString().padStart(2, '0');
+  const seconds = diff.getUTCSeconds().toString().padStart(2, '0');
+
   return (
     <Link
+      key={key}
       href="#"
       className='cursor-pointer relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
     >
@@ -102,25 +117,28 @@ export function Game({
         <div className='w-24 h-24 absolute top-0 left-0 z-10'/>
         <Chessboard
           id="BasicBoard"
-          position='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-          boardOrientation='white'
+          position={position || 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'}
+          boardOrientation={orientation || 'white'}
         />
       </div>
       <div className='flex flex-col justify-around space-y-3' >
         <div>
-          <div className='font-semibold'>
-            Competitiva
+          <div className='font-semibold capitalize'>
+            {type || 'Competitiva'}
           </div>
-          <div className='text-sm'>
-            Hace un mes
-          </div>
+          <date
+            title={createdAtFormated}
+            className="text-sm"
+          >
+            {timeago}
+          </date>
         </div>
         <div>
           <div className='font-semibold'>
-            Victoria
+            {state}
           </div>
           <div className='text-sm'>
-            11m 21s
+            {`${hours}h : ${minutes}m : ${seconds}s`}
           </div>
         </div>
       </div>
@@ -128,12 +146,37 @@ export function Game({
   );
 }
 
+const fetcher = (url) => fetch(url, {credentials: 'include'})
+    .then(async (res) => {
+      const data = await res.json();
+      return data?.data;
+    });
+
 export default function Profile({profile: user}) {
-  const stats = [
-    { name: 'Partidas ganadas', value: [user.stats.bulletWins, user.stats.blitzWins, user.stats.fastWins], text: ['bullet', 'blitz', 'fast'], type: 'victories' },
-    { name: 'Clasificación', value: [1200], text: ['GM'], type: 'ranking' },
-    { name: 'Logros obtenidos', value: [user.achievements.length], text: ['fast'], type: 'achievements' },
-  ];
+  const bullet = user.stats.bulletWins + user.stats.bulletDraws + user.stats.bulletDefeats;
+  const blitz = user.stats.blitzWins + user.stats.blitzDraws + user.stats.blitzDefeats;
+  const fast = user.stats.fastWins + user.stats.fastDraws + user.stats.fastDefeats;
+
+  const stats = [{
+    name: 'Ratio victorias',
+    value: [
+      Number(user.stats.bulletWins / (bullet === 0 ? 1 : bullet)),
+      Number(user.stats.blitzWins / (blitz === 0 ? 1 : blitz)),
+      Number(user.stats.fastWins / (fast === 0 ? 1 : fast)),
+    ],
+    text: ['bullet', 'blitz', 'fast'], type: 'victories',
+  }, {
+    name: 'Clasificación',
+    value: [user.elo],
+    text: [getElo(user.elo)], type: 'ranking',
+  }, {
+    name: 'Logros obtenidos',
+    value: [user.achievements.length],
+    text: ['fast'], type: 'achievements',
+  }];
+
+  const {data: games} = useSWR(user.games, fetcher);
+
   return (
     <>
       <ul className="flex flex-wrap justify-between gap-x-10">
@@ -164,15 +207,15 @@ export default function Profile({profile: user}) {
         </dl>
       </div>
       <div className="mt-5 grid grid-cols-1 gap-y-4overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
-        {[1, 2, 3].map((item) => (
-          <Game
+        {games?.map((item) => (
+          <ExampleGame
             key={item}
-            type=''
-            orientation=''
-            position=''
-            date=''
-            state=''
-            duration=''
+            type={item.gameType}
+            orientation={''}
+            position={item.board}
+            createdAt={item.createdAt}
+            updatedAt={item.updatedAt}
+            state={item.state}
           />
         ))}
       </div>

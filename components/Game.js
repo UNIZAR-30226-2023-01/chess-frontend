@@ -12,7 +12,6 @@ export default function Game({game}) {
 
   const getUsername = (type) => {
     if (type === 'light') {
-      console.log(userB);
       if (game?.lightPlayer) return userW?.data?.username;
       if (game?.gameType === 'AI') return 'IA';
     } else if (type === 'dark') {
