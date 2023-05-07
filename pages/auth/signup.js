@@ -7,15 +7,16 @@ export default function Login() {
   const router = useRouter();
 
   const handleGoogle = async () => {
-    let timer = null;
-    const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/v1/sign-in/google`, 'popup', 'width=600,height=600');
+    // Redirigir al usuario a la página de inicio de sesión de Google
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`;
+
+    // Manejar el evento onbeforeunload de la ventana emergente
+    const popup = window.open('', 'popup', 'width=600,height=600');
     if (popup) {
-      timer = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(timer);
-          router.push('/home');
-        }
-      }, 1000);
+      popup.onbeforeunload = () => {
+        // Redirigir al usuario a la página de inicio en la ventana principal
+        window.location.href = '/home';
+      };
     }
   };
 
