@@ -7,15 +7,16 @@ export default function Login() {
   const router = useRouter();
 
   const handleGoogle = async () => {
-    let timer = null;
-    const popup = window.open(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`, 'popup', 'width=600,height=600');
+    // Redirigir al usuario a la página de inicio de sesión de Google
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in/google`;
+
+    // Manejar el evento onbeforeunload de la ventana emergente
+    const popup = window.open('', 'popup', 'width=600,height=600');
     if (popup) {
-      timer = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(timer);
-          router.push('/home');
-        }
-      }, 1000);
+      popup.onbeforeunload = () => {
+        // Redirigir al usuario a la página de inicio en la ventana principal
+        window.location.href = '/home';
+      };
     }
   };
 
@@ -35,14 +36,10 @@ export default function Login() {
         }),
       })
           .then((res) => {
-            if (res.ok && res.status === 200) {
-              resolve('ok');
-            }
+            if (res.ok && res.status === 200) resolve('ok');
             reject(new Error('Network response was not ok.'));
           })
-          .catch(() => {
-            reject(new Error('Network response was not ok.'));
-          });
+          .catch(() => reject(new Error('Network response was not ok.')));
     });
   };
 
