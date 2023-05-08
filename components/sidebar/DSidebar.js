@@ -5,6 +5,13 @@ import { useGame } from '@/context/GameContext';
 import { useState } from 'react';
 import useSWR from 'swr';
 import Dropdown from '@/components/Dropdowns';
+import Tippy from '@tippyjs/react';
+import {
+  BackspaceIcon,
+  HandRaisedIcon,
+  FlagIcon,
+  PauseIcon,
+} from '@heroicons/react/24/outline';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'})
     .then(async (res) => {
@@ -73,6 +80,68 @@ export default function DSidebar({user}) {
               </Link>
             ))}
           </nav>
+        </div>
+        <div className='py-3.5 flex items-center justify-between gap-x-3'>
+          <Tippy
+            key={'Salir'}
+            placement='top'
+            duration={0}
+            arrow={true}
+            content={
+              <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
+                Salir
+              </span>
+            }
+          >
+            <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
+              <BackspaceIcon className='w-5 h-5 mx-auto text-white' />
+            </button>
+          </Tippy>
+          <Tippy
+            key={'Tablas'}
+            placement='top'
+            duration={0}
+            arrow={true}
+            content={
+              <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
+                Solicitar tablas
+              </span>
+            }
+          >
+            <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
+              <FlagIcon className='w-5 h-5 mx-auto text-white' />
+            </button>
+          </Tippy>
+          <Tippy
+            key={'Solicitar pausa'}
+            placement='top'
+            duration={0}
+            arrow={true}
+            content={
+              <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
+                Solicitar pausa
+              </span>
+            }
+          >
+            <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
+              <PauseIcon className='w-5 h-5 mx-auto text-white' />
+            </button>
+          </Tippy>
+          <Tippy
+            key={'Saludar'}
+            placement='top'
+            duration={0}
+            arrow={true}
+            content={
+              <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
+                Saludar
+              </span>
+            }
+          >
+            <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
+              <HandRaisedIcon className='w-5 h-5 mx-auto text-white' />
+            </button>
+          </Tippy>
         </div>
         <div className="flex flex-col flex-shrink-0 border-gray-200 py-2">
           <Dropdown
