@@ -47,8 +47,10 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
-  const token = req.headers.cookie?.split('=')[1];
+  const newQueryString = req.headers.cookie.replace(/;/g, '&');
+  const cookies = new URLSearchParams(newQueryString);
+  const token = cookies.get('api-auth');
+  const decoded = jwt.decode(token);
 
   const res2 = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments/${id}`, {
     method: 'GET',

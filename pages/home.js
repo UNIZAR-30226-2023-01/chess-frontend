@@ -46,8 +46,10 @@ export async function getServerSideProps({ req }) {
     };
   }
 
-  const decoded = jwt.decode(req.headers.cookie.split('=')[1]);
-  const token = req.headers.cookie?.split('=')[1];
+  const newQueryString = req.headers.cookie.replace(/;/g, '&');
+  const cookies = new URLSearchParams(newQueryString);
+  const token = cookies.get('api-auth');
+  const decoded = jwt.decode(token);
 
   return {
     props: {
