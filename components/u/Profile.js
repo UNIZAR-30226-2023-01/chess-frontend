@@ -54,18 +54,18 @@ export function Stats({
         {type === 'victories' && (
           <>
             <div className="flex items-baseline text-xl font-semibold text-indigo-600">
-              {value[0]}
-              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[0]}</span>
+              {value[0].toFixed(2).replace('.00', '')}
+              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">%{text[0]}</span>
             </div>
             /
             <div className="flex items-baseline text-xl font-semibold text-indigo-600">
-              {value[1]}
-              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[1]}</span>
+              {value[1].toFixed(2).replace('.00', '')}
+              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">%{text[1]}</span>
             </div>
             /
             <div className="flex items-baseline text-xl font-semibold text-indigo-600">
-              {value[2]}
-              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[2]}</span>
+              {value[2].toFixed(2).replace('.00', '')}
+              <span className="ml-1 text-xs font-medium text-gray-500 capitalize">%{text[2]}</span>
             </div>
           </>
         )}
@@ -123,18 +123,18 @@ export function ExampleGame({
       </div>
       <div className='flex flex-col justify-around space-y-3' >
         <div>
-          <div className='font-semibold capitalize'>
+          <div className='font-semibold lowercase first-letter:capitalize'>
             {type || 'Competitiva'}
           </div>
-          <date
+          <span
             title={createdAtFormated}
-            className="text-sm"
+            className="text-sm lowercase first-letter:capitalize"
           >
             {timeago}
-          </date>
+          </span>
         </div>
         <div>
-          <div className='font-semibold'>
+          <div className='font-semibold lowercase first-letter:capitalize'>
             {state}
           </div>
           <div className='text-sm'>

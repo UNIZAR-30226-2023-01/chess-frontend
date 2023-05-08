@@ -22,25 +22,23 @@ export function GameProvider({token, children}) {
   const [player, setPlayer] = useState();
 
   const updateGame = (fen) => {
-    if(fen!==
-      "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
+    if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
       setGame(new Chess(fen));
     }
-
   };
 
   useEffect(() => {
-    if(!socket){
-    const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
-      reconnectionDelayMax: 10000,
-      extraHeaders: {
-        token: token,
-      },
-    });
+    if (!socket) {
+      const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
+        reconnectionDelayMax: 10000,
+        extraHeaders: {
+          token: token,
+        },
+      });
 
-    setSocket(socket);
+      setSocket(socket);
     }
-    if(!socket) return;
+    if (!socket) return;
 
     socket.on('connect_error', (err) => {
       console.log(err.message);
@@ -61,7 +59,7 @@ export function GameProvider({token, children}) {
 
   useEffect(() => {
     if (!socket) return;
-    
+
     // You found a room
     socket.on('room_created', (message) => {
       console.log('room_created message', message);
@@ -82,7 +80,7 @@ export function GameProvider({token, children}) {
     // Someone moved a piece
     socket.on('moved', (message) => {
       console.log('moved message', message);
-      if(!player) return;
+      if (!player) return;
       if (message.turn === player) {
         moved(message.move);
       }
@@ -107,7 +105,7 @@ export function GameProvider({token, children}) {
     socket.on('error', (message) => {
       console.log('error message', message);
     });
-  }, [socket, player,game]);
+  }, [socket, player, game]);
 
   const findRoom = (gameType, options={}) => {
     const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM'];
