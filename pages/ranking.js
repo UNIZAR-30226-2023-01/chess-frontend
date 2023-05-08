@@ -10,7 +10,9 @@ const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.
 
 export default function Ranking() {
   const [pageIndex, setPageIndex] = useState(1);
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}&sort=-elo`, fetcher);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}&sort=-elo`, fetcher, {
+    refreshInterval: 1000 * 60 * 3,
+  });
 
   return (
     <div className="py-12 max-w-5xl mx-auto px-0 sm:px-6 lg:px-8">
