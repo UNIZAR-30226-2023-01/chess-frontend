@@ -22,6 +22,7 @@
     "@next/font": "13.1.6",
     "@tailwindcss/forms": "^0.5.3",
     "@tippyjs/react": "^4.2.6",
+    "@vercel/analytics": "^1.0.1",
     "chess.js": "^1.0.0-beta.3",
     "cm-chessboard": "^5.4.8",
     "eslint-config-next": "13.1.6",

@@ -1,9 +1,5 @@
 export const sites = [
   {
-    name: 'Developers',
-    url: 'https://docs.gracehopper.xyz',
-  },
-  {
     name: 'FAQ',
     url: '/faq',
   },
