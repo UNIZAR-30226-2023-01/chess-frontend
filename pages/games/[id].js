@@ -12,12 +12,10 @@ export default function Game({authorized, data, user}) {
   const {
     game, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
-    setPlayer,
   } = useGame();
 
   useEffect(() => {
     updateGame(data.board);
-    setPlayer(user.player);
     if (user.player === 'DARK' || user.player === 'LIGHT') setInQueue(false);
   }, []);
 
