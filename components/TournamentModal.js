@@ -1,11 +1,29 @@
 import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { TrophyIcon } from '@heroicons/react/24/outline';
-import { InputLabel } from '@/components/InputItem';
 import toast from 'react-hot-toast';
+import {ListBox, InputLabel } from '@/components/InputItem';
+
+const times = [
+  {
+    id: 1,
+    name: 'bullet (3 min)',
+    value: 180,
+  },
+  {
+    id: 2,
+    name: 'blitz (5 min)',
+    value: 300,
+  },
+  {
+    id: 3,
+    name: 'fast (10 min)',
+    value: 600,
+  },
+];
 
 export default function TournamentModal({ open, setOpen}) {
-  const [options, setOptions] = useState({rounds: 0, date: 0, time: 0});
+  const [options, setOptions] = useState({rounds: 3, date: 0, time: 0, matchTime: times[1].value, matchIncrement: 5});
 
   const handleSubmit = async (e) => {
     return new Promise(function(resolve, reject) {
@@ -20,7 +38,14 @@ export default function TournamentModal({ open, setOpen}) {
           method: 'POST',
           credentials: 'include',
           headers: { 'Content-Type': 'application/json'},
-          body: JSON.stringify({ rounds: options.rounds, startTime}),
+          body: JSON.stringify({
+            rounds: options.rounds,
+            startTime,
+            matchProps: {
+              time: options.matchTime,
+              increment: options.matchIncrement,
+            },
+          }),
         })
             .then((res) => {
               if (res.ok && res.status === 201) resolve('ok');
@@ -83,6 +108,7 @@ export default function TournamentModal({ open, setOpen}) {
                     type="number"
                     placeholder="Numero de rondas"
                     setter={(e) => setOptions({...options, rounds: e.target.value})}
+                    defaultValue={3}
                   />
                   <InputLabel
                     id="start-date"
@@ -97,6 +123,20 @@ export default function TournamentModal({ open, setOpen}) {
                     type="time"
                     placeholder="Hora de inicio"
                     setter={(e) => setOptions({...options, time: e.target.value})}
+                  />
+                  <ListBox
+                    label="Tiempo de partida"
+                    items={times}
+                    setter={(value) => setOptions({...options, matchTime: value})}
+                    defaultValue={times[1].value}
+                  />
+                  <InputLabel
+                    id='number'
+                    label='Incremento de partida'
+                    type='number'
+                    placeholder='Incremento'
+                    setter={(e) => setOptions({...options, matchIncrement: e.target.value})}
+                    defaultValue={5}
                   />
                 </div>
                 <div className="mt-5 sm:mt-6">
