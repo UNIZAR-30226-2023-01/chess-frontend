@@ -19,14 +19,18 @@ export function GameProvider({token, children}) {
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const cMov = 'rgba(255, 255, 0, 0.4)';
 
-  const [player, setP] = useState();
+  const [player, setPlayer] = useState();
 
   const updateGame = (fen) => {
-    setGame(new Chess(fen));
+    if(fen!==
+      "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"){
+      setGame(new Chess(fen));
+    }
+
   };
-  const setPlayer = (player) => setP(player);
 
   useEffect(() => {
+    if(!socket){
     const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
       reconnectionDelayMax: 10000,
       extraHeaders: {
@@ -35,6 +39,8 @@ export function GameProvider({token, children}) {
     });
 
     setSocket(socket);
+    }
+    if(!socket) return;
 
     socket.on('connect_error', (err) => {
       console.log(err.message);
@@ -55,7 +61,7 @@ export function GameProvider({token, children}) {
 
   useEffect(() => {
     if (!socket) return;
-
+    
     // You found a room
     socket.on('room_created', (message) => {
       console.log('room_created message', message);
@@ -64,6 +70,7 @@ export function GameProvider({token, children}) {
     // You found a room
     socket.on('room', (message) => {
       console.log('room message', message);
+      setPlayer(message.color);
       router.push(`/games/${message.roomID}`);
     });
 
@@ -75,6 +82,7 @@ export function GameProvider({token, children}) {
     // Someone moved a piece
     socket.on('moved', (message) => {
       console.log('moved message', message);
+      if(!player) return;
       if (message.turn === player) {
         moved(message.move);
       }
@@ -99,7 +107,7 @@ export function GameProvider({token, children}) {
     socket.on('error', (message) => {
       console.log('error message', message);
     });
-  }, [socket, game]);
+  }, [socket, player,game]);
 
   const findRoom = (gameType, options={}) => {
     const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM'];
@@ -149,7 +157,6 @@ export function GameProvider({token, children}) {
   };
 
   const movePiece = (mov) => {
-    console.log('move', {'move': mov});
     socket.emit('move', {'move': mov});
   };
 
@@ -184,6 +191,7 @@ export function GameProvider({token, children}) {
   }
 
   function onDrop(sourceSquare, targetSquare) {
+    console.log(game);
     try {
       const gameCopy = _.cloneDeep(game);
       const move = gameCopy.move({
@@ -196,9 +204,7 @@ export function GameProvider({token, children}) {
         return true;
       }
 
-      console.log('game', gameCopy);
       setGame(gameCopy);
-      console.log('game', game);
       movePiece(move.lan);
 
       setOptionSquares({
@@ -220,10 +226,8 @@ export function GameProvider({token, children}) {
 
   function moved(m) {
     try {
-      const gameCopy = _.cloneDeep(game);
-      const move = gameCopy.move(m);
-      setGame(gameCopy);
-
+      const move = game.move(m);
+      console.log(game);
       setOptionSquares({
         [move.from]: { background: cMov },
         [move.to]: { background: cMov },
@@ -233,6 +237,7 @@ export function GameProvider({token, children}) {
         [move.from]: { background: cMov },
         [move.to]: { background: cMov },
       });
+      setGame(game);
       return true;
     } catch (error) {
       return false;
@@ -251,7 +256,6 @@ export function GameProvider({token, children}) {
       onPieceDragBegin,
       onDrop,
       updateGame,
-      setPlayer,
     }}>
       {children}
     </GameContext.Provider>
