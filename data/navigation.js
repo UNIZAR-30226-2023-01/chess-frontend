@@ -29,16 +29,19 @@ export const navigation = [{
   name: 'Torneos',
   href: '/tournaments',
   icon: TrophyIcon,
+  key: 'Alt+T',
 }, {
   name: 'Clasificación',
   href: '/ranking',
   icon: ChartBarIcon,
+  key: 'Alt+C',
 }];
 
 export const subNavigation = [{
   name: 'Perfil',
   href: '/u/:id',
   icon: UserIcon,
+  key: 'Alt+P',
 }, { theme: true }, {
   name: 'Upgrades & FAQ',
   href: '/faq',

@@ -99,7 +99,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                           className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
                         >
                           <kbd className="inline-flex items-center rounded border border-gray-200 px-1 font-sans text-sm text-gray-400">
-                    ⌘ Enter
+                            ⌘ Enter
                           </kbd>
                         </button>
                       </div>
@@ -121,9 +121,9 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                         </>
                       )}
                     </Disclosure>
-                    {navigation.map((item) => (
+                    {navigation.map((item, id) => (
                       <Link
-                        key={item.id}
+                        key={id}
                         href={item.href}
                         className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
                       >
@@ -145,7 +145,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                       arrow={true}
                       content={
                         <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                Salir
+                          Salir
                         </span>
                       }
                     >
@@ -160,7 +160,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                       arrow={true}
                       content={
                         <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                Solicitar tablas
+                          Solicitar tablas
                         </span>
                       }
                     >
@@ -175,7 +175,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                       arrow={true}
                       content={
                         <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                Solicitar pausa
+                          Solicitar pausa
                         </span>
                       }
                     >
@@ -190,7 +190,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                       arrow={true}
                       content={
                         <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                Saludar
+                          Saludar
                         </span>
                       }
                     >

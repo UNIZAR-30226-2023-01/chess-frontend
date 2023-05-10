@@ -50,7 +50,7 @@ export function Stats({
   return (
     <div className="px-4 py-5 sm:p-6">
       <dt className="text-base font-medium text-gray-900">{name}</dt>
-      <dd className="mt-1 flex items-baseline justify-between flex">
+      <dd className="mt-1 flex items-baseline justify-between">
         {type === 'victories' && (
           <>
             <div className="flex items-baseline text-xl font-semibold text-indigo-600">
@@ -87,7 +87,6 @@ export function Stats({
 }
 
 export function ExampleGame({
-  key,
   type,
   orientation,
   position,
@@ -108,7 +107,6 @@ export function ExampleGame({
 
   return (
     <Link
-      key={key}
       href="#"
       className='cursor-pointer relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
     >
@@ -207,9 +205,9 @@ export default function Profile({profile: user}) {
         </dl>
       </div>
       <div className="mt-5 grid grid-cols-1 gap-y-4overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
-        {games?.map((item) => (
+        {games?.map((item, id) => (
           <ExampleGame
-            key={item}
+            key={id}
             type={item.gameType}
             orientation={''}
             position={item.board}

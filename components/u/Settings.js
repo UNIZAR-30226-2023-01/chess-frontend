@@ -321,13 +321,13 @@ export default function Settings({profile: user}) {
                       </select>
                     </React.Fragment>
                     <React.Fragment>
-                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="pieces-b" className="block text-sm font-medium text-gray-700">
                         Piezas (B)
                       </label>
                       <select
-                        id="board"
-                        name="board"
-                        autoComplete="board"
+                        id="pieces-b"
+                        name="pieces-b"
+                        autoComplete="pieces-b"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
                         onChange={(e) => setPTypes([ptypes[0], pieceTypes[e.target.selectedIndex]]) }
                       >
@@ -337,13 +337,13 @@ export default function Settings({profile: user}) {
                       </select>
                     </React.Fragment>
                     <React.Fragment>
-                      <label htmlFor="board" className="block text-sm font-medium text-gray-700">
+                      <label htmlFor="pieces-w" className="block text-sm font-medium text-gray-700">
                         Piezas (w)
                       </label>
                       <select
-                        id="board"
-                        name="board"
-                        autoComplete="board"
+                        id="pieces-w"
+                        name="pieces-w"
+                        autoComplete="pieces-w"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
                         onChange={(e) => setPTypes([pieceTypes[e.target.selectedIndex], ptypes[1]])}
 

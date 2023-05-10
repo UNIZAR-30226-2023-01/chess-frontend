@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { primaryButton, navigation } from '@/data/navigation';
 import { useChess } from '@/context/ChessContext';
 import { useGame } from '@/context/GameContext';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Dropdown from '@/components/Dropdowns';
+import {useEnterKey} from '@/hooks/useKeyPress';
 import Tippy from '@tippyjs/react';
 import {
   BackspaceIcon,
@@ -25,6 +26,12 @@ export default function DSidebar({user}) {
   const { switchModal } = useChess();
   const [options, setOptions] = useState({ roomID: ''});
   const { joinRoomAsSpectator } = useGame();
+  const Enter = useEnterKey('Enter', () => options.roomID ? joinRoomAsSpectator(options.roomID) : {});
+
+  useEffect(() => {
+    if (Enter) console.log('Enter');
+  }, [Enter]);
+
 
   const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, fetcher);
 
@@ -67,10 +74,13 @@ export default function DSidebar({user}) {
                 aria-hidden="true"
               />
               {primaryButton.name}
+              <kbd className="absolute right-0 inline-flex mr-5 items-center rounded border border-gray-200/20 px-1 font-sans text-sm text-gray-400/20">
+                ⌘ Alt+J
+              </kbd>
             </button>
-            {navigation.map((item) => (
+            {navigation.map((item, id) => (
               <Link
-                key={item.id}
+                key={id}
                 href={item.href}
                 className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
               >
@@ -79,6 +89,11 @@ export default function DSidebar({user}) {
                   aria-hidden="true"
                 />
                 {item.name}
+                {item?.key &&
+                  <kbd className="absolute right-0 inline-flex mr-5 items-center rounded border border-gray-200/20 px-1 font-sans text-sm text-gray-400/20">
+                    ⌘ {item.key}
+                  </kbd>
+                }
               </Link>
             ))}
           </nav>

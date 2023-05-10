@@ -3,22 +3,36 @@ import { Bars3Icon} from '@heroicons/react/24/outline';
 import MSidebar from '@/components/sidebar/MSidebar';
 import DSidebar from '@/components/sidebar/DSidebar';
 import SearchGame from '@/components/SearchGame';
+import { useRouter } from 'next/router';
 import GameModal from '@/components/GameModal';
 import { useChess } from '@/context/ChessContext';
 import { useGame } from '@/context/GameContext';
+import useKeyPress from '@/hooks/useKeyPress';
 
 export default function Layout({children}) {
-  const { inQueue, setInQueue } = useChess();
+  const router = useRouter();
+  const { inQueue, setInQueue, switchModal } = useChess();
   const { cancelSearch } = useGame();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {user} = children.props;
 
+  useKeyPress('j', () => switchModal());
+  useKeyPress('t', () => router.push('/tournaments'));
+  useKeyPress('c', () => router.push('/ranking'));
+  useKeyPress('p', () => router.push( '/u/' + user.id));
+
   return (
     <>
       <div className='h-screen overflow-hidden'>
-        <MSidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} user={user} />
+        <MSidebar
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+          user={user}
+        />
         {/* Static sidebar for desktop */}
-        <DSidebar user={user}/>
+        <DSidebar
+          user={user}
+        />
         <div className="flex flex-1 flex-col lg:pl-64 h-full">
           <div className="sticky top-0 z-10 pl-1 pt-1 sm:pl-3 sm:pt-3 lg:hidden bg-gray-800 border-b border-white/20">
             <button
