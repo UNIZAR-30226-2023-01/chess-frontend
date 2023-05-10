@@ -1,4 +1,3 @@
-
 export default function useDateTimeFormat(timestamp) {
   const date = new Date(timestamp);
   const language = 'es-ES';

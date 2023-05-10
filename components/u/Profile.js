@@ -87,7 +87,6 @@ export function Stats({
 }
 
 export function ExampleGame({
-  key,
   type,
   orientation,
   position,
@@ -108,7 +107,6 @@ export function ExampleGame({
 
   return (
     <Link
-      key={key}
       href="#"
       className='cursor-pointer relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
     >
@@ -207,9 +205,9 @@ export default function Profile({profile: user}) {
         </dl>
       </div>
       <div className="mt-5 grid grid-cols-1 gap-y-4overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
-        {games?.map((item) => (
+        {games?.map((item, id) => (
           <ExampleGame
-            key={item}
+            key={id}
             type={item.gameType}
             orientation={''}
             position={item.board}
