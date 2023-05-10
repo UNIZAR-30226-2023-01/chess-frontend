@@ -286,8 +286,8 @@ export default function Settings({profile: user}) {
                       boardOrientation='white'
                       customPieces={customPieces(customization?.whitePiece?.value)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: customization.board.black }}
-                      customLightSquareStyle={{ backgroundColor: customization.board.white }}
+                      // customDarkSquareStyle={{ backgroundColor: customization.board.black }}
+                      // customLightSquareStyle={{ backgroundColor: customization.board.white }}
                     />
                   </div>
                   <div className='bg-gray-50/20 select-none relative col-span-1 group'>

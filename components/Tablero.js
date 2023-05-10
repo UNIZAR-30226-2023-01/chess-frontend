@@ -28,8 +28,8 @@ export default function Tablero({
           ...optionSquares,
           ...lastMoveSquares,
         }}
-        customDarkSquareStyle={{ backgroundColor: customization.board.black }}
-        customLightSquareStyle={{ backgroundColor: customization.board.white }}
+        // customDarkSquareStyle={{ backgroundColor: customization.board.black }}
+        // customLightSquareStyle={{ backgroundColor: customization.board.white }}
       />
     </div>
   );

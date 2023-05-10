@@ -2,9 +2,36 @@ import Link from 'next/link';
 import Achivement from '@/components/Achivement';
 import { Chessboard } from 'react-chessboard';
 import { getElo } from '@/lib/elo';
-import useSWR from 'swr';
 import useTimeAgo from '@/hooks/useTimeAgo';
 import useDateTimeFormat from '@/hooks/useDateTimeFormat';
+import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
+import InfiniteScroll from 'react-infinite-scroll-component';
+const PAGE_SIZE = 10;
+/*
+export const usePagination = (user) => {
+
+  const getKey = (pageIndex, previousPageData ) => {
+    pageIndex = pageIndex + 1;
+    if (previousPageData && !previousPageData.length) return null;
+    return `${user.games}?page=${pageIndex + 1}&limit=${PAGE_SIZE}`;
+  };
+  const { data: games, size, setSize ,error,mutate} = useSWRInfinite(getKey, fetcher);
+  const paginatedGames = games ? games.flat() : [];
+  const isReachedEnd = games && games[games.length - 1].length < PAGE_SIZE;
+
+
+  const loadingMore = games && games[size-1] === undefined;
+  return {
+    paginatedGames,
+    isReachedEnd,
+    loadingMore,
+    size,
+    setSize,
+    error,
+    mutate,
+  };
+};*/
 
 const logros = [
   {
@@ -174,7 +201,13 @@ export default function Profile({profile: user}) {
     value: [user.achievements.length],
     text: ['fast'], type: 'achievements',
   }];
-
+  const getKey = (pageIndex, previousPageData ) => {
+    pageIndex = pageIndex + 1;
+    if (previousPageData && !previousPageData.length) return null;
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=${PAGE_SIZE}&page=${pageIndex + 1 }`;
+  };
+  const { data } = useSWRInfinite(getKey, fetcher);
+  console.log(data);
   const {data: games} = useSWR(user.games, fetcher);
 
   return (
@@ -207,18 +240,29 @@ export default function Profile({profile: user}) {
         </dl>
       </div>
       <div className="mt-5 grid grid-cols-1 gap-y-4overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
-        {games?.map((item) => (
-          <ExampleGame
-            key={item}
-            type={item.gameType}
-            orientation={''}
-            position={item.board}
-            createdAt={item.createdAt}
-            updatedAt={item.updatedAt}
-            state={item.state}
-          />
-        ))}
+        <InfiniteScroll
+          dataLength={data?.length}
+          hasMore={true}
+          loader={<h4>Loading...</h4>}
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }>
+          {games?.map((item) => (
+            <ExampleGame
+              key={item}
+              type={item.gameType}
+              orientation={''}
+              position={item.board}
+              createdAt={item.createdAt}
+              updatedAt={item.updatedAt}
+              state={item.state}
+            />
+          ))}
+        </InfiniteScroll>
       </div>
+
     </>
   );
 }
