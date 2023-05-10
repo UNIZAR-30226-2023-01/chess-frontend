@@ -27,14 +27,10 @@ export default function Settings({profile: user}) {
         },
       })
           .then((res) => {
-            if (res.ok && res.status === 200) {
-              resolve('ok');
-            }
+            if (res.ok && res.status === 200) resolve('ok');
             reject(new Error('Network response was not ok.'));
           })
-          .catch(() => {
-            reject(new Error('Network response was not ok.'));
-          });
+          .catch(() => reject(new Error('Network response was not ok.')) );
     });
   };
 
@@ -61,14 +57,13 @@ export default function Settings({profile: user}) {
             }
             reject(new Error('Network response was not ok.'));
           })
-          .catch(() => {
-            reject(new Error('Network response was not ok.'));
-          });
+          .catch(() => reject(new Error('Network response was not ok.')));
     });
   };
 
   function saveContext(e) {
     e.preventDefault();
+    console.log(board, ptypes[0], ptypes[1]);
 
     return new Promise(function(resolve, reject) {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, {
@@ -90,9 +85,7 @@ export default function Settings({profile: user}) {
             }
             reject(new Error('Network response was not ok.'));
           })
-          .catch(() => {
-            reject(new Error('Network response was not ok.'));
-          });
+          .catch(() => reject(new Error('Network response was not ok.')));
     });
   }
 
@@ -265,7 +258,7 @@ export default function Settings({profile: user}) {
       {/* Profile details */}
       <div className="space-y-6 sm:px-6 lg:col-span-9 lg:px-0">
         <section aria-labelledby="payment-details-heading">
-          <form action="#" method="POST">
+          <form method="POST">
             <div className="shadow sm:overflow-hidden sm:rounded-md">
               <div className="bg-white py-6 px-4 sm:p-6">
                 <div>
@@ -322,7 +315,7 @@ export default function Settings({profile: user}) {
                     </React.Fragment>
                     <React.Fragment>
                       <label htmlFor="pieces-b" className="block text-sm font-medium text-gray-700">
-                        Piezas (B)
+                        Piezas (N)
                       </label>
                       <select
                         id="pieces-b"
@@ -338,7 +331,7 @@ export default function Settings({profile: user}) {
                     </React.Fragment>
                     <React.Fragment>
                       <label htmlFor="pieces-w" className="block text-sm font-medium text-gray-700">
-                        Piezas (w)
+                        Piezas (B)
                       </label>
                       <select
                         id="pieces-w"

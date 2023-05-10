@@ -46,7 +46,7 @@ export default function Dropdown({ isLoading, username, avatar, id}) {
                 <div
                   className={classNames(
                   active ? 'bg-gray-100 text-gray-900' : 'text-gray-200',
-                  'group flex items-center px-4 py-3 text-sm w-full',
+                  'group flex items-center text-sm w-full',
                   )}
                 >
                   <Theme active={active}/>

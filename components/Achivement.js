@@ -13,7 +13,6 @@ export default function Achivement({
           alt={imgAlt}
         />
       </div>
-      <h3 className="mt-6 text-sm font-medium text-gray-900 dark:text-white">{name}</h3>
     </div>
   );
 }
