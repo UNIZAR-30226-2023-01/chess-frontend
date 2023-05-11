@@ -37,7 +37,7 @@ export default function User({profile, user}) {
                       <div className="flex rounded-full">
                         <img
                           className="h-24 w-24 object-cover rounded-full ring-4 ring-white sm:h-32 sm:w-32 select-none"
-                          src={isLoading ? '/assets/profile/animales/1.webp' : `/assets/profile${data?.avatar}`}
+                          src={isLoading ? '/assets/animals/1.webp' : `/assets/${data?.avatar}`}
                           alt={data?.avatar}
                         />
                       </div>
@@ -88,7 +88,13 @@ export default function User({profile, user}) {
                 {/* Description list */}
                 <div className="mx-auto mt-6 max-w-5xl px-4 sm:px-6 lg:px-8 pb-12">
                   {currentTab === profileTabs[0].name && <Profile profile={profile}/>}
-                  {currentTab === profileTabs[1].name && <Settings profile={profile} />}
+                  {currentTab === profileTabs[1].name && (
+                    <Settings
+                      profile={profile}
+                      boards={profile.skins.filter((i) => i.type === 'board')}
+                      pieces={profile.skins.filter((i) => i.type === 'pieces')}
+                    />
+                  )}
                 </div>
               </article>
             </div>

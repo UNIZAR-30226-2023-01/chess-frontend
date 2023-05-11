@@ -3,14 +3,14 @@ import { Chessboard } from 'react-chessboard';
 import { useChess } from '@/context/ChessContext';
 import toast, {Toaster} from 'react-hot-toast';
 import { useRouter } from 'next/router';
-import { boardTypes, pieceTypes, customPieces } from '@/data/board';
+import { customPieces } from '@/data/board';
 import { mutate } from 'swr';
 
 
-export default function Settings({profile: user}) {
+export default function Settings({profile: user, boards, pieces}) {
   const router = useRouter();
-  const [board, setBoard] = useState(boardTypes[0]);
-  const [ptypes, setPTypes] = useState([pieceTypes[0], pieceTypes[0]]);
+  const [board, setBoard] = useState('wood');
+  const [ptypes, setPTypes] = useState(['medieval', 'medieval']);
   const { customization, setData } = useChess();
 
   const [profile, setProfile] = useState({avatar: user.avatar, username: user.username, email: user.email});
@@ -63,7 +63,6 @@ export default function Settings({profile: user}) {
 
   function saveContext(e) {
     e.preventDefault();
-    console.log(board, ptypes[0], ptypes[1]);
 
     return new Promise(function(resolve, reject) {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, {
@@ -73,9 +72,9 @@ export default function Settings({profile: user}) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          board: board.value,
-          lightPieces: ptypes[0].value,
-          darkPieces: ptypes[1].value,
+          board: board,
+          lightPieces: ptypes[0],
+          darkPieces: ptypes[1],
         }),
       })
           .then((res) => {
@@ -89,9 +88,9 @@ export default function Settings({profile: user}) {
     });
   }
 
-  const humanAvatars = new Array(24).fill(null).map((i, id) => `/assets/profile/humanos/${id + 1}.webp`);
-  const animalAvatars = new Array(50).fill(null).map((i, id) => `/assets/profile/animales/${id + 1}.webp`);
-  const memojisAvatars = new Array(28).fill(null).map((i, id) => `/assets/profile/memojis/${id + 1}.webp`);
+  const humanAvatars = new Array(24).fill(null).map((i, id) => `/assets/humans/${id + 1}.webp`);
+  const animalAvatars = new Array(50).fill(null).map((i, id) => `/assets/animals/${id + 1}.webp`);
+  const memojisAvatars = new Array(28).fill(null).map((i, id) => `/assets/memojis/${id + 1}.webp`);
   const avatares = [...memojisAvatars, ...animalAvatars, ...humanAvatars];
 
   const sliderRef = useRef();
@@ -152,14 +151,14 @@ export default function Settings({profile: user}) {
                       {avatares.map((src, i) => (
                         <li
                           key={i}
-                          onClick={() => setProfile({...profile, avatar: src.replace('/assets/profile/', '/')})}
+                          onClick={() => setProfile({...profile, avatar: src.replace('/assets/', '/')})}
                           className="flex flex-none flex-col items-center space-y-1 select-none cursor-pointer"
                         >
                           <div className={`bg-gradient-to-tr ${src.endsWith(profile.avatar) ? 'from-green-400 via-blue-600 to-black/80' : 'from-yellow-400 to-fuchsia-600'} p-1 rounded-full`}>
                             <div className="block bg-white p-1 rounded-full relative">
                               <img
                                 src={src}
-                                alt=""
+                                alt={src}
                                 className="w-10 h-10 rounded-full object-cover"
                               />
                             </div>
@@ -279,8 +278,10 @@ export default function Settings({profile: user}) {
                       boardOrientation='white'
                       customPieces={customPieces(customization?.whitePiece?.value)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: customization.board.black }}
-                      customLightSquareStyle={{ backgroundColor: customization.board.white }}
+                      // customDarkSquareStyle={{ backgroundColor: customization.board.black }}
+                      // customLightSquareStyle={{ backgroundColor: customization.board.white }}
+                      customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).darkColor }}
+                      customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).lightColor }}
                     />
                   </div>
                   <div className='bg-gray-50/20 select-none relative col-span-1 group'>
@@ -290,10 +291,10 @@ export default function Settings({profile: user}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(ptypes[0].value)}
+                      customPieces={customPieces(pieces.name)}
                       arePiecesDraggable={false}
-                      customDarkSquareStyle={{ backgroundColor: board.black }}
-                      customLightSquareStyle={{ backgroundColor: board.white }}
+                      customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).darkColor }}
+                      customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).lightColor }}
                     />
                   </div>
                   <div className='flex flex-col justify-start gap-y-2'>
@@ -306,11 +307,12 @@ export default function Settings({profile: user}) {
                         name="board"
                         autoComplete="board"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(e) => setBoard(boardTypes[e.target.selectedIndex])}
+                        onChange={(e) => setBoard(e.target.value)}
                       >
-                        {boardTypes.map((color, index) => (
-                          <option key={index}>{color.name}</option>
-                        ))}
+                        {boards.map((piece, index) => (
+                          <option key={index}>{piece.name}</option>
+                        ))
+                        }
                       </select>
                     </React.Fragment>
                     <React.Fragment>
@@ -322,11 +324,12 @@ export default function Settings({profile: user}) {
                         name="pieces-b"
                         autoComplete="pieces-b"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(e) => setPTypes([ptypes[0], pieceTypes[e.target.selectedIndex]]) }
+                        onChange={(e) => setPTypes([ptypes[0], e.target.value])}
                       >
-                        {pieceTypes.map((modelo, index) => (
-                          <option key={index}>{modelo.name}</option>
-                        ))}
+                        {pieces.map((piece, index) => (
+                          <option key={index}>{piece.name}</option>
+                        ))
+                        }
                       </select>
                     </React.Fragment>
                     <React.Fragment>
@@ -338,12 +341,12 @@ export default function Settings({profile: user}) {
                         name="pieces-w"
                         autoComplete="pieces-w"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(e) => setPTypes([pieceTypes[e.target.selectedIndex], ptypes[1]])}
-
+                        onChange={(e) => setPTypes([e.target.value, ptypes[1]])}
                       >
-                        {pieceTypes.map((modelo, index) => (
-                          <option key={index}>{modelo.name}</option>
-                        ))}
+                        {pieces.map((piece, index) => (
+                          <option key={index}>{piece.name}</option>
+                        ))
+                        }
                       </select>
                     </React.Fragment>
                   </div>

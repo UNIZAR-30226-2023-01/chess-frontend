@@ -6,44 +6,6 @@ import useSWR from 'swr';
 import useTimeAgo from '@/hooks/useTimeAgo';
 import useDateTimeFormat from '@/hooks/useDateTimeFormat';
 
-const logros = [
-  {
-    id: 1,
-    name: 'FIRST LOGIN',
-    imagen: '/assets/achievements/1.png',
-  },
-  {
-    id: 2,
-    name: 'Logro 2',
-    imagen: '/assets/achievements/2.png',
-  },
-  {
-    id: 3,
-    name: 'TOP 1',
-    imagen: '/assets/achievements/3.png',
-  },
-  {
-    id: 5,
-    name: 'Logro 4',
-    imagen: '/assets/achievements/4.png',
-  },
-  {
-    id: 6,
-    name: 'Logro 4',
-    imagen: '/assets/achievements/5.png',
-  },
-  {
-    id: 7,
-    name: 'Logro 4',
-    imagen: '/assets/achievements/6.png',
-  },
-  {
-    id: 8,
-    name: 'TOP 100',
-    imagen: '/assets/achievements/7.png',
-  },
-];
-
 export function Stats({
   name, value, text, type,
 }) {
@@ -178,15 +140,16 @@ export default function Profile({profile: user}) {
   return (
     <>
       <ul className="flex flex-wrap justify-between gap-x-10">
-        {logros.map((logro) => (
+        {user.achievements.map((achivement, id) => (
           <li
-            key={logro.id}
+            key={id}
             className="col-span-1 flex flex-col text-center"
           >
             <Achivement
-              name={logro.name}
-              imgSrc={logro.imagen}
-              unlocked={user.achievements.includes(logro.name)}
+              name={achivement.name}
+              imgSrc={`/assets${achivement.imgSrc}`}
+              imgAlt={achivement.imgAlt}
+              achieved={achivement.achieved}
             />
           </li>
         ))}
