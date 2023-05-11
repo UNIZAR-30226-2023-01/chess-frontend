@@ -9,7 +9,7 @@ const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.
 export default function Game({game}) {
   const { data: userW } = useSWR(game?.lightPlayer ? game?.lightPlayer : null, fetcher, { revalidateIfStale: false });
   const { data: userB } = useSWR(game?.darkPlayer ? game?.darkPlayer : null, fetcher, { revalidateIfStale: false });
-
+  
   const getUsername = (type) => {
     if (type === 'light') {
       if (game?.lightPlayer) return userW?.data?.username;

@@ -6,12 +6,30 @@ import { useEffect } from 'react';
 import { useGame } from '@/context/GameContext';
 import { useChess } from '@/context/ChessContext';
 import { whoami, getOrientation } from '@/lib/cmd';
+import ChessPiece from 'components/ChessPiece';
+
+
+const promotionPieces= [
+  {name: 'q',
+    key: 'queen',
+  },
+  {name: 'b',
+    key: 'bishop',
+  },
+  {name: 'n',
+    key: 'knight',
+  },
+  {name: 'r',
+    key: 'rook',
+  },
+];
 
 export default function Game({authorized, data, user}) {
   const { setInQueue } = useChess();
   const {
     game, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
+    onPromotion,setShowPromotion,showPromotion,
   } = useGame();
 
   useEffect(() => {
@@ -55,6 +73,57 @@ export default function Game({authorized, data, user}) {
             onPieceDragBegin={onPieceDragBegin}
             onDrop={onDrop}
           />
+          {showPromotion && (
+            <div className="fixed z-10 inset-0 overflow-y-auto">
+              <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div
+                  className="fixed inset-0 transition-opacity"
+                  aria-hidden="true"
+                  onClick={() => setShowPromotion(false)}
+                >
+                  <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                </div>
+                <span
+                  className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                  aria-hidden="true"
+                >
+                  &#8203;
+                </span>
+                <div
+                  className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby="modal-headline"
+                >
+                  <div>
+                    <div className="mt-3 text-center sm:mt-5">
+                      <h3
+                        className="text-lg leading-6 font-medium text-gray-900"
+                        id="modal-headline"
+                      >
+                        Promocionar peón
+                      </h3>
+                      <div className="mt-2">
+                        {promotionPieces.map((piece) => (
+                          <div
+                            key={piece.key}
+                            className="inline-block"
+                            onClick={() => onPromotion(piece.name)}
+                          >
+                            <ChessPiece
+                              piece={piece.key}
+                              modelo='normal' // modelo=modelo
+                              color={getOrientation(user.player)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <audio id="pieceSound">
