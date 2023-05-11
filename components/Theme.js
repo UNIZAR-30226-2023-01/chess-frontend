@@ -8,7 +8,7 @@ export default function Theme({active}) {
     <button
       key={theme}
       onClick={handleThemeChange}
-      className='flex items-center text-sm'
+      className='flex items-center text-sm w-full px-4 py-3'
     >
       {theme === 'dark' ?
       <>

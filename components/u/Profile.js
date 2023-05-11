@@ -8,68 +8,6 @@ import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
 const PAGE_SIZE = 10;
-/*
-export const usePagination = (user) => {
-
-  const getKey = (pageIndex, previousPageData ) => {
-    pageIndex = pageIndex + 1;
-    if (previousPageData && !previousPageData.length) return null;
-    return `${user.games}?page=${pageIndex + 1}&limit=${PAGE_SIZE}`;
-  };
-  const { data: games, size, setSize ,error,mutate} = useSWRInfinite(getKey, fetcher);
-  const paginatedGames = games ? games.flat() : [];
-  const isReachedEnd = games && games[games.length - 1].length < PAGE_SIZE;
-
-
-  const loadingMore = games && games[size-1] === undefined;
-  return {
-    paginatedGames,
-    isReachedEnd,
-    loadingMore,
-    size,
-    setSize,
-    error,
-    mutate,
-  };
-};*/
-
-const logros = [
-  {
-    id: 1,
-    name: 'FIRST LOGIN',
-    imagen: '/assets/achievements/1.png',
-  },
-  {
-    id: 2,
-    name: 'Logro 2',
-    imagen: '/assets/achievements/2.png',
-  },
-  {
-    id: 3,
-    name: 'TOP 1',
-    imagen: '/assets/achievements/3.png',
-  },
-  {
-    id: 5,
-    name: 'Logro 4',
-    imagen: '/assets/achievements/4.png',
-  },
-  {
-    id: 6,
-    name: 'Logro 4',
-    imagen: '/assets/achievements/5.png',
-  },
-  {
-    id: 7,
-    name: 'Logro 4',
-    imagen: '/assets/achievements/6.png',
-  },
-  {
-    id: 8,
-    name: 'TOP 100',
-    imagen: '/assets/achievements/7.png',
-  },
-];
 
 export function Stats({
   name, value, text, type,
@@ -77,7 +15,7 @@ export function Stats({
   return (
     <div className="px-4 py-5 sm:p-6">
       <dt className="text-base font-medium text-gray-900">{name}</dt>
-      <dd className="mt-1 flex items-baseline justify-between flex">
+      <dd className="mt-1 flex items-baseline justify-between">
         {type === 'victories' && (
           <>
             <div className="flex items-baseline text-xl font-semibold text-indigo-600">
@@ -114,7 +52,6 @@ export function Stats({
 }
 
 export function ExampleGame({
-  key,
   type,
   orientation,
   position,
@@ -135,7 +72,6 @@ export function ExampleGame({
 
   return (
     <Link
-      key={key}
       href="#"
       className='cursor-pointer relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
     >
@@ -213,15 +149,16 @@ export default function Profile({profile: user}) {
   return (
     <>
       <ul className="flex flex-wrap justify-between gap-x-10">
-        {logros.map((logro) => (
+        {user.achievements.map((achivement, id) => (
           <li
-            key={logro.id}
+            key={id}
             className="col-span-1 flex flex-col text-center"
           >
             <Achivement
-              name={logro.name}
-              imgSrc={logro.imagen}
-              unlocked={user.achievements.includes(logro.name)}
+              name={achivement.name}
+              imgSrc={`/assets${achivement.imgSrc}`}
+              imgAlt={achivement.imgAlt}
+              achieved={achivement.achieved}
             />
           </li>
         ))}

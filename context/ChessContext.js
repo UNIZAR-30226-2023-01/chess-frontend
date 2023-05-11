@@ -1,5 +1,4 @@
 import React, {useState, useContext, useEffect} from 'react';
-import { boardTypes, pieceTypes } from '@/data/board';
 
 const ChessContext = React.createContext();
 
@@ -26,9 +25,9 @@ export function ChessProvider({children}) {
       setCustom(JSON.parse(data));
     } else {
       setCustom({
-        board: boardTypes[0],
-        whitePiece: pieceTypes[0],
-        blackPiece: pieceTypes[0],
+        board: 'wood',
+        whitePiece: 'medieval',
+        blackPiece: 'medieval',
       });
     }
   }, []);

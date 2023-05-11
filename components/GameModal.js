@@ -196,7 +196,10 @@ export default function GameModal() {
                         />
                         <button
                           type="submit"
-                          onClick={()=>{}}
+                          onClick={()=>{
+                            findRoom(gameType, options);
+                            setOpen();
+                          }}
                           className="absolute inset-y-0 right-0 flex py-3 pr-1.5 cursor-pointer"
                         >
                           <kbd className="inline-flex items-center rounded border border-gray-300 px-1 font-sans text-sm text-gray-500">

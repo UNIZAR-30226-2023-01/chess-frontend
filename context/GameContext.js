@@ -14,17 +14,19 @@ export function GameProvider({token, children}) {
   const router = useRouter();
   const [socket, setSocket] = useState(null);
 
-  const [game, setGame] = useState(new Chess());
+  const [game, setGame] = useState(new Chess('rnb2bnr/p1P1kppp/8/4P3/4P3/8/PP4PP/RNB1KBNR b KQ - 0 12'));
+  const [pausedgame, setPausedGame] = useState({});
+  const [showPromotion, setShowPromotion] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const cMov = 'rgba(255, 255, 0, 0.4)';
 
   const [player, setPlayer] = useState();
 
-  const updateGame = (fen) => {
-    if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
-      setGame(new Chess(fen));
-    }
+  const updateGame = (fen) => {// 'rnb2bnr/p1P1kppp/8/4P3/4P3/8/PP4PP/RNB1KBNR b KQ - 0 12'
+    // if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1') {
+    // setGame(new Chess(fen));
+    // }
   };
 
   useEffect(() => {
@@ -108,7 +110,7 @@ export function GameProvider({token, children}) {
   }, [socket, player, game]);
 
   const findRoom = (gameType, options={}) => {
-    const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM'];
+    const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM', 'JOINCUSTOM'];
     if (!gameTypesAllowed.includes(gameType)) {
       throw new Error('Invalid game type');
     }
@@ -137,6 +139,14 @@ export function GameProvider({token, children}) {
         increment: options?.increment ?? 5,
         hostColor: options?.hostColor ?? 'LIGHT',
       };
+    } else if (gameType === 'JOINCUSTOM') {
+      message = options?.roomID ?
+      {gameType: 'CUSTOM', roomID: options.roomID}:
+      {
+
+      };
+      socket.emit('join_room', message);
+      return;
     }
 
     socket.emit('find_room', message);
@@ -189,22 +199,23 @@ export function GameProvider({token, children}) {
   }
 
   function onDrop(sourceSquare, targetSquare) {
-    console.log(game);
     try {
       const gameCopy = _.cloneDeep(game);
       const move = gameCopy.move({
         from: sourceSquare,
         to: targetSquare,
+        promotion: 'q', // ponemos reina pero luego se modifica
       });
-
       if (move && move.promotion) {
-        // Si es un movimiento de promoción, preguntamos que pieza queremos
+        console.log('QUIERO PROMOCIONAR');
+        setShowPromotion(true);
+        setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
         return true;
       }
 
       setGame(gameCopy);
       movePiece(move.lan);
-
+      console.log(game.fen());//
       setOptionSquares({
         sourceSquare: { background: cMov },
         targetSquare: { background: cMov },
@@ -222,10 +233,20 @@ export function GameProvider({token, children}) {
     }
   }
 
+  function onPromotion(piece) { // Cuando se quiera promocionar movemos el juego origen
+    setShowPromotion(false);
+    const move = game.move({
+      from: pausedgame.sourceSquare,
+      to: pausedgame.targetSquare,
+      promotion: piece,
+    });
+    movePiece(move.lan);
+    setLastMoveSquares({});
+  }
+
   function moved(m) {
     try {
       const move = game.move(m);
-      console.log(game);
       setOptionSquares({
         [move.from]: { background: cMov },
         [move.to]: { background: cMov },
@@ -254,6 +275,9 @@ export function GameProvider({token, children}) {
       onPieceDragBegin,
       onDrop,
       updateGame,
+      onPromotion,
+      setShowPromotion,
+      showPromotion,
     }}>
       {children}
     </GameContext.Provider>

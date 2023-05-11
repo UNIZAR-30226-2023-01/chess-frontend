@@ -51,7 +51,7 @@ export default function Login() {
     <div className="flex min-h-screen flex-col justify-around sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="w-fit h-fit mx-auto py-4">
-          <img src="/assets/images/Logo_black.png" className="h-20 mx-auto" />
+          <img src="/assets/images/Logo_black.png" alt="logo" className="h-20 mx-auto" />
         </div>
       </div>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
