@@ -7,7 +7,6 @@ import useDateTimeFormat from '@/hooks/useDateTimeFormat';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
-const PAGE_SIZE = 10;
 
 export function Stats({
   name, value, text, type,
@@ -140,7 +139,7 @@ export default function Profile({profile: user}) {
   const getKey = (pageIndex, previousPageData ) => {
     pageIndex = pageIndex + 1;
     if (previousPageData && !previousPageData.length) return null;
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=${PAGE_SIZE}&page=${pageIndex + 1 }`;
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=12&page=${pageIndex + 1}`;
   };
   const { data } = useSWRInfinite(getKey, fetcher);
   console.log(data);
@@ -176,16 +175,16 @@ export default function Profile({profile: user}) {
           ))}
         </dl>
       </div>
-      <div className="mt-5 grid grid-cols-1 gap-y-4overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
-        <InfiniteScroll
-          dataLength={data?.length}
-          hasMore={true}
-          loader={<h4>Loading...</h4>}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }>
+      <InfiniteScroll
+        dataLength={ data?.length ?? 0}
+        hasMore={true}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }>
+        <div className="mt-5 grid grid-cols-1 overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
           {games?.map((item) => (
             <ExampleGame
               key={item}
@@ -197,9 +196,8 @@ export default function Profile({profile: user}) {
               state={item.state}
             />
           ))}
-        </InfiniteScroll>
-      </div>
-
+        </div>
+      </InfiniteScroll>
     </>
   );
 }
