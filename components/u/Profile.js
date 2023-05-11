@@ -137,12 +137,17 @@ export default function Profile({profile: user}) {
     text: ['fast'], type: 'achievements',
   }];
   const getKey = (pageIndex, previousPageData ) => {
+    const filter = {
+      $or: [
+        { darkId: String(user._id) },
+        { lightId: String(user._id) },
+      ],
+    };
     pageIndex = pageIndex + 1;
     if (previousPageData && !previousPageData.length) return null;
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=12&page=${pageIndex + 1}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=24&page=${pageIndex + 1}&sort=-createdAt&filter=${encodeURIComponent(JSON.stringify(filter))}`;
   };
   const { data } = useSWRInfinite(getKey, fetcher);
-  console.log(data);
   const {data: games} = useSWR(user.games, fetcher);
 
   return (
@@ -176,14 +181,9 @@ export default function Profile({profile: user}) {
         </dl>
       </div>
       <InfiniteScroll
-        dataLength={ data?.length ?? 0}
+        dataLength={data?.length ?? 0}
         hasMore={true}
-        loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }>
+      >
         <div className="mt-5 grid grid-cols-1 overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
           {games?.map((item) => (
             <ExampleGame

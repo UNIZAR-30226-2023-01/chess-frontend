@@ -8,9 +8,10 @@ import { mutate } from 'swr';
 
 
 export default function Settings({profile: user, boards, pieces}) {
+  console.log('pieces', pieces);
   const router = useRouter();
-  const [board, setBoard] = useState('wood');
-  const [ptypes, setPTypes] = useState(['medieval', 'medieval']);
+  const [board, setBoard] = useState(boards.find((b) => b.active).name);
+  const [ptypes, setPTypes] = useState([pieces.find((b) => b.activeLight).name, pieces.find((b) => b.activeDark).name]);
   const { customization, setData } = useChess();
 
   const [profile, setProfile] = useState({avatar: user.avatar, username: user.username, email: user.email});
@@ -276,12 +277,10 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(customization?.whitePiece?.value)}
+                      customPieces={customPieces(customization?.whitePiece)}
                       arePiecesDraggable={false}
-                      // customDarkSquareStyle={{ backgroundColor: customization.board.black }}
-                      // customLightSquareStyle={{ backgroundColor: customization.board.white }}
-                      customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).darkColor }}
-                      customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).lightColor }}
+                      customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).darkColor }}
+                      customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).lightColor }}
                     />
                   </div>
                   <div className='bg-gray-50/20 select-none relative col-span-1 group'>
@@ -291,7 +290,7 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(pieces.name)}
+                      customPieces={customPieces(pieces.find((i) => i.name === ptypes[0]).name)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).darkColor }}
                       customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).lightColor }}

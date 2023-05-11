@@ -65,14 +65,14 @@ export const customPieces = (data) => ({
   bB: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/pieces/${data}/bishop-black.webp`}
+      src= {`/assets/pieces/${data}/bishop-b.webp`}
       alt="Black Bishop"
     />
   ),
   bN: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/pieces/${data}/bishop-b.webp`}
+      src= {`/assets/pieces/${data}/knight-b.webp`}
       alt="Black Knight"
     />
   ),
