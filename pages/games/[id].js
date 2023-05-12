@@ -106,7 +106,7 @@ export default function Game({authorized, data, user}) {
                         {promotionPieces.map((piece) => (
                           <div
                             key={piece.key}
-                            className="inline-block"
+                            className="inline-block cursor-pointer"
                             onClick={() => onPromotion(piece.name)}
                           >
                             <ChessPiece
