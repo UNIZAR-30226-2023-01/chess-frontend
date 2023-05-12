@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { primaryButton, navigation } from '@/data/navigation';
 import { useChess } from '@/context/ChessContext';
 import { useGame } from '@/context/GameContext';
-import { useState, useEffect} from 'react';
+import { useState} from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Dropdown from '@/components/Dropdowns';
@@ -25,13 +25,8 @@ export default function DSidebar({user}) {
   const router = useRouter();
   const { switchModal } = useChess();
   const [options, setOptions] = useState({ roomID: ''});
-  const { joinRoomAsSpectator } = useGame();
-  const Enter = useEnterKey('Enter', () => options.roomID ? joinRoomAsSpectator(options.roomID) : {});
-
-  useEffect(() => {
-    if (Enter) console.log('Enter');
-  }, [Enter]);
-
+  const { joinRoomAsSpectator, surrender } = useGame();
+  useEnterKey('Enter', () => options.roomID ? joinRoomAsSpectator(options.roomID) : {});
 
   const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, fetcher);
 
@@ -41,7 +36,7 @@ export default function DSidebar({user}) {
       <div className="flex min-h-0 flex-1 flex-col border-gray-200 divide-y divide-white/20 px-2">
         <div className="flex flex-1 flex-col overflow-y-auto py-2">
           <nav className="flex-1 space-y-1.5">
-            <form>
+            <form autoComplete='off'>
               <div className="relative flex items-center">
                 <input
                   type="text"
@@ -111,7 +106,10 @@ export default function DSidebar({user}) {
                 </span>
               }
             >
-              <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
+              <button
+                onClick={() => surrender()}
+                className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'
+              >
                 <BackspaceIcon className='w-5 h-5 mx-auto text-white' />
               </button>
             </Tippy>

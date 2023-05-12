@@ -64,7 +64,7 @@ export default function Ranking() {
                     <td className="select-none whitespace-nowrap py-4 px-3 text-sm text-gray-500 dark:text-gray-200">
                       <Link href={`/u/${user.id}`} className="flex items-center">
                         <div className="h-8 w-8 flex-shrink-0">
-                          <img className="h-8 w-8 rounded-full" src={`/assets/profile${user?.avatar}`} alt={user?.avatar} />
+                          <img className="h-8 w-8 rounded-full" src={`/assets${user?.avatar}`} alt={user?.avatar} />
                         </div>
                         <div className="ml-4 flex items-center gap-x-2">
                           {getElo(user.elo) &&

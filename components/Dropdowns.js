@@ -21,7 +21,7 @@ export default function Dropdown({ isLoading, username, avatar, id}) {
           <span className='flex items-center gap-x-2 capitalize'>
             <img
               className="h-7 w-7 object-cover rounded-full select-none"
-              src={isLoading ? '/assets/profile/animales/1.webp' : `/assets/profile${avatar}`}
+              src={isLoading ? '/assets/animals/1.webp' : `/assets/${avatar}`}
               alt={avatar}
             />
             {username}
@@ -46,7 +46,7 @@ export default function Dropdown({ isLoading, username, avatar, id}) {
                 <div
                   className={classNames(
                   active ? 'bg-gray-100 text-gray-900' : 'text-gray-200',
-                  'group flex items-center px-4 py-3 text-sm w-full',
+                  'group flex items-center text-sm w-full',
                   )}
                 >
                   <Theme active={active}/>

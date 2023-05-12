@@ -1,142 +1,86 @@
-export const boardTypes = [
-  {
-    id: 1,
-    name: 'Tablero de madera',
-    value: 'wood',
-    black: '#B88B4A', // maderaN
-    white: '#E3C16F', // maderaB
-  },
-  {
-    id: 2,
-    name: 'Tablero coral',
-    value: 'coral',
-    black: '#70A2A3', // coralN
-    white: '#B1E4B9', // coralB
-  },
-  {
-    id: 3,
-    name: 'Tablero oscuro',
-    value: 'dark',
-    black: '#706677', // oscuroN
-    white: '#CCB7AE', // oscuroB
-  },
-  {
-    id: 4,
-    name: 'Tablero marino',
-    value: 'marine',
-    black: '#6f73d2', // marN
-    white: '#9dacff', // marB
-  },
-  {
-    id: 5,
-    name: 'Tablero trigo',
-    value: 'wheat',
-    black: '#bbbe64', // trigoN
-    white: '#eaf0ce', // trigoB
-  },
-  {
-    id: 6,
-    name: 'Tablero esmeralda',
-    value: 'emerald',
-    black: '#6f8f72', // esmeraldaN
-    white: '#ad8d8f', // esmeraldaB
-  },
-];
-
-export const pieceTypes = [
-  {
-    id: 1,
-    name: 'Piezas chess',
-    value: 'chess',
-  },
-  {
-    id: 2,
-    name: 'Piezas marroquies',
-    value: 'moroccans',
-  },
-  {
-    id: 3,
-    name: 'Piezas maya',
-    value: 'maya',
-  },
-  {
-    id: 4,
-    name: 'Piezas árabes',
-    value: 'arab',
-  },
-];
-
 export const customPieces = (data) => ({
   wK: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/rey-white.png`}
+      src= {`/assets/pieces/${data}/king-w.webp`}
+      alt="White King"
     />
   ),
   wQ: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/reina-white.png`}
+      src= {`/assets/pieces/${data}/queen-w.webp`}
+      alt="White Queen"
     />
   ),
   wR: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/torre-white.png`}
+      src= {`/assets/pieces/${data}/rook-w.webp`}
+      alt="White Rook"
     />
   ),
   wB: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/alfil-white.png`}
+      src= {`/assets/pieces/${data}/bishop-w.webp`}
+      alt="White Bishop"
     />
   ),
   wN: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/juan-white.png`}
+      src= {`/assets/pieces/${data}/knight-w.webp`}
+      alt="White Knight"
     />
   ),
   wP: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/peon-white.png`}
+      src= {`/assets/pieces/${data}/pawn-w.webp`}
+      alt="White Pawn"
     />
   ),
   bK: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/rey-black.png`}
+      src= {`/assets/pieces/${data}/king-b.webp`}
+      alt="Black King"
     />
   ),
   bQ: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/reina-black.png`}
+      src= {`/assets/pieces/${data}/queen-b.webp`}
+      alt="Black Queen"
     />
   ),
   bR: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/torre-black.png`}
+      src= {`/assets/pieces/${data}/rook-b.webp`}
+      alt="Black Rook"
     />
   ),
   bB: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/alfil-black.png`}
+      src= {`/assets/pieces/${data}/bishop-b.webp`}
+      alt="Black Bishop"
     />
   ),
   bN: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/juan-black.png`}
+      src= {`/assets/pieces/${data}/knight-b.webp`}
+      alt="Black Knight"
     />
   ),
   bP: ({ squareWidth }) => (
     <img
       style={{ width: squareWidth, height: squareWidth }}
-      src= {`/assets/piezas/${data}/peon-black.png`}
+      src= {`/assets/pieces/${data}/pawn-b.webp`}
+      alt="Black Pawn"
     />
   ),
 });
