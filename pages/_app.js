@@ -13,6 +13,7 @@ export default function MyApp({ Component, pageProps }) {
     <ThemeProvider>
       <GameProvider
         token={pageProps?.user?.token}
+        authorized={pageProps?.user?.player}
       >
         <ChessProvider>
           <Toaster position='top-right' />

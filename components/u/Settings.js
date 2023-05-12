@@ -8,7 +8,6 @@ import { mutate } from 'swr';
 
 
 export default function Settings({profile: user, boards, pieces}) {
-  console.log('pieces', pieces);
   const router = useRouter();
   const [board, setBoard] = useState(boards.find((b) => b.active).name);
   const [ptypes, setPTypes] = useState([pieces.find((b) => b.activeLight).name, pieces.find((b) => b.activeDark).name]);

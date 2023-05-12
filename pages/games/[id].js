@@ -8,7 +8,6 @@ import { useChess } from '@/context/ChessContext';
 import { whoami, getOrientation } from '@/lib/cmd';
 import ChessPiece from 'components/ChessPiece';
 
-
 const promotionPieces= [
   {name: 'q',
     key: 'queen',
@@ -25,7 +24,7 @@ const promotionPieces= [
 ];
 
 export default function Game({authorized, data, user}) {
-  const { setInQueue } = useChess();
+  const { setInQueue, customization } = useChess();
   const {
     game, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
@@ -112,7 +111,7 @@ export default function Game({authorized, data, user}) {
                           >
                             <ChessPiece
                               piece={piece.key}
-                              modelo='normal' // modelo=modelo
+                              modelo={customization?.whitePiece}
                               color={getOrientation(user.player)}
                             />
                           </div>

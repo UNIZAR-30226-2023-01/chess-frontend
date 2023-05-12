@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import { useRouter } from 'next/router';
 import { Chess } from 'chess.js';
 import _ from 'lodash';
+import toast from 'react-hot-toast';
 
 const GameContext = React.createContext();
 
@@ -10,11 +11,11 @@ export function useGame() {
   return useContext(GameContext);
 }
 
-export function GameProvider({token, children}) {
+export function GameProvider({token, authorized, children}) {
   const router = useRouter();
   const [socket, setSocket] = useState(null);
 
-  const [game, setGame] = useState(new Chess('rnb2bnr/p1P1kppp/8/4P3/4P3/8/PP4PP/RNB1KBNR b KQ - 0 12'));
+  const [game, setGame] = useState(new Chess());
   const [pausedgame, setPausedGame] = useState({});
   const [showPromotion, setShowPromotion] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
@@ -24,9 +25,9 @@ export function GameProvider({token, children}) {
   const [player, setPlayer] = useState();
 
   const updateGame = (fen) => {// 'rnb2bnr/p1P1kppp/8/4P3/4P3/8/PP4PP/RNB1KBNR b KQ - 0 12'
-    // if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1') {
-    // setGame(new Chess(fen));
-    // }
+    if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1') {
+      setGame(new Chess(fen));
+    }
   };
 
   useEffect(() => {
@@ -148,7 +149,7 @@ export function GameProvider({token, children}) {
       socket.emit('join_room', message);
       return;
     }
-
+    console.log(message);
     socket.emit('find_room', message);
   };
 
@@ -168,8 +169,24 @@ export function GameProvider({token, children}) {
     socket.emit('move', {'move': mov});
   };
 
+  const surrender = (mov) => {
+    socket.emit('surrender');
+    toast('Un titan nunca se rinde!!', {
+      icon: '👺',
+    });
+    router.push('/home');
+  };
+
   function onPieceDragBegin(piece, sourceSquare) {
     // Obtenemos los posibles movimientos de la pieza
+    let turn;
+    if (authorized === 'LIGHT') turn = 'w';
+    else if (authorized === 'DARK') turn ='b';
+
+    if (turn !== piece[0]) {
+      toast('Quieto viejo suelta esa pieza', { icon: '👺' });
+      return;
+    }
     const posibleMoves = game.moves({
       square: sourceSquare,
       verbose: true,
@@ -198,7 +215,13 @@ export function GameProvider({token, children}) {
     setLastMoveSquares({});
   }
 
-  function onDrop(sourceSquare, targetSquare) {
+  function onDrop(sourceSquare, targetSquare, piece) {
+    let turn;
+    if (authorized==='LIGHT') turn = 'w';
+    else if (authorized==='DARK') turn ='b';
+
+    if (turn !== piece[0]) return;
+
     try {
       const gameCopy = _.cloneDeep(game);
       const move = gameCopy.move({
@@ -206,6 +229,7 @@ export function GameProvider({token, children}) {
         to: targetSquare,
         promotion: 'q', // ponemos reina pero luego se modifica
       });
+
       if (move && move.promotion) {
         console.log('QUIERO PROMOCIONAR');
         setShowPromotion(true);
@@ -215,7 +239,6 @@ export function GameProvider({token, children}) {
 
       setGame(gameCopy);
       movePiece(move.lan);
-      console.log(game.fen());//
       setOptionSquares({
         sourceSquare: { background: cMov },
         targetSquare: { background: cMov },
@@ -278,6 +301,7 @@ export function GameProvider({token, children}) {
       onPromotion,
       setShowPromotion,
       showPromotion,
+      surrender,
     }}>
       {children}
     </GameContext.Provider>
