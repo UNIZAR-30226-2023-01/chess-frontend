@@ -113,7 +113,7 @@ export default function Game({authorized, data, user}) {
                             >
                               <ChessPiece
                                 piece={piece.key}
-                                modelo={customization?.whitePiece}
+                                modelo={(getOrientation(user.player) === 'w')?customization?.whitePiece:customization?.blackPiece}
                                 color={getOrientation(user.player)}
                               />
                             </div>
