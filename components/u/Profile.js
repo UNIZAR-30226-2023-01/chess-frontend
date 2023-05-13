@@ -35,13 +35,14 @@ export function Stats({
         )}
         {type === 'ranking' && (
           <div className="flex items-baseline text-xl font-semibold text-indigo-600">
-            {value[0]}
+            #{value[0]}
+            <span className="ml-1 text-sm font-medium text-gray-500 capitalize">{value[1]}</span>
             <span className="ml-1 text-xs font-medium text-gray-500 capitalize">{text[0]}</span>
           </div>
         )}
         {type === 'achievements' && (
           <div className="flex items-baseline text-xl font-semibold text-indigo-600">
-            {Math.floor(value[0]/ 13 * 100)}%
+            {Math.floor(value.reduce((count, obj) => count + (obj.achieved === true ? 1 : 0), 0) / value.length * 100)}%
             <span className="ml-1 text-xs font-medium text-gray-500 capitalize">Desbloqueados</span>
           </div>
         )}
@@ -129,18 +130,19 @@ export default function Profile({profile: user}) {
     text: ['bullet', 'blitz', 'fast'], type: 'victories',
   }, {
     name: 'Clasificación',
-    value: [user.elo],
+    value: [user.ranking, user.elo],
     text: [getElo(user.elo)], type: 'ranking',
   }, {
     name: 'Logros obtenidos',
-    value: [user.achievements.length],
+    value: user.achievements,
     text: ['fast'], type: 'achievements',
   }];
+
   const getKey = (pageIndex, previousPageData ) => {
     const filter = {
       $or: [
-        { darkId: String(user._id) },
-        { lightId: String(user._id) },
+        { darkId: String(user.id) },
+        { lightId: String(user.id) },
       ],
     };
     pageIndex = pageIndex + 1;

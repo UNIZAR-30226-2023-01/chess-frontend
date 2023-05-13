@@ -19,7 +19,6 @@ export default function Privacy() {
             list={subsection.list}
           />
         ))}
-
       </div>
     </div>
   );

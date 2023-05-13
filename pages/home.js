@@ -3,10 +3,14 @@ import Game from '@/components/Game';
 import useSWR from 'swr';
 import jwt from 'jsonwebtoken';
 
-const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
+const fetcher = (url) => fetch(url, {credentials: 'include'})
+    .then(async (res) => {
+      const data = await res.json();
+      return data?.data;
+    });
 
 export default function Home() {
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=30&filter={"gameType":"COMPETITIVE"}`, fetcher);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=30&filter={"gameType":"COMPETITIVE"}`, fetcher, { refreshInterval: 1000 * 60 * 3 });
   return (
     <div className="py-12 max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -19,7 +23,7 @@ export default function Home() {
       </div>
       <div className="mt-8 flex flex-col">
         <div className="flex flex-wrap gap-6 justify-items-center md:grid-cols-2 mt-6">
-          {data?.data.map((item) => <Game key={item.id} game={item}/>)}
+          {data?.map((item) => <Game key={item.id} game={item}/>)}
         </div>
       </div>
     </div>

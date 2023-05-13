@@ -40,7 +40,11 @@ export function GameProvider({token, authorized, children}) {
       });
 
       setSocket(socket);
+      console.log('socket created', socket);
     }
+  }, [token]);
+
+  useEffect(() => {
     if (!socket) return;
 
     socket.on('connect_error', (err) => {
@@ -58,10 +62,6 @@ export function GameProvider({token, authorized, children}) {
     socket.on('reconnect', () => {
       console.log('reconnected');
     });
-  }, [token]);
-
-  useEffect(() => {
-    if (!socket) return;
 
     // You found a room
     socket.on('room_created', (message) => {
@@ -111,6 +111,7 @@ export function GameProvider({token, authorized, children}) {
   }, [socket, player, game]);
 
   const findRoom = (gameType, options={}) => {
+    console.log('findRoom', gameType, options);
     const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM', 'JOINCUSTOM'];
     if (!gameTypesAllowed.includes(gameType)) {
       throw new Error('Invalid game type');
@@ -174,7 +175,20 @@ export function GameProvider({token, authorized, children}) {
     toast('Un titan nunca se rinde!!', {
       icon: '👺',
     });
-    router.push('/home');
+  };
+
+  const voteDraw = (mov) => {
+    socket.emit('vote_draw');
+    toast('Has pedido tablas', {
+      icon: '♟️',
+    });
+  };
+
+  const voteSave = (mov) => {
+    socket.emit('vote_save');
+    toast('Has pedido pausar el juego', {
+      icon: '🧃',
+    });
   };
 
   function onPieceDragBegin(piece, sourceSquare) {
@@ -302,6 +316,8 @@ export function GameProvider({token, authorized, children}) {
       setShowPromotion,
       showPromotion,
       surrender,
+      voteDraw,
+      voteSave,
     }}>
       {children}
     </GameContext.Provider>
