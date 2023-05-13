@@ -9,7 +9,7 @@ export function useChess() {
 export function ChessProvider({children}) {
   // ----- SEARCH -----
   // Para la creación de partidas
-  const [gameType, setGameType] = useState(null);
+  const [gameType, setGameType] = useState('AI');
   const [selModal, openSelModal] = useState(false);
   const [inQueue, setInQueue] = useState(false);
 

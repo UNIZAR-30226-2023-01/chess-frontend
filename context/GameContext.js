@@ -175,7 +175,20 @@ export function GameProvider({token, authorized, children}) {
     toast('Un titan nunca se rinde!!', {
       icon: '👺',
     });
-    router.push('/home');
+  };
+
+  const voteDraw = (mov) => {
+    socket.emit('vote_draw');
+    toast('Has pedido tablas', {
+      icon: '♟️',
+    });
+  };
+
+  const voteSave = (mov) => {
+    socket.emit('vote_save');
+    toast('Has pedido pausar el juego', {
+      icon: '🧃',
+    });
   };
 
   function onPieceDragBegin(piece, sourceSquare) {
@@ -303,6 +316,8 @@ export function GameProvider({token, authorized, children}) {
       setShowPromotion,
       showPromotion,
       surrender,
+      voteDraw,
+      voteSave,
     }}>
       {children}
     </GameContext.Provider>

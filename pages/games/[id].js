@@ -7,6 +7,7 @@ import { useGame } from '@/context/GameContext';
 import { useChess } from '@/context/ChessContext';
 import { whoami, getOrientation } from '@/lib/cmd';
 import ChessPiece from 'components/ChessPiece';
+import EndGameModal from '@/components/EndGameModal';
 
 const promotionPieces= [
   {name: 'q',
@@ -48,87 +49,90 @@ export default function Game({authorized, data, user}) {
   };
 
   return (
-    <div className="px-0 sm:px-6 lg:px-8 max-h-screen h-full max-w-5xl mx-auto flex items-start py-6 lg:py-10">
-      <div className='h-fit w-full grid grid-cols-4 sm:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 gap-y-4'>
-        <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4 flex  gap-x-4 md:gap-x-10 justify-center items-center'>
-          <Player
-            orientation='l'
-            avatar={data?.lightPlayer?.avatar}
-            username={getUsername('light')}
-            elo={data?.lightPlayer?.elo}
-          />
-          <Player
-            avatar={data?.darkPlayer?.avatar}
-            username={getUsername('dark')}
-            elo={data?.darkPlayer?.elo}
-          />
-        </div>
-        <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
-          <Tablero
-            orientation={getOrientation(user.player)}
-            game={game}
-            optionSquares={optionSquares}
-            lastMoveSquares={lastMoveSquares}
-            onPieceDragBegin={onPieceDragBegin}
-            onDrop={onDrop}
-          />
-          {showPromotion && (
-            <div className="fixed z-10 inset-0 overflow-y-auto">
-              <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div
-                  className="fixed inset-0 transition-opacity"
-                  aria-hidden="true"
-                  onClick={() => setShowPromotion(false)}
-                >
-                  <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-                </div>
-                <span
-                  className="hidden sm:inline-block sm:align-middle sm:h-screen"
-                  aria-hidden="true"
-                >
+    <>
+      <div className="px-0 sm:px-6 lg:px-8 max-h-screen h-full max-w-5xl mx-auto flex items-start py-6 lg:py-10">
+        <div className='h-fit w-full grid grid-cols-4 sm:grid-cols-5 md:grid-cols-4 lg:grid-cols-6 gap-y-4'>
+          <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4 flex  gap-x-4 md:gap-x-10 justify-center items-center'>
+            <Player
+              orientation='l'
+              avatar={data?.lightPlayer?.avatar}
+              username={getUsername('light')}
+              elo={data?.lightPlayer?.elo}
+            />
+            <Player
+              avatar={data?.darkPlayer?.avatar}
+              username={getUsername('dark')}
+              elo={data?.darkPlayer?.elo}
+            />
+          </div>
+          <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
+            <Tablero
+              orientation={getOrientation(user.player)}
+              game={game}
+              optionSquares={optionSquares}
+              lastMoveSquares={lastMoveSquares}
+              onPieceDragBegin={onPieceDragBegin}
+              onDrop={onDrop}
+            />
+            {showPromotion && (
+              <div className="fixed z-10 inset-0 overflow-y-auto">
+                <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                  <div
+                    className="fixed inset-0 transition-opacity"
+                    aria-hidden="true"
+                    onClick={() => setShowPromotion(false)}
+                  >
+                    <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
+                  </div>
+                  <span
+                    className="hidden sm:inline-block sm:align-middle sm:h-screen"
+                    aria-hidden="true"
+                  >
                   &#8203;
-                </span>
-                <div
-                  className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby="modal-headline"
-                >
-                  <div>
-                    <div className="mt-3 text-center sm:mt-5">
-                      <h3
-                        className="text-lg leading-6 font-medium text-gray-900"
-                        id="modal-headline"
-                      >
+                  </span>
+                  <div
+                    className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-labelledby="modal-headline"
+                  >
+                    <div>
+                      <div className="mt-3 text-center sm:mt-5">
+                        <h3
+                          className="text-lg leading-6 font-medium text-gray-900"
+                          id="modal-headline"
+                        >
                         Promocionar peón
-                      </h3>
-                      <div className="mt-2">
-                        {promotionPieces.map((piece) => (
-                          <div
-                            key={piece.key}
-                            className="inline-block cursor-pointer"
-                            onClick={() => onPromotion(piece.name)}
-                          >
-                            <ChessPiece
-                              piece={piece.key}
-                              modelo={customization?.whitePiece}
-                              color={getOrientation(user.player)}
-                            />
-                          </div>
-                        ))}
+                        </h3>
+                        <div className="mt-2">
+                          {promotionPieces.map((piece) => (
+                            <div
+                              key={piece.key}
+                              className="inline-block cursor-pointer"
+                              onClick={() => onPromotion(piece.name)}
+                            >
+                              <ChessPiece
+                                piece={piece.key}
+                                modelo={customization?.whitePiece}
+                                color={getOrientation(user.player)}
+                              />
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
+        <audio id="pieceSound">
+          <source src="/assets/audio/audio.mp3" type="audio/mp3" />
+        </audio>
       </div>
-      <audio id="pieceSound">
-        <source src="/assets/audio/audio.mp3" type="audio/mp3" />
-      </audio>
-    </div>
+      <EndGameModal open={false} setOpen={()=>{}}/>
+    </>
   );
 }
 

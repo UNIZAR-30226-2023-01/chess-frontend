@@ -10,7 +10,6 @@ import {useEnterKey} from '@/hooks/useKeyPress';
 import Tippy from '@tippyjs/react';
 import {
   BackspaceIcon,
-  HandRaisedIcon,
   FlagIcon,
   PauseIcon,
 } from '@heroicons/react/24/outline';
@@ -43,7 +42,7 @@ export default function DSidebar({user}) {
                   name="search"
                   id="search"
                   onChange={(e) => setOptions({ roomID: e.target.value })}
-                  placeholder='Room id ...'
+                  placeholder='Visualizar partida'
                   className="block bg-transparent w-full rounded-md border-0 py-2.5 pr-14 text-gray-300 shadow-sm ring-1 ring-inset ring-gray-300/20 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-300/20 sm:text-sm sm:leading-6"
                 />
                 <button
@@ -96,13 +95,13 @@ export default function DSidebar({user}) {
         {router.asPath.includes('game') && (
           <div className='py-3.5 flex items-center justify-between gap-x-3'>
             <Tippy
-              key={'Salir'}
+              key={'Rendirse'}
               placement='top'
               duration={0}
               arrow={true}
               content={
                 <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                Salir
+                Rendirse
                 </span>
               }
             >
@@ -141,21 +140,6 @@ export default function DSidebar({user}) {
             >
               <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
                 <PauseIcon className='w-5 h-5 mx-auto text-white' />
-              </button>
-            </Tippy>
-            <Tippy
-              key={'Saludar'}
-              placement='top'
-              duration={0}
-              arrow={true}
-              content={
-                <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                Saludar
-                </span>
-              }
-            >
-              <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
-                <HandRaisedIcon className='w-5 h-5 mx-auto text-white' />
               </button>
             </Tippy>
           </div>
