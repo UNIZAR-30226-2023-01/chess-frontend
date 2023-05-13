@@ -56,8 +56,8 @@ export default function Game({game}) {
             boardOrientation='white'
           />
         </div>
-        <div className="p-5 text-center">
-          <p className="text-lg font-medium text-gray-800 hover:underline dark:text-white capitalize">
+        <div className="py-2 text-center">
+          <p className="text-sm font-medium text-gray-800 hover:underline dark:text-white capitalize">
             {getUsername('light')} / {getUsername('dark')}
           </p>
           <time className="text-sm text-gray-500 dark:text-gray-300">

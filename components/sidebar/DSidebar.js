@@ -90,6 +90,14 @@ export default function DSidebar({user}) {
                 }
               </Link>
             ))}
+            <div className='w-full flex flex-col justify-center gap-y-1.5 py-4 items-center text-gray-200/30'>
+              <span className='text-sm font-semibold select-none'>
+                Volver al lobby
+              </span>
+              <kbd className="w-fit flex items-center font-semibold rounded border border-gray-200/20 px-1 font-sans text-sm text-gray-400/20">
+                ⌘ Alt+H
+              </kbd>
+            </div>
           </nav>
         </div>
         {router.asPath.includes('game') && (
