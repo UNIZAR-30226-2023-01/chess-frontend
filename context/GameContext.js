@@ -162,6 +162,10 @@ export function GameProvider({token, authorized, children}) {
     socket.emit('find_room', {gameType: 'CUSTOM', roomID});
   };
 
+  const joinMatchAsPlayer = (matchID) => {
+    socket.emit('find_room', {gameType: 'TOURNAMENT', matchID});
+  };
+
   const joinRoomAsSpectator = (roomID) => {
     socket.emit('join_room', {roomID});
   };
@@ -306,6 +310,7 @@ export function GameProvider({token, authorized, children}) {
       cancelSearch,
       joinRoomAsPlayer,
       joinRoomAsSpectator,
+      joinMatchAsPlayer,
       game,
       optionSquares,
       lastMoveSquares,

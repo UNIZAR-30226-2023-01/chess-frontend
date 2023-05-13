@@ -105,13 +105,14 @@ export default function Game({authorized, data, user}) {
                         Promocionar peón
                         </h3>
                         <div className="mt-2">
-                          {promotionPieces.map((piece) => (
+                          {promotionPieces.map((piece, id) => (
                             <div
                               key={piece.key}
                               className="inline-block cursor-pointer"
                               onClick={() => onPromotion(piece.name)}
                             >
                               <ChessPiece
+                                key={id}
                                 piece={piece.key}
                                 modelo={(getOrientation(user.player) === 'w')?customization?.whitePiece:customization?.blackPiece}
                                 color={getOrientation(user.player)}
