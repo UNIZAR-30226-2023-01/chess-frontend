@@ -276,7 +276,7 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(customization?.whitePiece)}
+                      customPieces={customPieces(customization?.whitePiece,customization?.blackPiece)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).darkColor }}
                       customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).lightColor }}
@@ -289,7 +289,7 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(pieces.find((i) => i.name === ptypes[0]).name)}
+                      customPieces={customPieces(pieces.find((i) => i.name === ptypes[0]).name,pieces.find((i) => i.name === ptypes[1]).name)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).darkColor }}
                       customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).lightColor }}
