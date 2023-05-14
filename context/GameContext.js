@@ -68,7 +68,6 @@ export function GameProvider({token, authorized, children}) {
 
     const handleRoomCreated = (message) => {
       console.log('room_created message', message);
-      console.log('room_created message holaaaaa');
       setGameType(message.gameType);
 
       toast((t) => (
@@ -136,9 +135,12 @@ export function GameProvider({token, authorized, children}) {
       console.log('voted_save message', message);
     };
 
+
     const handleError = (message) => {
       console.log('error message', message);
-    };
+      if(message.error === 'ALREADY_PLAYING') toast('Ya estas actualmente en una partida o en una cola para jugar.',{icon:'🥸'});
+      if(message.error === 'NOT_PLAYING_ANY_GAME')toast('No estas conectado a ninguna partida actualmente.',{icon:'🐦'});
+    }
 
     socket.on('connect_error', handleConnectError);
     socket.on('connect', handleConnect);
@@ -169,6 +171,10 @@ export function GameProvider({token, authorized, children}) {
     };
   }, [socket, player, game]);
 
+  const resumeMatch = (roomID) => {
+    console.log('Retomando partida : ',roomID);
+    socket.emit('resume', {gameID: roomID});
+  }
 
   const findRoom = (gameType, options={}) => {
     setOver(false);
@@ -320,7 +326,6 @@ export function GameProvider({token, authorized, children}) {
         [move.from]: { background: cMov },
         [move.to]: { background: cMov },
       });
-
       return true;
     } catch (error) {
       setOptionSquares({});
@@ -362,6 +367,7 @@ export function GameProvider({token, authorized, children}) {
     <GameContext.Provider value={{
       gameType,
       setGameType,
+      resumeMatch,
       findRoom,
       cancelSearch,
       joinRoomAsPlayer,

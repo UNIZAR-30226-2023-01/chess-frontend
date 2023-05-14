@@ -7,10 +7,13 @@ import useDateTimeFormat from '@/hooks/useDateTimeFormat';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { PlayIcon } from '@heroicons/react/24/outline';
+import { useGame } from '@/context/GameContext';
 
 export function Stats({
   name, value, text, type,
-}) {
+}) 
+{
   return (
     <div className="px-4 py-5 sm:p-6">
       <dt className="text-base font-medium text-gray-900">{name}</dt>
@@ -60,6 +63,7 @@ export function ExampleGame({
   updatedAt,
   state,
 }) {
+  const { resumeMatch } = useGame();
   const timeago = useTimeAgo(createdAt);
   const createdAtFormated = useDateTimeFormat(createdAt);
 
@@ -106,6 +110,17 @@ export function ExampleGame({
           </div>
         </div>
       </div>
+      {state == 'PAUSED' &&
+        <button
+          type="button"
+          className="z-10 absolute right-0 top-0 p-1 mt-2 mr-2 text-sm duration-300 font-semibold group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          onClick={() => {
+            resumeMatch(id);
+          }}
+        >
+          <PlayIcon className='w-6 h-6 text-black group-hover:text-blue-800 rounded' />
+        </button>
+      }
     </Link>
   );
 }
