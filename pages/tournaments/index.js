@@ -75,7 +75,7 @@ export default function Tournaments({user}) {
                     scope="col"
                     className="select-none py-3.5 pl-4 pr-3 text-left text-sm font-semibold capitalize text-gray-900 dark:text-white sm:pl-6 md:pl-0"
                   >
-                    ID
+                    Propietario
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold capitalize text-gray-900 dark:text-white">
                     Estado
@@ -99,15 +99,22 @@ export default function Tournaments({user}) {
                   return (
                     <tr key={item.id}>
                       <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0 flex items-center">
-                        <Badge text={`# ${item.id}`} className={'bg-gray-100 font-mono'} />
-                        {item.owner.includes(user.id) && !item.hasStarted &&
+                        {item.owner.id === user.id && !item.hasStarted &&
                           <button
                             type='button'
-                            className='group'
+                            className='group mr-1'
                           >
                             <Badge text={<TrashIcon className='w-4 h-4'/>} className={'font-base group-hover:text-red-600 duration-300'} />
                           </button>
                         }
+                        <Link href={`/u/${item.owner.id}`} className="flex items-center">
+                          <div className="h-8 w-8 flex-shrink-0">
+                            <img className="h-8 w-8 rounded-full" src={`/assets${item?.owner?.avatar}`} alt={user?.avatar} />
+                          </div>
+                          <div className="ml-4 flex items-center gap-x-2">
+                            <div className="text-gray-500 dark:text-gray-200 capitalize">{item?.owner?.username}</div>
+                          </div>
+                        </Link>
                       </td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">
                         <Badge className={`bg-${getState(item.finished, item.hasStarted)[0]}-100 text-${getState(item.finished, item.hasStarted)[0]}-600`} text={getState(item.finished, item.hasStarted)[1]} />

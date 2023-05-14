@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 import Layout from '@/components/Layout';
 import jwt from 'jsonwebtoken';
 
@@ -8,6 +9,11 @@ const Bracket = dynamic(
 );
 
 export default function Rounds({tournament, user}) {
+  useEffect(() => {
+    // Preload the component during the initial navigation
+    Bracket.preload();
+  }, []);
+
   const matches = tournament.matches.map((match) => {
     const participants = match.participants.map((participant) => {
       return {...participant, name: participant.username};
