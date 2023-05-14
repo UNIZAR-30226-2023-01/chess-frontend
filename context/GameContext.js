@@ -47,68 +47,89 @@ export function GameProvider({token, authorized, children}) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on('connect_error', (err) => {
+    const handleConnectError = (err) => {
       console.log(err.message);
-    });
+    };
 
-    socket.on('connect', () => {
+    const handleConnect = () => {
       console.log('connected');
-    });
+    };
 
-    socket.on('disconnect', () => {
+    const handleDisconnect = () => {
       console.log('disconnected');
-    });
+    };
 
-    socket.on('reconnect', () => {
+    const handleReconnect = () => {
       console.log('reconnected');
-    });
+    };
 
-    // You found a room
-    socket.on('room_created', (message) => {
+    const handleRoomCreated = (message) => {
       console.log('room_created message', message);
-    });
+    };
 
-    // You found a room
-    socket.on('room', (message) => {
+    const handleRoom = (message) => {
       console.log('room message', message);
       setPlayer(message.color);
       router.push(`/games/${message.roomID}`);
-    });
+    };
 
-    // You canceled the search
-    socket.on('cancelled', (message) => {
+    const handleCancelled = (message) => {
       console.log('canceled message', message);
-    });
+    };
 
-    // Someone moved a piece
-    socket.on('moved', (message) => {
+    const handleMoved = (message) => {
       console.log('moved message', message);
       if (!player) return;
       if (message.turn === player) {
         moved(message.move);
       }
-    });
+    };
 
-    // Game ended
-    socket.on('game_over', (message) => {
+    const handleGameOver = (message) => {
       console.log('game_over message', message);
-    });
+    };
 
-    // Someone requested a draw
-    socket.on('voted_draw', (message) => {
+    const handleVotedDraw = (message) => {
       console.log('voted_draw message', message);
-    });
+    };
 
-    // Someone requested a pause
-    socket.on('voted_save', (message) => {
+    const handleVotedSave = (message) => {
       console.log('voted_save message', message);
-    });
+    };
 
-    // An error occurred
-    socket.on('error', (message) => {
+    const handleError = (message) => {
       console.log('error message', message);
-    });
+    };
+
+    socket.on('connect_error', handleConnectError);
+    socket.on('connect', handleConnect);
+    socket.on('disconnect', handleDisconnect);
+    socket.on('reconnect', handleReconnect);
+    socket.on('room_created', handleRoomCreated);
+    socket.on('room', handleRoom);
+    socket.on('cancelled', handleCancelled);
+    socket.on('moved', handleMoved);
+    socket.on('game_over', handleGameOver);
+    socket.on('voted_draw', handleVotedDraw);
+    socket.on('voted_save', handleVotedSave);
+    socket.on('error', handleError);
+
+    return () => {
+      socket.off('connect_error', handleConnectError);
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
+      socket.off('reconnect', handleReconnect);
+      socket.off('room_created', handleRoomCreated);
+      socket.off('room', handleRoom);
+      socket.off('cancelled', handleCancelled);
+      socket.off('moved', handleMoved);
+      socket.off('game_over', handleGameOver);
+      socket.off('voted_draw', handleVotedDraw);
+      socket.off('voted_save', handleVotedSave);
+      socket.off('error', handleError);
+    };
   }, [socket, player, game]);
+
 
   const findRoom = (gameType, options={}) => {
     console.log('findRoom', gameType, options);
@@ -160,6 +181,10 @@ export function GameProvider({token, authorized, children}) {
 
   const joinRoomAsPlayer = (roomID) => {
     socket.emit('find_room', {gameType: 'CUSTOM', roomID});
+  };
+
+  const joinMatchAsPlayer = (matchID) => {
+    socket.emit('find_room', {gameType: 'TOURNAMENT', matchID});
   };
 
   const joinRoomAsSpectator = (roomID) => {
@@ -306,6 +331,7 @@ export function GameProvider({token, authorized, children}) {
       cancelSearch,
       joinRoomAsPlayer,
       joinRoomAsSpectator,
+      joinMatchAsPlayer,
       game,
       optionSquares,
       lastMoveSquares,

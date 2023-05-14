@@ -2,15 +2,38 @@ import Layout from '@/components/Layout';
 import Game from '@/components/Game';
 import useSWR from 'swr';
 import jwt from 'jsonwebtoken';
+// import useSWRInfinite from 'swr/infinite';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import {useState} from 'react';
 
-const fetcher = (url) => fetch(url, {credentials: 'include'})
+const fetcher = (url) => fetch(url, { credentials: 'include' })
     .then(async (res) => {
       const data = await res.json();
       return data?.data;
     });
+const PAGE_SIZE = 4; // Número de juegos por página
 
 export default function Home() {
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=30&filter={"gameType":"COMPETITIVE"}`, fetcher, { refreshInterval: 1000 * 60 * 3 });
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?&filter={"gameType":"COMPETITIVE","limit":${PAGE_SIZE},"skip":${(currentPage - 1) * PAGE_SIZE}}`, fetcher, { refreshInterval: 1000 * 60 * 3 });
+  const games = data?.flat();
+
+  const now = new Date();
+  const oneHourAgo = new Date(now.getTime() - 60 *60* 1000);
+
+  const lastHourGames = games?.filter((game) => {
+    const gameCreatedAt = new Date(game.createdAt);
+    return gameCreatedAt > oneHourAgo && gameCreatedAt <= now;
+  });
+  const lastHourGamesSorted = lastHourGames?.sort((a, b) => {
+    const aCreatedAt = new Date(a.createdAt);
+    const bCreatedAt = new Date(b.createdAt);
+    return bCreatedAt - aCreatedAt; // Ordenar de más reciente a más antigua
+  });
+  const handleLoadMore = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
   return (
     <div className="py-12 max-w-6xl mx-auto px-0 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
@@ -22,13 +45,20 @@ export default function Home() {
         </div>
       </div>
       <div className="mt-8 flex flex-col">
-        <div className="flex flex-wrap gap-6 justify-items-center md:grid-cols-2 mt-6">
-          {data?.map((item) => <Game key={item.id} game={item}/>)}
-        </div>
+        <InfiniteScroll
+          dataLength={lastHourGames?.length ?? 0}
+          next={handleLoadMore}
+          hasMore={data && data.length === PAGE_SIZE}
+        >
+          <div className="flex flex-wrap gap-6 justify-items-center md:grid-cols-2 mt-6">
+            {lastHourGamesSorted?.map((item) => <Game key={item.id} game={item} />)}
+          </div>
+        </InfiniteScroll>
       </div>
     </div>
   );
 }
+
 
 Home.getLayout = (page) => <Layout>{page}</Layout>;
 

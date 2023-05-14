@@ -147,11 +147,10 @@ export default function Profile({profile: user}) {
     };
     pageIndex = pageIndex + 1;
     if (previousPageData && !previousPageData.length) return null;
-    return `${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=24&page=${pageIndex + 1}&sort=-createdAt&filter=${encodeURIComponent(JSON.stringify(filter))}`;
+    return `${process.env.NEXT_PUBLIC_API_URL}/v1/games?limit=5&page=${pageIndex + 1}&sort=-createdAt&filter=${encodeURIComponent(JSON.stringify(filter))}`;
   };
   const { data } = useSWRInfinite(getKey, fetcher);
   const {data: games} = useSWR(user.games, fetcher);
-
   return (
     <>
       <ul className="flex flex-wrap justify-between gap-x-10">
@@ -189,7 +188,7 @@ export default function Profile({profile: user}) {
         <div className="mt-5 grid grid-cols-1 overflow-hidden rounded-lg md:grid-cols-3 gap-y-4 gap-x-4">
           {games?.map((item) => (
             <ExampleGame
-              key={item}
+              key={item.id}
               type={item.gameType}
               orientation={''}
               position={item.board}
