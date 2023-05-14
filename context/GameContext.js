@@ -16,6 +16,7 @@ export function GameProvider({token, authorized, children}) {
   const router = useRouter();
   const [socket, setSocket] = useState(null);
 
+  const [gameType, setGameType] = useState();
   const [game, setGame] = useState(new Chess());
   const [pausedgame, setPausedGame] = useState({});
   const [showPromotion, setShowPromotion] = useState(false);
@@ -67,6 +68,7 @@ export function GameProvider({token, authorized, children}) {
     const handleRoomCreated = (message) => {
       console.log('room_created message', message);
       console.log('room_created message holaaaaa');
+      setGameType(message.gameType);
       toast((t) => (
         <span className='flex items-center gap-x-2 whitespace-nowrap'>
           Partida con ID: <span className='bg-gray-100 text-gray-900 px-2 py-1 rounded-md text-sm uppercase font-semibold'>{message.roomID}</span> creada.
@@ -88,6 +90,7 @@ export function GameProvider({token, authorized, children}) {
     const handleRoom = (message) => {
       console.log('room message', message);
       setPlayer(message.color);
+      setGameType(message.gameType);
       router.push(`/games/${message.roomID}`);
     };
 
@@ -109,6 +112,21 @@ export function GameProvider({token, authorized, children}) {
 
     const handleVotedDraw = (message) => {
       console.log('voted_draw message', message);
+      toast((t) => (
+        <span className='flex items-center gap-x-2 whitespace-nowrap'>
+          Tu rival pide tablas.
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+            }}
+            className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Aceptar
+          </button>
+        </span>
+      ), {
+        duration: 1000 * 60,
+      });
     };
 
     const handleVotedSave = (message) => {
@@ -211,9 +229,7 @@ export function GameProvider({token, authorized, children}) {
 
   const surrender = (mov) => {
     socket.emit('surrender');
-    toast('Un titan nunca se rinde!!', {
-      icon: '👺',
-    });
+    toast('Te has rendido', { icon: '🐥' });
   };
 
   const voteDraw = (mov) => {
@@ -225,9 +241,8 @@ export function GameProvider({token, authorized, children}) {
 
   const voteSave = (mov) => {
     socket.emit('vote_save');
-    toast('Has pedido pausar el juego', {
-      icon: '🧃',
-    });
+    if (gameType === 'AI') toast('Has guardado la partida.', { icon: '🤖' });
+    else toast('Has pedido guardar la partida.', { icon: '👥' });
   };
 
   function onPieceDragBegin(piece, sourceSquare) {
@@ -341,6 +356,8 @@ export function GameProvider({token, authorized, children}) {
 
   return (
     <GameContext.Provider value={{
+      gameType,
+      setGameType,
       findRoom,
       cancelSearch,
       joinRoomAsPlayer,

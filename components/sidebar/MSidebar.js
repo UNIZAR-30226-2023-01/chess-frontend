@@ -10,10 +10,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import Dropdown from '@/components/Dropdowns';
-import Tippy from '@tippyjs/react';
+import GameButton from '@/components/GameButton';
 import {
   BackspaceIcon,
-  HandRaisedIcon,
   FlagIcon,
   PauseIcon,
 } from '@heroicons/react/24/outline';
@@ -28,8 +27,48 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
   const router = useRouter();
   const { switchModal } = useChess();
   const [options, setOptions] = useState({ roomID: ''});
-  const { joinRoomAsSpectator } = useGame();
+  const { gameType, joinRoomAsSpectator, surrender, voteDraw, voteSave } = useGame();
   const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, fetcher);
+
+  const iaButtons = [
+    {
+      text: 'rendirse',
+      onClick: () => surrender(),
+      icon: BackspaceIcon,
+    }, {
+      text: 'guardar',
+      onClick: () => voteSave(),
+      icon: PauseIcon,
+    },
+  ];
+
+  const competitiveButtons = [
+    {
+      text: 'rendirse',
+      onClick: () => surrender(),
+      icon: BackspaceIcon,
+    }, {
+      text: 'tablas',
+      onClick: () => voteDraw(),
+      icon: FlagIcon,
+    },
+  ];
+
+  const customButtons = [
+    {
+      text: 'rendirse',
+      onClick: () => surrender(),
+      icon: BackspaceIcon,
+    }, {
+      text: 'tablas',
+      onClick: () => voteDraw(),
+      icon: FlagIcon,
+    }, {
+      text: 'guardar',
+      onClick: () => voteSave(),
+      icon: PauseIcon,
+    },
+  ];
 
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
@@ -138,66 +177,36 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                 </div>
                 {router.asPath.includes('game') && (
                   <div className='py-3.5 flex items-center justify-between gap-x-3'>
-                    <Tippy
-                      key={'Salir'}
-                      placement='top'
-                      duration={0}
-                      arrow={true}
-                      content={
-                        <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                          Salir
-                        </span>
-                      }
-                    >
-                      <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
-                        <BackspaceIcon className='w-5 h-5 mx-auto text-white' />
-                      </button>
-                    </Tippy>
-                    <Tippy
-                      key={'Tablas'}
-                      placement='top'
-                      duration={0}
-                      arrow={true}
-                      content={
-                        <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                          Solicitar tablas
-                        </span>
-                      }
-                    >
-                      <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
-                        <FlagIcon className='w-5 h-5 mx-auto text-white' />
-                      </button>
-                    </Tippy>
-                    <Tippy
-                      key={'Solicitar pausa'}
-                      placement='top'
-                      duration={0}
-                      arrow={true}
-                      content={
-                        <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                          Solicitar pausa
-                        </span>
-                      }
-                    >
-                      <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
-                        <PauseIcon className='w-5 h-5 mx-auto text-white' />
-                      </button>
-                    </Tippy>
-                    <Tippy
-                      key={'Saludar'}
-                      placement='top'
-                      duration={0}
-                      arrow={true}
-                      content={
-                        <span className="bg-white text-gray-900 tracking-wide font-medium text-xs py-1 px-2 rounded-md">
-                          Saludar
-                        </span>
-                      }
-                    >
-                      <button className='flex-1 p-2 border rounded-lg hover:bg-gray-50/20 duration-300'>
-                        <HandRaisedIcon className='w-5 h-5 mx-auto text-white' />
-                      </button>
-                    </Tippy>
+                    {gameType === 'AI' && (
+                      iaButtons.map((item, id) => (
+                        <GameButton
+                          key={item.id}
+                          onClick={() => item.onClick()}
+                          text={item.text}
+                          Icon={item.icon}
+                        />
+                      ))
+                    )}
+                    {gameType === 'COMPETITIVE' && (
+                      competitiveButtons.map((item, id) => (
+                        <GameButton
+                          key={item.id}
+                          onClick={() => item.onClick()}
+                          text={item.text}
+                          Icon={item.icon}
+                        />
+                      ))
+                    )}
+                    {gameType === 'CUSTOM' && (
+                      customButtons.map((item, id) => (
+                        <GameButton
+                          key={item.id}
+                          onClick={() => item.onClick()}
+                          text={item.text}
+                          Icon={item.icon}
+                        />
+                      ))
+                    )}
                   </div>
                 )}
                 <div className="flex flex-col flex-shrink-0 border-gray-200 py-4">
