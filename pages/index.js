@@ -1,15 +1,20 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import ScrollTrigger from 'react-scroll-trigger';
+import CountUp from '@/components/CountUp';
+import { useState } from 'react';
 
 const stats = [
-  { id: 1, name: 'Jugadores registrados', value: '8,000+' },
-  { id: 2, name: 'Partidas diarias', value: '100+' },
+  { id: 1, name: 'Jugadores registrados', value: '8000+' },
+  { id: 2, name: 'Partidas diarias', value: '750+' },
   { id: 3, name: 'Torneos diarios', value: '200+' },
-  { id: 4, name: 'Garantía de disponibilidad', value: '99.9%' },
+  { id: 4, name: 'Garantía de disponibilidad', value: '99%' },
 ];
 
 export default function Index({logged}) {
+  const [inView, setInView] = useState(false);
+
   return (
     <div className="relative isolate bg-white">
       <svg
@@ -96,14 +101,18 @@ export default function Index({logged}) {
               Algunos números sorprendentes de nuestra plataforma de ajedrez.
               </p>
             </div>
-            <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map((stat) => (
-                <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
-                  <dt className="text-sm font-semibold leading-6 text-gray-600">{stat.name}</dt>
-                  <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900">{stat.value}</dd>
-                </div>
-              ))}
-            </dl>
+            <ScrollTrigger onEnter={() => setInView(true)} onExit={() => setInView(false)}>
+              <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+                {stats.map((stat) => (
+                  <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
+                    <dt className="text-sm font-semibold leading-6 text-gray-600">{stat.name}</dt>
+                    <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900">
+                      {inView && <CountUp start={0} end={Number(stat.value.match(/\d+/)[0])} timer={10} symbol={stat.value.match(/\D+/)[0]}/>}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </ScrollTrigger>
           </div>
         </div>
       </div>
