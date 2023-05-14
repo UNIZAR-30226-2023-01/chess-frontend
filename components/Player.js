@@ -1,10 +1,29 @@
-import { useTimer } from 'react-timer-hook';
+import React, {useState, useEffect} from 'react';
 
-export default function Player({avatar, username, elo, orientation='r', turn }) {
-  const time = new Date();
-  const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
-  const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
+export default function Player({avatar, username, elo, orientation='r', turn, time }) {
+  const [timer, setTimer] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
+  useEffect(() => {
+    if(turn){
+      setTimer(time);
+      setIsRunning(true);
+    } else {
+      setIsRunning(false);
+    }
+  }, [turn]);
+
+
+  useEffect(() => {
+    let intervalId;
+    if (isRunning) {
+      intervalId = setInterval(() => {
+        setTimer((timer) => timer - 1);
+      }, 1000);
+    }
+
+    return () => clearInterval(intervalId);
+  }, [isRunning]);
   return (
     <div className="w-fit mx-auto">
       <div className='flex flex-col gap-y-6 max-w-3xl'>
@@ -28,13 +47,9 @@ export default function Player({avatar, username, elo, orientation='r', turn }) 
                   alt="avatar image"
                 />
                 <div className='absolute bottom-0 left-0 w-full h-full z-20 border-b-2 rounded-2xl flex items-end justify-center text-lg font-bold font-mono bg-gradient-to-t from-white/50 via-white/20 to-transparent'>
-                  {turn && <span>
-                    {minutes.toString().padStart(2, '0')}
-                  </span>}
-                  <span>:</span>
-                  {turn && <span>
-                    {seconds.toString().padStart(2, '0')}
-                  </span>}
+                  <span>
+                  {Math.floor(timer / 60)}:{(timer % 60).toFixed(0).toString().padStart(2, '0')}
+                  </span>
                 </div>
               </div>
               {orientation === 'r' &&
