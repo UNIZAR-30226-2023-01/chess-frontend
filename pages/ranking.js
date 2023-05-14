@@ -5,6 +5,7 @@ import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid
 import useSWR from 'swr';
 import { getElo } from '@/lib/elo';
 import jwt from 'jsonwebtoken';
+import Badge from '@/components/Badge';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
@@ -58,9 +59,7 @@ export default function Ranking() {
                 {data?.data.map((user, index) => (
                   <tr key={user.id}>
                     <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
-                      <span className='px-2 py-1 rounded-md bg-gray-100 font-medium'>
-                        # {(pageIndex - 1) * 10 + index + 1}
-                      </span>
+                      <Badge text={`# ${(pageIndex - 1) * 10 + index + 1}`} className={'bg-gray-100 font-mono'}/>
                     </td>
                     <td className="select-none whitespace-nowrap py-4 px-3 text-sm text-gray-500 dark:text-gray-200">
                       <Link href={`/u/${user.id}`} className="flex items-center">

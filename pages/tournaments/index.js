@@ -99,9 +99,7 @@ export default function Tournaments({user}) {
                   return (
                     <tr key={item.id}>
                       <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
-                        <span className='px-2 py-1 rounded-md bg-gray-100 font-medium'>
-                        # {item.id}
-                        </span>
+                        <Badge text={`# ${item.id}`} className={'bg-gray-100 font-mono'}/>
                       </td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">
                         <Badge className={`bg-${getState(item.finished, item.hasStarted)[0]}-100 text-${getState(item.finished, item.hasStarted)[0]}-600`} text={getState(item.finished, item.hasStarted)[1]} />
