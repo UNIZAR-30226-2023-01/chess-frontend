@@ -30,6 +30,7 @@ export default function Game({authorized, data, user}) {
     game, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
     onPromotion, setShowPromotion, showPromotion,
+    over,
   } = useGame();
 
   useEffect(() => {
@@ -114,7 +115,7 @@ export default function Game({authorized, data, user}) {
                               <ChessPiece
                                 key={id}
                                 piece={piece.key}
-                                modelo={(getOrientation(user.player) === 'w')?customization?.whitePiece:customization?.blackPiece}
+                                modelo={getOrientation(customization?.whitePiece,customization?.blackPiece)}
                                 color={getOrientation(user.player)}
                               />
                             </div>
@@ -132,7 +133,7 @@ export default function Game({authorized, data, user}) {
           <source src="/assets/audio/audio.mp3" type="audio/mp3" />
         </audio>
       </div>
-      <EndGameModal open={false} setOpen={()=>{}}/>
+      <EndGameModal show = {over[0]} setOpen={()=>{}} endGame={over[1]} winner={over[2]} player={user.Player}/>
     </>
   );
 }

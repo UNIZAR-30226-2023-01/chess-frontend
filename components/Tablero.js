@@ -23,7 +23,7 @@ export default function Tablero({
         onPieceDragBegin={onPieceDragBegin}
         animationDuration={400}
         boardOrientation={orientation}
-        customPieces={customPieces((orientation === 'w') ? customization?.whitePiece:customization?.blackPiece)}
+        customPieces={customPieces(customization?.whitePiece, customization?.blackPiece)}
         customSquareStyles={{
           ...optionSquares,
           ...lastMoveSquares,

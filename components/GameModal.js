@@ -36,10 +36,10 @@ const times = [
 ];
 
 const levels = [
-  {name: 'facil', value: 1},
-  {name: 'intermedio', value: 2},
-  {name: 'dificil', value: 3},
-  {name: 'buena suerte', value: 4},
+  {name: 'facil', value: 0},
+  {name: 'intermedio', value: 1},
+  {name: 'dificil', value: 2},
+  {name: 'buena suerte', value: 3},
 ];
 
 const pieces = [

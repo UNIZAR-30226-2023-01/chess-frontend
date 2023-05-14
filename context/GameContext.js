@@ -22,11 +22,12 @@ export function GameProvider({token, authorized, children}) {
   const [showPromotion, setShowPromotion] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
+  const [over, setOver] = useState([false])
   const cMov = 'rgba(255, 255, 0, 0.4)';
 
   const [player, setPlayer] = useState();
 
-  const updateGame = (fen) => {// 'rnb2bnr/p1P1kppp/8/4P3/4P3/8/PP4PP/RNB1KBNR b KQ - 0 12'
+  const updateGame = (fen) => {// '4r1r1/1Rn5/P1k5/3p1p1p/R5pP/4K1P1/8/8 w - - 4 41'
     if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1') {
       setGame(new Chess(fen));
     }
@@ -69,6 +70,7 @@ export function GameProvider({token, authorized, children}) {
       console.log('room_created message', message);
       console.log('room_created message holaaaaa');
       setGameType(message.gameType);
+
       toast((t) => (
         <span className='flex items-center gap-x-2 whitespace-nowrap'>
           Partida con ID: <span className='bg-gray-100 text-gray-900 px-2 py-1 rounded-md text-sm uppercase font-semibold'>{message.roomID}</span> creada.
@@ -108,8 +110,9 @@ export function GameProvider({token, authorized, children}) {
 
     const handleGameOver = (message) => {
       console.log('game_over message', message);
+      const resul = ['CHECKMATE', 'TIMEOUT', 'DRAW', 'SURRENDER'].includes(message.endState);
+      setOver([resul,message.endState,message.winner]);
     };
-
     const handleVotedDraw = (message) => {
       console.log('voted_draw message', message);
       toast((t) => (
@@ -168,6 +171,7 @@ export function GameProvider({token, authorized, children}) {
 
 
   const findRoom = (gameType, options={}) => {
+    setOver(false);
     console.log('findRoom', gameType, options);
     const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM', 'JOINCUSTOM'];
     if (!gameTypesAllowed.includes(gameType)) {
@@ -375,6 +379,7 @@ export function GameProvider({token, authorized, children}) {
       surrender,
       voteDraw,
       voteSave,
+      over,
     }}>
       {children}
     </GameContext.Provider>
