@@ -114,8 +114,8 @@ export default function GameModal() {
                           key={tab.name}
                           onClick={() => setGameType(tab.value)}
                           className={classNames(
-                        tab.value === gameType ? 'text-indigo-700' : 'text-gray-500 hover:text-gray-700',
-                        'rounded-md px-3 py-2.5 text-sm font-medium bg-white shadow-lg flex-1 mb-3',
+                            tab.value === gameType ? 'text-indigo-700' : 'text-gray-500 hover:text-gray-700',
+                            'rounded-md px-3 py-2.5 text-sm font-medium bg-white shadow-lg flex-1 mb-3',
                           )}
                           aria-current={tab.value === gameType ? 'page' : undefined}
                         >
@@ -128,6 +128,7 @@ export default function GameModal() {
                 <div className='bg-white rounded-lg px-4 pb-4 pt-5 text-left shadow-xl sm:p-6'>
                   <div className='flex flex-col space-y-1'>
                     <ListBox
+                      key="Tiempo"
                       label="Tiempo"
                       items={times}
                       setter={(value) => setTime(value)}
@@ -135,6 +136,7 @@ export default function GameModal() {
                     />
                     {gameType === 'AI' && (
                       <ListBox
+                        key="Dificultad"
                         label="Dificultad"
                         items={levels}
                         setter={(value) => setLevel(value)}
@@ -144,12 +146,14 @@ export default function GameModal() {
                     {(gameType === 'AI' || gameType === 'CUSTOM') && (
                       <>
                         <ListBox
+                          key="Set piezas"
                           label="Set piezas"
                           items={pieces}
                           setter={(value) => setColor(value)}
                           defaultValue={pieces[0].value}
                         />
                         <InputLabel
+                          key="Incremento"
                           id='number'
                           label='Incremento'
                           type='number'
