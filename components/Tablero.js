@@ -13,7 +13,8 @@ export default function Tablero({
   const { customization } = useChess();
 
   return (
-    <div className='w-full bg-white/20'>
+    <div className='w-full bg-white/20 relative h-full'>
+      
       <Chessboard
         id="BasicBoard"
         position={game.fen()}
