@@ -1,6 +1,6 @@
 import { useTimer } from 'react-timer-hook';
 
-export default function Player({avatar, username, elo, orientation='r'}) {
+export default function Player({avatar, username, elo, orientation='r', turn }) {
   const time = new Date();
   const expiryTimestamp = time.setSeconds(time.getSeconds() + 300); // 5 minutes
   const { seconds, minutes } = useTimer({expiryTimestamp, onExpire: () => console.warn('onExpire called') });
@@ -28,13 +28,13 @@ export default function Player({avatar, username, elo, orientation='r'}) {
                   alt="avatar image"
                 />
                 <div className='absolute bottom-0 left-0 w-full h-full z-20 border-b-2 rounded-2xl flex items-end justify-center text-lg font-bold font-mono bg-gradient-to-t from-white/50 via-white/20 to-transparent'>
-                  <span>
+                  {turn && <span>
                     {minutes.toString().padStart(2, '0')}
-                  </span>
+                  </span>}
                   <span>:</span>
-                  <span>
+                  {turn && <span>
                     {seconds.toString().padStart(2, '0')}
-                  </span>
+                  </span>}
                 </div>
               </div>
               {orientation === 'r' &&
