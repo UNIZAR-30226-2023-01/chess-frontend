@@ -160,19 +160,21 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                         </>
                       )}
                     </Disclosure>
-                    {navigation.map((item, id) => (
-                      <Link
-                        key={id}
-                        href={item.href}
-                        className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-                      >
-                        <item.icon
-                          className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </Link>
-                    ))}
+                    {navigation
+                        .filter((item) => user.username !== 'guest' ? true : item.name === 'Jugar partida')
+                        .map((item, id) => (
+                          <Link
+                            key={id}
+                            href={item.href}
+                            className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
+                          >
+                            <item.icon
+                              className='text-gray-200  mr-3 flex-shrink-0 h-5 w-5'
+                              aria-hidden="true"
+                            />
+                            {item.name}
+                          </Link>
+                        ))}
                   </nav>
                 </div>
                 {router.asPath.includes('game') && (

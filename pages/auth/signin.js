@@ -43,6 +43,27 @@ export default function Login() {
     });
   };
 
+  const handleSignInGuest = () => {
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/sign-in`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: 'guest',
+          password: '12345678',
+        }),
+      })
+          .then((res) => {
+            if (res.ok && res.status === 200) resolve('ok');
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch(() => reject(new Error('Network response was not ok.')));
+    });
+  };
+
   return (
     <div className="flex min-h-screen flex-col justify-around sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -96,12 +117,30 @@ export default function Login() {
               </div>
             </div>
 
-            <div>
+            <div className='space-y-2'>
               <button
                 type="submit"
                 className="capitalize flex w-full justify-center rounded-sm border border-transparent bg-emerald/80 hover:bg-emerald/90 duration-300 py-4 px-4 text-sm font-medium text-white shadow-sm focus:outline-none"
               >
                   continuar
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  toast.promise(
+                      handleSignInGuest(e),
+                      {
+                        loading: 'Cargando el perfil...',
+                        success: 'Bienvenido, esperemos que disfrutes.',
+                        error: 'Error al cargar el perfil.',
+                      },
+                  )
+                      .then(() => router.push('/home'))
+                      .catch((err) => console.error(err));
+                }}
+                className="capitalize flex w-full justify-center rounded-sm border border-transparent bg-gray-400/80 hover:bg-gray-400/90 duration-300 py-4 px-4 text-sm font-medium text-white shadow-sm focus:outline-none"
+              >
+                Entrar como invitado
               </button>
             </div>
 

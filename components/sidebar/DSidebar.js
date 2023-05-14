@@ -112,24 +112,26 @@ export default function DSidebar({user}) {
                 ⌘ Alt+J
               </kbd>
             </button>
-            {navigation.map((item, id) => (
-              <Link
-                key={id}
-                href={item.href}
-                className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-              >
-                <item.icon
-                  className='text-gray-200 mr-3 flex-shrink-0 h-5 w-5'
-                  aria-hidden="true"
-                />
-                {item.name}
-                {item?.key &&
+            {navigation
+                .filter((item) => user.username !== 'guest' ? true : item.name === 'Jugar partida')
+                .map((item, id) => (
+                  <Link
+                    key={id}
+                    href={item.href}
+                    className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
+                  >
+                    <item.icon
+                      className='text-gray-200 mr-3 flex-shrink-0 h-5 w-5'
+                      aria-hidden="true"
+                    />
+                    {item.name}
+                    {item?.key &&
                   <kbd className="absolute right-0 inline-flex mr-5 items-center rounded border border-gray-200/20 px-1 font-sans text-sm text-gray-400/20">
                     ⌘ {item.key}
                   </kbd>
-                }
-              </Link>
-            ))}
+                    }
+                  </Link>
+                ))}
             <div className='w-full flex flex-col justify-center gap-y-1.5 py-4 items-center text-gray-200/30'>
               <span className='text-sm font-semibold select-none'>
                 Volver al lobby

@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 
 export default function CountUp({start = 0, end, timer = 50, symbol}) {
   const [state, setState] = useState(null);
@@ -6,7 +6,7 @@ export default function CountUp({start = 0, end, timer = 50, symbol}) {
 
   const accumulator = end / 200;
 
-  const updateCounterState = () => {
+  const updateCounterState = useCallback(() => {
     if (ref.current < end) {
       const result = Math.ceil(ref.current + accumulator);
       if (result > end) return setState(end);
@@ -14,7 +14,7 @@ export default function CountUp({start = 0, end, timer = 50, symbol}) {
       ref.current = result;
     }
     setTimeout(updateCounterState, timer);
-  };
+  }, [end, ref, setState, accumulator, timer]);
 
   useEffect(() => {
     let isMounted = true;

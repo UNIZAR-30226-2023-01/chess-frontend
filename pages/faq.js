@@ -59,9 +59,14 @@ FAQ.getLayout = (page) => {
 };
 
 export async function getServerSideProps({req}) {
-  const newQueryString = req.headers.cookie.replace(/;/g, '&');
-  const cookies = new URLSearchParams(newQueryString);
-  const token = cookies.get('api-auth');
+  let token = null;
+  try {
+    const newQueryString = req.headers.cookie.replace(/;/g, '&');
+    const cookies = new URLSearchParams(newQueryString);
+    token = cookies.get('api-auth');
+  } catch (err) {
+    console.error(err);
+  }
 
   return {
     props: {
