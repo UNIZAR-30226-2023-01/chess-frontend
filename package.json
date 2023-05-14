@@ -25,6 +25,7 @@
     "@vercel/analytics": "^1.0.1",
     "chess.js": "^1.0.0-beta.3",
     "cm-chessboard": "^5.4.8",
+    "copy-to-clipboard": "^3.3.3",
     "eslint-config-next": "13.1.6",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.0",

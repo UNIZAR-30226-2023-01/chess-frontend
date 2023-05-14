@@ -171,7 +171,7 @@ export default function GameModal() {
                       onClick={() => {
                         findRoom(gameType, options);
                         setOpen();
-                        if (gameType === 'COMPETITIVE') {
+                        if (gameType === 'COMPETITIVE' | gameType === 'CUSTOM') {
                           setInQueue(true);
                         }
                       }}

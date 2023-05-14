@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import { useRouter } from 'next/router';
 import { Chess } from 'chess.js';
 import _ from 'lodash';
+import copy from 'copy-to-clipboard';
 import toast from 'react-hot-toast';
 
 const GameContext = React.createContext();
@@ -65,6 +66,23 @@ export function GameProvider({token, authorized, children}) {
 
     const handleRoomCreated = (message) => {
       console.log('room_created message', message);
+      console.log('room_created message holaaaaa');
+      toast((t) => (
+        <span className='flex items-center gap-x-2 whitespace-nowrap'>
+          Partida con ID: <span className='bg-gray-100 text-gray-900 px-2 py-1 rounded-md text-sm uppercase font-semibold'>{message.roomID}</span> creada.
+          <button
+            onClick={() => {
+              copy(message.roomID, { debug: false, format: 'text/plain' });
+              toast.dismiss(t.id);
+            }}
+            className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Compartir
+          </button>
+        </span>
+      ), {
+        duration: 1000 * 60,
+      });
     };
 
     const handleRoom = (message) => {
@@ -163,11 +181,7 @@ export function GameProvider({token, authorized, children}) {
         hostColor: options?.hostColor ?? 'LIGHT',
       };
     } else if (gameType === 'JOINCUSTOM') {
-      message = options?.roomID ?
-      {gameType: 'CUSTOM', roomID: options.roomID}:
-      {
-
-      };
+      message = options?.roomID ? {gameType: 'CUSTOM', roomID: options.roomID} : {};
       socket.emit('join_room', message);
       return;
     }
