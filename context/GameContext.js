@@ -23,18 +23,19 @@ export function GameProvider({token, authorized, children}) {
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
   const [over, setOver] = useState([false]);
-  const [turn, setTurn] = useState('w');
-  // const [lightTimer, setLTimer] = useState('w');
-  // const [darkTimer, setDTimer] = useState('w');
+  const [turn, setTurn] = useState();
+  const [timer, setTimer] = useState([300, 300]);
+
   const cMov = 'rgba(255, 255, 0, 0.4)';
 
   const [player, setPlayer] = useState();
 
-  const updateGame = (fen) => {// '4r1r1/1Rn5/P1k5/3p1p1p/R5pP/4K1P1/8/8 w - - 4 41'
-    if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1') {
+  const updateGame = (fen) => {
+    if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
       setGame(new Chess(fen));
     }
   };
+
 
   useEffect(() => {
     if (!socket) {
@@ -95,6 +96,8 @@ export function GameProvider({token, authorized, children}) {
       console.log('room message', message);
       setPlayer(message.color);
       setGameType(message.gameType);
+      setTurn(message.turn);
+      setTimer([message.timerLight/1000, message.timerDark/1000]);
       router.push(`/games/${message.roomID}`);
     };
 
@@ -104,6 +107,8 @@ export function GameProvider({token, authorized, children}) {
 
     const handleMoved = (message) => {
       console.log('moved message', message);
+      setTimer([message.timerLight/1000, message.timerDark/1000]);
+      setTurn(message.turn);
       if (!player) return;
       if (message.turn === player) {
         moved(message.move);
@@ -113,6 +118,7 @@ export function GameProvider({token, authorized, children}) {
     const handleGameOver = (message) => {
       console.log('game_over message', message);
       const resul = ['CHECKMATE', 'TIMEOUT', 'DRAW', 'SURRENDER'].includes(message.endState);
+      setGame(new Chess());
       setOver([resul, message.endState, message.winner]);
     };
     const handleVotedDraw = (message) => {
@@ -178,6 +184,7 @@ export function GameProvider({token, authorized, children}) {
     console.log('Retomando partida : ', roomID);
     socket.emit('resume', {gameID: roomID});
   };
+
 
   const findRoom = (gameType, options={}) => {
     setOver(false);
@@ -259,12 +266,13 @@ export function GameProvider({token, authorized, children}) {
   };
 
   function onPieceDragBegin(piece, sourceSquare) {
+    console.log(game);
     // Obtenemos los posibles movimientos de la pieza
-    let turn;
-    if (authorized === 'LIGHT') turn = 'w';
-    else if (authorized === 'DARK') turn ='b';
+    let who;
+    if (authorized === 'LIGHT') who = 'w';
+    else if (authorized === 'DARK') who ='b';
 
-    if (turn !== piece[0]) {
+    if (who !== piece[0]) {
       toast('Quieto viejo suelta esa pieza', { icon: '👺' });
       return;
     }
@@ -297,11 +305,11 @@ export function GameProvider({token, authorized, children}) {
   }
 
   function onDrop(sourceSquare, targetSquare, piece) {
-    let turn;
-    if (authorized==='LIGHT') turn = 'w';
-    else if (authorized==='DARK') turn ='b';
+    let who;
+    if (authorized==='LIGHT') who = 'w';
+    else if (authorized==='DARK') who ='b';
 
-    if (turn !== piece[0]) return;
+    if (who !== piece[0]) return;
 
     try {
       const gameCopy = _.cloneDeep(game);
@@ -319,6 +327,7 @@ export function GameProvider({token, authorized, children}) {
       }
 
       setGame(gameCopy);
+      console.log('onDrop ', game);
       movePiece(move.lan);
       setOptionSquares({
         sourceSquare: { background: cMov },
@@ -329,8 +338,6 @@ export function GameProvider({token, authorized, children}) {
         [move.from]: { background: cMov },
         [move.to]: { background: cMov },
       });
-      if (turn==='w') setTurn('b');
-      else if (turn==='b') setTurn('w');
       return true;
     } catch (error) {
       setOptionSquares({});
@@ -362,6 +369,7 @@ export function GameProvider({token, authorized, children}) {
         [move.to]: { background: cMov },
       });
       setGame(game);
+      console.log('su move', game);
       return true;
     } catch (error) {
       return false;
@@ -392,6 +400,7 @@ export function GameProvider({token, authorized, children}) {
       voteSave,
       over,
       turn,
+      timer,
     }}>
       {children}
     </GameContext.Provider>

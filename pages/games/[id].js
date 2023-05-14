@@ -30,8 +30,9 @@ export default function Game({authorized, data, user}) {
     game, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
     onPromotion, setShowPromotion, showPromotion,
-    over, turn,
+    over, turn, timer,
   } = useGame();
+
 
   useEffect(() => {
     updateGame(data.board);
@@ -59,13 +60,15 @@ export default function Game({authorized, data, user}) {
               avatar={data?.lightPlayer?.avatar}
               username={getUsername('light')}
               elo={data?.lightPlayer?.elo}
-              turn={turn==='w'}
+              turn={turn === 'LIGHT'}
+              time ={timer[0] ?? 300}
             />
             <Player
               avatar={data?.darkPlayer?.avatar}
               username={getUsername('dark')}
               elo={data?.darkPlayer?.elo}
-              turn={turn==='b'}
+              turn={turn === 'DARK'}
+              time ={timer[1] ?? 300}
             />
           </div>
           <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
