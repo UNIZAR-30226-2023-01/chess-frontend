@@ -4,7 +4,7 @@ import useSWR, { mutate } from 'swr';
 import Layout from '@/components/Layout';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid';
+import { ArrowLongLeftIcon, ArrowLongRightIcon, TrashIcon } from '@heroicons/react/24/outline';
 import TournamentModal from '@/components/TournamentModal';
 import Badge from '@/components/Badge';
 
@@ -98,8 +98,16 @@ export default function Tournaments({user}) {
                 {data?.data.map((item) => {
                   return (
                     <tr key={item.id}>
-                      <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
-                        <Badge text={`# ${item.id}`} className={'bg-gray-100 font-mono'}/>
+                      <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0 flex items-center">
+                        <Badge text={`# ${item.id}`} className={'bg-gray-100 font-mono'} />
+                        {item.owner.includes(user.id) && !item.hasStarted &&
+                          <button
+                            type='button'
+                            className='group'
+                          >
+                            <Badge text={<TrashIcon className='w-4 h-4'/>} className={'font-base group-hover:text-red-600 duration-300'} />
+                          </button>
+                        }
                       </td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">
                         <Badge className={`bg-${getState(item.finished, item.hasStarted)[0]}-100 text-${getState(item.finished, item.hasStarted)[0]}-600`} text={getState(item.finished, item.hasStarted)[1]} />
@@ -107,46 +115,48 @@ export default function Tournaments({user}) {
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{item.rounds}</td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{item.participants.length} / {Math.pow(2, item.rounds)}</td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{new Date(item.startTime).toLocaleString('es-ES', dateOptions)}</td>
-                      <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200 space-x-2">
+                      <td className="select-none whitespace-nowrap py-4 px-3 text-sm text-gray-500 dark:text-gray-200 space-x-2 flex">
                         <Link
                           href={`/tournaments/${item.id}`}
-                          className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
+                          className='capitalize flex-1 px-3 py-1 text-center rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
                         >
                         ver
                         </Link>
-                        {item.participants.includes(user.id) ? (
-                            <button
-                              onClick={() => {
-                                toast.promise(
-                                    handleURI(item.leave),
-                                    {
-                                      loading: 'Abandonando el torneo...',
-                                      success: 'Has abandonado el torneo',
-                                      error: 'Error al abandonar el torneo',
-                                    },
-                                ).catch(() => {});
-                              }}
-                              className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
-                            >
-                              Abandonar
-                            </button>
-                          ) : (
-                            <button
-                              onClick={() => {
-                                toast.promise(
-                                    handleURI(item.join),
-                                    {
-                                      loading: 'Unidote al torneo...',
-                                      success: 'Te has unido al torneo',
-                                      error: 'Error al unirse al torneo',
-                                    },
-                                ).catch(() => {});
-                              }}
-                              className='capitalize px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
-                            >
-                              Registrarse
-                            </button>
-                          )}
+                        {!item.hasStarted && (
+                          item.participants.includes(user.id) ? (
+                              <button
+                                onClick={() => {
+                                  toast.promise(
+                                      handleURI(item.leave),
+                                      {
+                                        loading: 'Abandonando el torneo...',
+                                        success: 'Has abandonado el torneo',
+                                        error: 'Error al abandonar el torneo',
+                                      },
+                                  ).catch(() => {});
+                                }}
+                                className='flex-1 capitalize text-center px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
+                              >
+                                Abandonar
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => {
+                                  toast.promise(
+                                      handleURI(item.join),
+                                      {
+                                        loading: 'Unidote al torneo...',
+                                        success: 'Te has unido al torneo',
+                                        error: 'Error al unirse al torneo',
+                                      },
+                                  ).catch(() => {});
+                                }}
+                                className='flex-1 capitalize text-center px-3 py-1 rounded text-sm font-semibold tracking-wide bg-slate-50 hover:bg-transparent duration-300 text-gray-900'
+                              >
+                                Registrarse
+                              </button>
+                          )
+                        )}
                       </td>
                     </tr>
                   );
@@ -159,7 +169,7 @@ export default function Tournaments({user}) {
           <div className="-mt-px flex w-0 flex-1">
             <button
               onClick={() => setPageIndex(pageIndex - 1)}
-              className={`${data?.meta.nextPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
+              className={`${data?.meta.previousPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
               disabled={data?.meta.previousPage === null || pageIndex === 1}
             >
               <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-200" aria-hidden="true" />
