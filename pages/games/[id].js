@@ -30,7 +30,7 @@ export default function Game({authorized, data, user}) {
     game, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
     onPromotion, setShowPromotion, showPromotion,
-    over,
+    over, turn,
   } = useGame();
 
   useEffect(() => {
@@ -59,11 +59,13 @@ export default function Game({authorized, data, user}) {
               avatar={data?.lightPlayer?.avatar}
               username={getUsername('light')}
               elo={data?.lightPlayer?.elo}
+              turn={turn==='w'}
             />
             <Player
               avatar={data?.darkPlayer?.avatar}
               username={getUsername('dark')}
               elo={data?.darkPlayer?.elo}
+              turn={turn==='b'}
             />
           </div>
           <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
@@ -115,7 +117,7 @@ export default function Game({authorized, data, user}) {
                               <ChessPiece
                                 key={id}
                                 piece={piece.key}
-                                modelo={getOrientation(customization?.whitePiece,customization?.blackPiece)}
+                                modelo={getOrientation(customization?.whitePiece, customization?.blackPiece)}
                                 color={getOrientation(user.player)}
                               />
                             </div>

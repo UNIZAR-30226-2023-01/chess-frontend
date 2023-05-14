@@ -14,7 +14,7 @@ export default function Tablero({
 
   return (
     <div className='w-full bg-white/20 relative h-full'>
-      
+
       <Chessboard
         id="BasicBoard"
         position={game.fen()}

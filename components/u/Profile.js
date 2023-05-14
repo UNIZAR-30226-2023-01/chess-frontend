@@ -12,8 +12,7 @@ import { useGame } from '@/context/GameContext';
 
 export function Stats({
   name, value, text, type,
-}) 
-{
+}) {
   return (
     <div className="px-4 py-5 sm:p-6">
       <dt className="text-base font-medium text-gray-900">{name}</dt>
