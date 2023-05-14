@@ -145,7 +145,7 @@ export default function DSidebar({user}) {
             {gameType === 'AI' && (
               iaButtons.map((item, id) => (
                 <GameButton
-                  key={item.id}
+                  key={id}
                   onClick={() => item.onClick()}
                   text={item.text}
                   Icon={item.icon}
@@ -155,7 +155,7 @@ export default function DSidebar({user}) {
             {gameType === 'COMPETITIVE' && (
               competitiveButtons.map((item, id) => (
                 <GameButton
-                  key={item.id}
+                  key={id}
                   onClick={() => item.onClick()}
                   text={item.text}
                   Icon={item.icon}
@@ -165,7 +165,7 @@ export default function DSidebar({user}) {
             {gameType === 'CUSTOM' && (
               customButtons.map((item, id) => (
                 <GameButton
-                  key={item.id}
+                  key={id}
                   onClick={() => item.onClick()}
                   text={item.text}
                   Icon={item.icon}

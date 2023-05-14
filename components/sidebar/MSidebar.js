@@ -180,7 +180,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                     {gameType === 'AI' && (
                       iaButtons.map((item, id) => (
                         <GameButton
-                          key={item.id}
+                          key={id}
                           onClick={() => item.onClick()}
                           text={item.text}
                           Icon={item.icon}
@@ -190,7 +190,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                     {gameType === 'COMPETITIVE' && (
                       competitiveButtons.map((item, id) => (
                         <GameButton
-                          key={item.id}
+                          key={id}
                           onClick={() => item.onClick()}
                           text={item.text}
                           Icon={item.icon}
@@ -200,7 +200,7 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                     {gameType === 'CUSTOM' && (
                       customButtons.map((item, id) => (
                         <GameButton
-                          key={item.id}
+                          key={id}
                           onClick={() => item.onClick()}
                           text={item.text}
                           Icon={item.icon}
