@@ -8,7 +8,7 @@ const navigation = [
   { name: 'Novedades', href: '/#news' },
 ];
 
-export default function Navbar() {
+export default function Navbar({logged}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -38,8 +38,8 @@ export default function Navbar() {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link href="/auth/login" className="text-sm font-semibold leading-6 text-gray-900">
-              Entrar <span aria-hidden="true">&rarr;</span>
+          <Link href={logged ? '/home': '/auth/login'} className="text-sm font-semibold leading-6 text-gray-900">
+            {logged ? 'Volver al inicio' : 'Entrar'} <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>
       </nav>

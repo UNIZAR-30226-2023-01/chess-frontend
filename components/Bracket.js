@@ -1,12 +1,13 @@
 import { SingleEliminationBracket, Match } from '@g-loot/react-tournament-brackets';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
-// import {useGame} from '@/context/GameContext';
+import {useGame} from '@/context/GameContext';
 
 
-export default function SingleElimination({ matches }) {
+export default function SingleElimination({ matches, user }) {
   const router = useRouter();
-  // const { joinMatchAsPlayer, joinRoomAsSpectator } = useGame();
+  const { joinMatchAsPlayer, joinRoomAsSpectator } = useGame();
+
   return (
     <SingleEliminationBracket
       matches={matches}
@@ -20,13 +21,15 @@ export default function SingleElimination({ matches }) {
       onMatchClick={(m) => {
         console.log(m);
         const {match} = m;
-        if (!match.game) {
-          toast('La partida todavía no esta disponible.', { icon: '⌛️' });
+        if (!match.game || match.participants.length < 2) {
+          toast('La partida no esta disponible.', { icon: '⌛️' });
           return;
         }
+
         // unir el socket a la sala del match
-        // si soy jugador:   joinMatchAsPlayer(matchID)
-        // si no soy jugador:   joinRoomAsSpectator(matchID)
+        if (match.participants[0].id === user.id || match.participants[1].id === user.id) joinMatchAsPlayer(match.id);
+        else joinRoomAsSpectator(match.id);
+
         const aux = match.game.split('/');
         const id = aux[aux.lenght - 1];
         router.push(`/games/${id}`);

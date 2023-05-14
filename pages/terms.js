@@ -28,7 +28,7 @@ export default function Terms() {
 Terms.getLayout = (page) => {
   return (
     <div className='w-full'>
-      <Navbar/>
+      <Navbar logged={page?.props?.logged} />
       <main className='container mx-auto'>
         {page}
       </main>
@@ -36,3 +36,15 @@ Terms.getLayout = (page) => {
     </div>
   );
 };
+
+export async function getServerSideProps({req}) {
+  const newQueryString = req.headers.cookie.replace(/;/g, '&');
+  const cookies = new URLSearchParams(newQueryString);
+  const token = cookies.get('api-auth');
+
+  return {
+    props: {
+      logged: !!token,
+    },
+  };
+}

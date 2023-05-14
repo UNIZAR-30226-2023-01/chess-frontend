@@ -22,7 +22,7 @@ export function GameProvider({token, authorized, children}) {
   const [showPromotion, setShowPromotion] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
-  const [over, setOver] = useState([false])
+  const [over, setOver] = useState([false]);
   const cMov = 'rgba(255, 255, 0, 0.4)';
 
   const [player, setPlayer] = useState();
@@ -111,7 +111,7 @@ export function GameProvider({token, authorized, children}) {
     const handleGameOver = (message) => {
       console.log('game_over message', message);
       const resul = ['CHECKMATE', 'TIMEOUT', 'DRAW', 'SURRENDER'].includes(message.endState);
-      setOver([resul,message.endState,message.winner]);
+      setOver([resul, message.endState, message.winner]);
     };
     const handleVotedDraw = (message) => {
       console.log('voted_draw message', message);

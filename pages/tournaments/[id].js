@@ -7,7 +7,7 @@ const Bracket = dynamic(
     { ssr: false },
 );
 
-export default function Rounds({tournament}) {
+export default function Rounds({tournament, user}) {
   const matches = tournament.matches.map((match) => {
     const participants = match.participants.map((participant) => {
       return {...participant, name: participant.username};
@@ -18,7 +18,7 @@ export default function Rounds({tournament}) {
 
   return (
     <div className="px-0 sm:px-6 lg:px-8 py-12 mx-auto flex items-center justify-center">
-      <Bracket matches={matches}/>
+      <Bracket matches={matches} user={user}/>
     </div>
 
   );

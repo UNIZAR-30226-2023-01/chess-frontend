@@ -3,13 +3,13 @@ import Link from 'next/link';
 export default function login() {
   return (
     <div className="h-screen flex flex-col justify-center items-center space-y-1 bg-gray-800 text-gray-200">
-      <div className="w-fit h-fit">
+      <Link href='/' className="w-fit h-fit">
         <img
           src="/assets/images/Logo_white.png"
           alt=''
           className=" h-20 mx-auto"
         />
-      </div>
+      </Link>
       <h1 className="font-medium tracking-wide">Bienvenido a Reign</h1>
       <p className="tracking-wide">Conéctese con su cuenta Reign para continuar</p>
       <div className="flex gap-x-4 py-4">

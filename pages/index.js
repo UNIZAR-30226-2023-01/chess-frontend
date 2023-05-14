@@ -9,7 +9,7 @@ const stats = [
   { id: 4, name: 'Garantía de disponibilidad', value: '99.9%' },
 ];
 
-export default function Index() {
+export default function Index({logged}) {
   return (
     <div className="relative isolate bg-white">
       <svg
@@ -36,7 +36,7 @@ export default function Index() {
         </svg>
         <rect width="100%" height="100%" strokeWidth={0} fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
       </svg>
-      <Navbar/>
+      <Navbar logged={logged}/>
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
           <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
@@ -172,3 +172,15 @@ Index.getLayout = (page) => {
     </div>
   );
 };
+
+export async function getServerSideProps({req}) {
+  const newQueryString = req.headers.cookie.replace(/;/g, '&');
+  const cookies = new URLSearchParams(newQueryString);
+  const token = cookies.get('api-auth');
+
+  return {
+    props: {
+      logged: !!token,
+    },
+  };
+}
