@@ -5,11 +5,13 @@ import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid
 import useSWR from 'swr';
 import { getElo } from '@/lib/elo';
 import jwt from 'jsonwebtoken';
+import Badge from '@/components/Badge';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
 export default function Ranking() {
   const [pageIndex, setPageIndex] = useState(1);
+
   const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users?limit=10&page=${pageIndex}&sort=-elo`, fetcher, {
     refreshInterval: 1000 * 60 * 3,
   });
@@ -57,9 +59,7 @@ export default function Ranking() {
                 {data?.data.map((user, index) => (
                   <tr key={user.id}>
                     <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
-                      <span className='px-2 py-1 rounded-md bg-gray-100 font-medium'>
-                        # {(pageIndex - 1) * 10 + index + 1}
-                      </span>
+                      <Badge text={`# ${(pageIndex - 1) * 10 + index + 1}`} className={'bg-gray-100 font-mono'}/>
                     </td>
                     <td className="select-none whitespace-nowrap py-4 px-3 text-sm text-gray-500 dark:text-gray-200">
                       <Link href={`/u/${user.id}`} className="flex items-center">
@@ -90,7 +90,7 @@ export default function Ranking() {
           <div className="-mt-px flex w-0 flex-1">
             <button
               onClick={() => setPageIndex(pageIndex - 1)}
-              className={`${data?.meta.nextPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
+              className={`${data?.meta.previousPage === null && 'cursor-not-allowed'} inline-flex items-center border-t-2 border-transparent pt-4 pr-1 text-sm font-medium text-gray-500 dark:text-gray-200 hover:border-gray-300 hover:text-gray-700`}
               disabled={data?.meta.previousPage === null || pageIndex === 0}
             >
               <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400 dark:text-gray-200" aria-hidden="true" />

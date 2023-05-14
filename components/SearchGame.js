@@ -1,7 +1,8 @@
+import { useState, useEffect } from 'react';
+
 const person =
   {
     title: 'Buscando partida...',
-    time: '00:25',
     quotes: [
       'Sabías que la partida de ajedrez más corta posible es conocida como "mate pastor"? Esta se puede completar en solo dos movimientos, pero solo funciona si el jugador que tiene las piezas blancas juega de una manera específica.',
       'Sabías que el ajedrez es uno de los deportes más populares del mundo? Se estima que hay alrededor de 600 millones de personas en todo el mundo que juegan ajedrez regularmente, ya sea en torneos, en línea o simplemente por diversión.',
@@ -12,6 +13,26 @@ const person =
   };
 
 export default function SearchGame({onCancel}) {
+  const [quote, setQuote] = useState(person.quotes[Math.floor(Math.random() * person.quotes.length)]);
+  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+
+  useEffect(() => {
+    let interval = null;
+    if (seconds === 30) setQuote(person.quotes[Math.floor(Math.random() * person.quotes.length)]);
+
+    interval = setInterval(() => {
+      if (seconds < 59) {
+        setSeconds(seconds + 1);
+      } else {
+        setSeconds(0);
+        setMinutes(minutes + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [seconds, minutes]);
+
   return (
     <div className="fixed inset-x-0 bottom-0 px-6 pb-6 z-50">
       <div className="mx-auto max-w-lg divide-y divide-gray-200 rounded-lg bg-white shadow-2xl">
@@ -20,10 +41,10 @@ export default function SearchGame({onCancel}) {
             <div className="flex items-center justify-between space-x-3">
               <h3 className="truncate text-base font-medium text-gray-900">{person.title}</h3>
               <span className="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                {person.time}
+                {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
               </span>
             </div>
-            <p className="mt-1 text-sm text-gray-500">{person.quotes[Math.floor(Math.random() * person.quotes.length)]}</p>
+            <p className="mt-1 text-sm text-gray-500">{quote}</p>
           </div>
         </div>
         <div className="-mt-px flex flex-1 divide-gray-200">

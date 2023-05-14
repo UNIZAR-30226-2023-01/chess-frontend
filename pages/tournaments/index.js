@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import jwt from 'jsonwebtoken';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import Layout from '@/components/Layout';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid';
 import TournamentModal from '@/components/TournamentModal';
+import Badge from '@/components/Badge';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'}).then((res) => res.json());
 
@@ -15,6 +16,9 @@ export default function Tournaments({user}) {
   const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}&sort=-createdAt`, fetcher, {
     refreshInterval: 1000 * 60 * 3,
   });
+
+  const dateOptions = { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+
 
   const handleURI = (uri) => {
     return new Promise(function(resolve, reject) {
@@ -26,11 +30,20 @@ export default function Tournaments({user}) {
         },
       })
           .then((res) => {
-            if (res.ok && res.status === 200) resolve('ok');
+            if (res.ok && res.status === 200) {
+              mutate(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}&sort=-createdAt`);
+              resolve('ok');
+            }
             reject(new Error('Network response was not ok.'));
           })
           .catch(() => reject(new Error('Network response was not ok.')));
     });
+  };
+
+  const getState = (finished, hasStarted) => {
+    if (!finished && !hasStarted) return ['green', 'Esperando jugadores'];
+    if (finished) return ['red', 'Terminado'];
+    if (hasStarted) return ['yellow', 'En curso'];
   };
 
   return (
@@ -74,6 +87,9 @@ export default function Tournaments({user}) {
                     Jugadores
                   </th>
                   <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
+                    Fecha de inicio
+                  </th>
+                  <th scope="col" className="select-none py-3.5 px-3 text-left text-sm font-semibold w-32 capitalize text-gray-900 dark:text-white">
                     <span aria-hidden='true' className='hidden'>Entrar</span>
                   </th>
                 </tr>
@@ -83,13 +99,14 @@ export default function Tournaments({user}) {
                   return (
                     <tr key={item.id}>
                       <td className="select-none whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6 md:pl-0">
-                        <span className='px-2 py-1 rounded-md bg-gray-100 font-medium'>
-                        # {item.id}
-                        </span>
+                        <Badge text={`# ${item.id}`} className={'bg-gray-100 font-mono'}/>
+                      </td>
+                      <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">
+                        <Badge className={`bg-${getState(item.finished, item.hasStarted)[0]}-100 text-${getState(item.finished, item.hasStarted)[0]}-600`} text={getState(item.finished, item.hasStarted)[1]} />
                       </td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{item.rounds}</td>
-                      <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{item.rounds}</td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{item.participants.length} / {Math.pow(2, item.rounds)}</td>
+                      <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200">{new Date(item.startTime).toLocaleString('es-ES', dateOptions)}</td>
                       <td className="select-none whitespace-nowrap py-4 px-3 w-32 text-sm text-gray-500 dark:text-gray-200 space-x-2">
                         <Link
                           href={`/tournaments/${item.id}`}
