@@ -85,7 +85,7 @@ export default function Index({logged}) {
               transform="translate(24 24)"
               clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
             >
-              <img src="/assets/images/inicio.png" alt="" />
+              <img src="/assets/images/mobile.webp" alt="" />
             </foreignObject>
           </svg>
         </div>
@@ -140,7 +140,7 @@ export default function Index({logged}) {
               </div>
             </div>
             <img
-              src="/assets/images/web_screenshot.png"
+              src="/assets/images/web.webp"
               alt="Product screenshot"
               className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:ml-0"
               width={2432}

@@ -20,6 +20,26 @@ export default function Tournaments({user}) {
   const dateOptions = { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
 
 
+  const handleDelete = (id) => {
+    return new Promise(function(resolve, reject) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+          .then((res) => {
+            if (res.ok && res.status === 200) {
+              mutate(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}&sort=-createdAt`);
+              resolve('ok');
+            }
+            reject(new Error('Network response was not ok.'));
+          })
+          .catch(() => reject(new Error('Network response was not ok.')));
+    });
+  };
+
   const handleURI = (uri) => {
     return new Promise(function(resolve, reject) {
       fetch(uri, {
@@ -102,6 +122,16 @@ export default function Tournaments({user}) {
                         {item.owner.id === user.id && !item.hasStarted &&
                           <button
                             type='button'
+                            onClick={() => {
+                              toast.promise(
+                                  handleDelete(item.id),
+                                  {
+                                    loading: 'Abandonando el torneo...',
+                                    success: 'Has abandonado el torneo',
+                                    error: 'Error al abandonar el torneo',
+                                  },
+                              ).catch(() => {});
+                            }}
                             className='group mr-1'
                           >
                             <Badge text={<TrashIcon className='w-4 h-4'/>} className={'font-base group-hover:text-red-600 duration-300'} />
@@ -195,7 +225,7 @@ export default function Tournaments({user}) {
           </div>
         </nav>
       </div>
-      <TournamentModal open={open} setOpen={setOpen} />
+      <TournamentModal open={open} setOpen={setOpen} mutate={() => mutate(`${process.env.NEXT_PUBLIC_API_URL}/v1/tournaments?limit=10&page=${pageIndex}&sort=-createdAt`)} />
     </div>
   );
 }
