@@ -19,7 +19,6 @@ export default function SingleElimination({ matches, user }) {
         },
       }}
       onMatchClick={(m) => {
-        console.log(m);
         const {match} = m;
         if (!match.game || match.participants.length < 2) {
           toast('La partida no esta disponible.', { icon: '⌛️' });
@@ -31,7 +30,7 @@ export default function SingleElimination({ matches, user }) {
         else joinRoomAsSpectator(match.id);
 
         const aux = match.game.split('/');
-        const id = aux[aux.lenght - 1];
+        const id = aux[aux.length - 1];
         router.push(`/games/${id}`);
       }}
       onPartyClick={(participant) => participant?.id ? router.push(`/u/${participant.id}`) : null}

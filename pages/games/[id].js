@@ -39,7 +39,6 @@ export default function Game({authorized, data, user}) {
   } = useGame();
 
   useEffect(() => {
-    console.log('game', data.board);
     updateGame(data.board);
     if (user.player === 'DARK' || user.player === 'LIGHT') setInQueue(false);
   }, []);
@@ -90,6 +89,7 @@ export default function Game({authorized, data, user}) {
           </div>
           <div className='col-start-1 col-span-4 sm:col-start-2 sm:col-span-3 md:col-start-2 md:col-span-2 lg:col-start-2 lg:col-span-4'>
             <Tablero
+              skins={data?.lightPlayer?.skins ?? data?.darkPlayer?.skins}
               orientation={getOrientation(user.player)}
               game={game}
               optionSquares={optionSquares}

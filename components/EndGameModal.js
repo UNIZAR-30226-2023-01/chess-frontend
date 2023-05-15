@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Dialog, Transition } from '@headlessui/react';
 import { TrophyIcon } from '@heroicons/react/24/outline';
 
-export default function TournamentModal({show, setOpen, endGame, winner, player}) {
+export default function EndGameModal({show, setOpen, endGame, winner, player}) {
   const router = useRouter();
   const win = (winner === player)? true : false;
   return (
@@ -43,7 +43,9 @@ export default function TournamentModal({show, setOpen, endGame, winner, player}
                           win ?
                          'Has ganado, ¡Felicidades!' :
                          'Has perdido, ¡Sigue intentando!' :
-                        endGame === 'DRAW' ?
+                         endGame === 'SAVE' ?
+                         'Se ha guardado la partida' :
+                          endGame === 'DRAW' ?
                          'Empatados, ¡Bien Jugado!':
                           endGame === 'TIMEOUT' ?
                           win ?
@@ -54,7 +56,8 @@ export default function TournamentModal({show, setOpen, endGame, winner, player}
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        { endGame === 'DRAW' ?
+                        { endGame === 'SAVE' ?
+                         '¡Puedes seguir jugando más tarde!' : endGame === 'DRAW' ?
                         'De las mejores partidas vistas en estos tiempos, a pesar del empate cualquiera podria haberse llevado la victoria' :
                         win ?
                          'Tu asombrosa habilidad cautiva a todos, impulsándolos a continuar jugando sin cesar.' :

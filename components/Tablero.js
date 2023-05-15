@@ -3,6 +3,7 @@ import { useChess } from '@/context/ChessContext';
 import { customPieces } from '@/data/board';
 
 export default function Tablero({
+  skins,
   orientation,
   game,
   optionSquares,
@@ -28,8 +29,8 @@ export default function Tablero({
           ...optionSquares,
           ...lastMoveSquares,
         }}
-        // customDarkSquareStyle={{ backgroundColor: customization.board.black }}
-        // customLightSquareStyle={{ backgroundColor: customization.board.white }}
+        customDarkSquareStyle={{ backgroundColor: skins.find((i) => i.name === customization.board).darkColor }}
+        customLightSquareStyle={{ backgroundColor: skins.find((i) => i.name === customization.board).lightColor }}
       />
     </div>
   );

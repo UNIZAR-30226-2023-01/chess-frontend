@@ -16,7 +16,9 @@ export default function Rounds({tournament, user}) {
 
   const matches = tournament.matches.map((match) => {
     const participants = match.participants.map((participant) => {
-      return {...participant, name: participant.username};
+      const isWinner = participant.id === match.winner;
+      const ended = match.finished;
+      return {...participant, name: participant.username, isWinner, resultText: !ended ? null : isWinner ? 'Won' : 'Lost'};
     });
     const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
     return {...match, tournamentRoundText: match.tournamentRoundText.replace('Ronda ', ''), participants, startTime: new Date(match.startTime).toLocaleDateString('es-ES', options)};

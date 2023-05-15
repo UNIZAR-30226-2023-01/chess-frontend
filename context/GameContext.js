@@ -47,16 +47,13 @@ export function GameProvider({token, authorized, children}) {
       });
 
       setSocket(sock);
-      console.log('socket created', sock);
     }
   }, [token]);
 
   useEffect(() => {
     if (!socket) return;
 
-    const handleConnectError = (err) => {
-      console.log(err.message);
-    };
+    const handleConnectError = (err) => {};
 
     const handleConnect = () => {
       console.log('connected');
@@ -71,7 +68,6 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleRoomCreated = (message) => {
-      console.log('room_created message', message);
       setGameType(message.gameType);
 
       toast((t) => (
@@ -93,7 +89,6 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleRoom = (message) => {
-      console.log('room message', message);
       setPlayer(message.color ?? 'SPECTATOR');
       setGameType(message.gameType);
       setGame(new Chess(message.board));
@@ -108,34 +103,27 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleMoved = (message) => {
-      console.log('moved message', message);
       setTimer([message.timerLight/1000, message.timerDark/1000]);
       setTurn(message.turn);
-      // if (!player) return;
-      console.log('player:', player);
       if (message.turn === player || player === 'SPECTATOR') {
-        console.log('voy a mover', message);
         moved(message.move);
       }
     };
 
     const handleGameOver = (message) => {
-      console.log('game_over message', message);
       const resul = ['CHECKMATE', 'TIMEOUT', 'DRAW', 'SURRENDER'].includes(message.endState);
       setGame(new Chess());
       setOver([resul, message.endState, message.winner]);
-      console.log([resul, message.endState, message.winner]);
     };
-    const handleVotedDraw = (message) => {
-      console.log('voted_draw message', message);
 
+    const handleVotedDraw = (message) => {
       if (player === message.color || player === 'SPECTATOR') return;
       toast((t) => (
         <span className='flex items-center gap-x-2 whitespace-nowrap'>
           Tu rival pide tablas.
           <button
             onClick={() => {
-              socket.emit('voted_draw');
+              socket.emit('vote_draw');
               toast.dismiss(t.id);
             }}
             className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -149,18 +137,35 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleVotedSave = (message) => {
-      console.log('voted_save message', message);
+      if (player === message.color || player === 'SPECTATOR') return;
+      toast((t) => (
+        <span className='flex items-center gap-x-2 whitespace-nowrap'>
+          Tu rival quiere guardar la partida.
+          <button
+            onClick={() => {
+              socket.emit('vote_save');
+              toast.dismiss(t.id);
+            }}
+            className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Aceptar
+          </button>
+        </span>
+      ), {
+        duration: 1000 * 60,
+      });
     };
 
+    const handleSave = (message) => {
+      setOver([true, 'SAVE', '']);
+    };
 
     const handleSalute = (message) => {
-      console.log('error message', message);
       if (message === '') fire();
       else toast(message, {icon: '📨'});
     };
 
     const handleError = (message) => {
-      console.log('error message', message);
       if (message.error === 'ALREADY_PLAYING') toast('Ya estas actualmente en una partida o en una cola para jugar.', {icon: '🥸'});
       if (message.error === 'NOT_PLAYING_ANY_GAME')toast('No estas conectado a ninguna partida actualmente.', {icon: '🐦'});
     };
@@ -176,6 +181,7 @@ export function GameProvider({token, authorized, children}) {
     socket.on('game_over', handleGameOver);
     socket.on('voted_draw', handleVotedDraw);
     socket.on('voted_save', handleVotedSave);
+    socket.on('saved', handleSave);
     socket.on('salute', handleSalute);
     socket.on('error', handleError);
 
@@ -191,13 +197,13 @@ export function GameProvider({token, authorized, children}) {
       socket.off('game_over', handleGameOver);
       socket.off('voted_draw', handleVotedDraw);
       socket.off('voted_save', handleVotedSave);
+      socket.on('saved', handleSave);
       socket.off('salute', handleSalute);
       socket.off('error', handleError);
     };
   }, [socket, player, game]);
 
   const resumeMatch = (roomID) => {
-    console.log('Retomando partida : ', roomID);
     socket.emit('resume', {gameID: roomID});
   };
 
@@ -233,7 +239,6 @@ export function GameProvider({token, authorized, children}) {
         increment: options?.increment ?? 5,
         hostColor: options?.hostColor ?? 'LIGHT',
       };
-      console.log('message', message);
     } else if (gameType === 'JOINCUSTOM') {
       message = options?.roomID ? {gameType: 'CUSTOM', roomID: options.roomID} : {};
       socket.emit('join_room', message);
@@ -279,13 +284,16 @@ export function GameProvider({token, authorized, children}) {
   };
 
   const voteSave = () => {
-    socket.emit('vote_save');
-    if (gameType === 'AI') toast('Has guardado la partida.', { icon: '🤖' });
-    else toast('Has pedido guardar la partida.', { icon: '👥' });
+    if (gameType === 'AI') {
+      toast('Has guardado la partida.', { icon: '🤖' });
+      socket.emit('vote_save');
+    } else {
+      toast('Has pedido guardar la partida.', { icon: '👥' });
+      socket.emit('vote_save');
+    }
   };
 
   function onPieceDragBegin(piece, sourceSquare) {
-    console.log(game);
     // Obtenemos los posibles movimientos de la pieza
     let who;
     if (authorized === 'LIGHT') who = 'w';
@@ -386,7 +394,6 @@ export function GameProvider({token, authorized, children}) {
         [move.to]: { background: cMov },
       });
       setGame(game);
-      console.log('su move', game);
       return true;
     } catch (error) {
       return false;
