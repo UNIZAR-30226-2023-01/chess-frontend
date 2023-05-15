@@ -68,26 +68,27 @@ export default function Dropdown({ isLoading, username, avatar, id}) {
               )}
             </Menu.Item>
           </div>
-          <div className="py-2 space-y-2">
-
-            <Menu.Item>
-              {({ active }) => (
-                <Link
-                  href={`/u/${id}`}
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-200',
-                    'group flex items-center px-4 py-3 text-sm w-full',
-                  )}
-                >
-                  <UserIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                  Perfil
-                  <kbd className="absolute right-0 inline-flex mr-5 items-center rounded border border-gray-200/40 px-1 font-sans text-sm text-gray-400/40">
-                    ⌘ Alt+P
-                  </kbd>
-                </Link>
-              )}
-            </Menu.Item>
-          </div>
+          {username !== 'guest' &&
+            <div className="py-2 space-y-2">
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    href={`/u/${id}`}
+                    className={classNames(
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-200',
+                      'group flex items-center px-4 py-3 text-sm w-full',
+                    )}
+                  >
+                    <UserIcon className="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                    Perfil
+                    <kbd className="absolute right-0 inline-flex mr-5 items-center rounded border border-gray-200/40 px-1 font-sans text-sm text-gray-400/40">
+                      ⌘ Alt+P
+                    </kbd>
+                  </Link>
+                )}
+              </Menu.Item>
+            </div>
+          }
           <div className="py-2 space-y-2">
             <Menu.Item>
               {({ active }) => (

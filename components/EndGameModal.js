@@ -42,23 +42,20 @@ export default function TournamentModal({show, setOpen, endGame, winner, player}
                       {endGame === 'CHECKMATE' ?
                           win ?
                          'Has ganado, ¡Felicidades!' :
-                         'Has perdido, ¡Sigue intentando!'
-                        :
+                         'Has perdido, ¡Sigue intentando!' :
                         endGame === 'DRAW' ?
                          'Empatados, ¡Bien Jugado!':
-                          endGame === 'TIMEOUT' ? 
+                          endGame === 'TIMEOUT' ?
                           win ?
                           'Has ganado por tiempo, ¡Felicidades!' :
-                          'Has perdido por tiempo, ¡Sigue intentando!'
-                          :
+                          'Has perdido por tiempo, ¡Sigue intentando!' :
                         'Te has rendido, no te des por vencido'
                       }
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         { endGame === 'DRAW' ?
-                        'De las mejores partidas vistas en estos tiempos, a pesar del empate cualquiera podria haberse llevado la victoria'
-                        :
+                        'De las mejores partidas vistas en estos tiempos, a pesar del empate cualquiera podria haberse llevado la victoria' :
                         win ?
                          'Tu asombrosa habilidad cautiva a todos, impulsándolos a continuar jugando sin cesar.' :
                          'A pesar de la derrota, su espíritu resiliente inspira a levantarse y seguir luchando con renovada determinación.'

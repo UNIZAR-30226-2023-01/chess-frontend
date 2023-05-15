@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useRef, useCallback} from 'react';
 import { io } from 'socket.io-client';
 import { useRouter } from 'next/router';
 import { Chess } from 'chess.js';
@@ -22,16 +22,20 @@ export function GameProvider({token, authorized, children}) {
   const [showPromotion, setShowPromotion] = useState(false);
   const [optionSquares, setOptionSquares] = useState({});
   const [lastMoveSquares, setLastMoveSquares] = useState({});
-  const [over, setOver] = useState([false])
+  const [over, setOver] = useState([false]);
+  const [turn, setTurn] = useState();
+  const [timer, setTimer] = useState([300, 300]);
+
   const cMov = 'rgba(255, 255, 0, 0.4)';
 
   const [player, setPlayer] = useState();
 
-  const updateGame = (fen) => {// '4r1r1/1Rn5/P1k5/3p1p1p/R5pP/4K1P1/8/8 w - - 4 41'
-    if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/8/RNBQKBNR w KQkq - 0 1') {
+  const updateGame = (fen) => {
+    if (fen !== 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1') {
       setGame(new Chess(fen));
     }
   };
+
 
   useEffect(() => {
     if (!socket) {
@@ -68,7 +72,6 @@ export function GameProvider({token, authorized, children}) {
 
     const handleRoomCreated = (message) => {
       console.log('room_created message', message);
-      console.log('room_created message holaaaaa');
       setGameType(message.gameType);
 
       toast((t) => (
@@ -93,6 +96,8 @@ export function GameProvider({token, authorized, children}) {
       console.log('room message', message);
       setPlayer(message.color);
       setGameType(message.gameType);
+      setTurn(message.turn);
+      setTimer([message.timerLight/1000, message.timerDark/1000]);
       router.push(`/games/${message.roomID}`);
     };
 
@@ -102,6 +107,8 @@ export function GameProvider({token, authorized, children}) {
 
     const handleMoved = (message) => {
       console.log('moved message', message);
+      setTimer([message.timerLight/1000, message.timerDark/1000]);
+      setTurn(message.turn);
       if (!player) return;
       if (message.turn === player) {
         moved(message.move);
@@ -111,7 +118,9 @@ export function GameProvider({token, authorized, children}) {
     const handleGameOver = (message) => {
       console.log('game_over message', message);
       const resul = ['CHECKMATE', 'TIMEOUT', 'DRAW', 'SURRENDER'].includes(message.endState);
-      setOver([resul,message.endState,message.winner]);
+      setGame(new Chess());
+      setOver([resul, message.endState, message.winner]);
+      console.log([resul, message.endState, message.winner]);
     };
     const handleVotedDraw = (message) => {
       console.log('voted_draw message', message);
@@ -136,8 +145,17 @@ export function GameProvider({token, authorized, children}) {
       console.log('voted_save message', message);
     };
 
+
+    const handleSalute = (message) => {
+      console.log('error message', message);
+      if (message === '') fire();
+      else toast(message, {icon: '📨'});
+    };
+
     const handleError = (message) => {
       console.log('error message', message);
+      if (message.error === 'ALREADY_PLAYING') toast('Ya estas actualmente en una partida o en una cola para jugar.', {icon: '🥸'});
+      if (message.error === 'NOT_PLAYING_ANY_GAME')toast('No estas conectado a ninguna partida actualmente.', {icon: '🐦'});
     };
 
     socket.on('connect_error', handleConnectError);
@@ -151,6 +169,7 @@ export function GameProvider({token, authorized, children}) {
     socket.on('game_over', handleGameOver);
     socket.on('voted_draw', handleVotedDraw);
     socket.on('voted_save', handleVotedSave);
+    socket.on('salute', handleSalute);
     socket.on('error', handleError);
 
     return () => {
@@ -165,14 +184,19 @@ export function GameProvider({token, authorized, children}) {
       socket.off('game_over', handleGameOver);
       socket.off('voted_draw', handleVotedDraw);
       socket.off('voted_save', handleVotedSave);
+      socket.off('salute', handleSalute);
       socket.off('error', handleError);
     };
   }, [socket, player, game]);
 
+  const resumeMatch = (roomID) => {
+    console.log('Retomando partida : ', roomID);
+    socket.emit('resume', {gameID: roomID});
+  };
+
 
   const findRoom = (gameType, options={}) => {
     setOver(false);
-    console.log('findRoom', gameType, options);
     const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM', 'JOINCUSTOM'];
     if (!gameTypesAllowed.includes(gameType)) {
       throw new Error('Invalid game type');
@@ -207,8 +231,11 @@ export function GameProvider({token, authorized, children}) {
       socket.emit('join_room', message);
       return;
     }
-    console.log(message);
     socket.emit('find_room', message);
+  };
+
+  const sayHello = (text='') => {
+    socket.emit('salute', {text});
   };
 
   const cancelSearch = () => {
@@ -231,31 +258,32 @@ export function GameProvider({token, authorized, children}) {
     socket.emit('move', {'move': mov});
   };
 
-  const surrender = (mov) => {
+  const surrender = () => {
     socket.emit('surrender');
     toast('Te has rendido', { icon: '🐥' });
   };
 
-  const voteDraw = (mov) => {
+  const voteDraw = () => {
     socket.emit('vote_draw');
     toast('Has pedido tablas', {
       icon: '♟️',
     });
   };
 
-  const voteSave = (mov) => {
+  const voteSave = () => {
     socket.emit('vote_save');
     if (gameType === 'AI') toast('Has guardado la partida.', { icon: '🤖' });
     else toast('Has pedido guardar la partida.', { icon: '👥' });
   };
 
   function onPieceDragBegin(piece, sourceSquare) {
+    console.log(game);
     // Obtenemos los posibles movimientos de la pieza
-    let turn;
-    if (authorized === 'LIGHT') turn = 'w';
-    else if (authorized === 'DARK') turn ='b';
+    let who;
+    if (authorized === 'LIGHT') who = 'w';
+    else if (authorized === 'DARK') who ='b';
 
-    if (turn !== piece[0]) {
+    if (who !== piece[0]) {
       toast('Quieto viejo suelta esa pieza', { icon: '👺' });
       return;
     }
@@ -288,11 +316,11 @@ export function GameProvider({token, authorized, children}) {
   }
 
   function onDrop(sourceSquare, targetSquare, piece) {
-    let turn;
-    if (authorized==='LIGHT') turn = 'w';
-    else if (authorized==='DARK') turn ='b';
+    let who;
+    if (authorized==='LIGHT') who = 'w';
+    else if (authorized==='DARK') who ='b';
 
-    if (turn !== piece[0]) return;
+    if (who !== piece[0]) return;
 
     try {
       const gameCopy = _.cloneDeep(game);
@@ -310,6 +338,7 @@ export function GameProvider({token, authorized, children}) {
       }
 
       setGame(gameCopy);
+      console.log('onDrop ', game);
       movePiece(move.lan);
       setOptionSquares({
         sourceSquare: { background: cMov },
@@ -320,7 +349,6 @@ export function GameProvider({token, authorized, children}) {
         [move.from]: { background: cMov },
         [move.to]: { background: cMov },
       });
-
       return true;
     } catch (error) {
       setOptionSquares({});
@@ -352,16 +380,64 @@ export function GameProvider({token, authorized, children}) {
         [move.to]: { background: cMov },
       });
       setGame(game);
+      console.log('su move', game);
       return true;
     } catch (error) {
       return false;
     }
   }
 
+  const refAnimationInstance = useRef(null);
+
+  const getInstance = useCallback((instance) => {
+    refAnimationInstance.current = instance;
+  }, []);
+
+  const makeShot = useCallback((particleRatio, opts) => {
+    refAnimationInstance.current &&
+      refAnimationInstance.current({
+        ...opts,
+        origin: { y: 0.7 },
+        particleCount: Math.floor(200 * particleRatio),
+      });
+  }, []);
+
+  const fire = useCallback(() => {
+    makeShot(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+
+    makeShot(0.2, {
+      spread: 60,
+    });
+
+    makeShot(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  }, [makeShot]);
+
   return (
     <GameContext.Provider value={{
+      sayHello,
+      getInstance,
       gameType,
       setGameType,
+      resumeMatch,
       findRoom,
       cancelSearch,
       joinRoomAsPlayer,
@@ -380,6 +456,8 @@ export function GameProvider({token, authorized, children}) {
       voteDraw,
       voteSave,
       over,
+      turn,
+      timer,
     }}>
       {children}
     </GameContext.Provider>

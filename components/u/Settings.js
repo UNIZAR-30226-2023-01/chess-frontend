@@ -5,14 +5,9 @@ import toast, {Toaster} from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { customPieces } from '@/data/board';
 import { mutate } from 'swr';
-import { Switch } from '@headlessui/react';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function Settings({profile: user, boards, pieces}) {
-  const [enabled, setEnabled] = useState(false);
   const router = useRouter();
   const [board, setBoard] = useState(boards.find((b) => b.active).name);
   const [ptypes, setPTypes] = useState([pieces.find((b) => b.activeLight).name, pieces.find((b) => b.activeDark).name]);
@@ -281,7 +276,7 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(customization?.whitePiece,customization?.blackPiece)}
+                      customPieces={customPieces(customization?.whitePiece, customization?.blackPiece)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).darkColor }}
                       customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).lightColor }}
@@ -294,7 +289,7 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(pieces.find((i) => i.name === ptypes[0]).name,pieces.find((i) => i.name === ptypes[1]).name)}
+                      customPieces={customPieces(pieces.find((i) => i.name === ptypes[0]).name, pieces.find((i) => i.name === ptypes[1]).name)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).darkColor }}
                       customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).lightColor }}
@@ -355,8 +350,7 @@ export default function Settings({profile: user, boards, pieces}) {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6 flex justify-between items-center">
-
+              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6 flex justify-end items-center">
                 <button
                   type="submit"
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"

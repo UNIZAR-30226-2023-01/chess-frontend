@@ -16,11 +16,11 @@ export default function Layout({children}) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {user} = children.props;
 
-  useKeyPress('h', () => router.push('/home'));
   useKeyPress('j', () => switchModal());
-  useKeyPress('t', () => router.push('/tournaments'));
-  useKeyPress('c', () => router.push('/ranking'));
-  useKeyPress('p', () => router.push( '/u/' + user.id));
+  useKeyPress('h', () => router.push('/home'));
+  useKeyPress('t', () => (user && user.username !== 'guest') ? router.push('/tournaments') : null);
+  useKeyPress('c', () => (user && user.username !== 'guest') ? router.push('/ranking') : null);
+  useKeyPress('p', () => (user && user.username !== 'guest') ? router.push('/u/' + user.id) : null);
 
   return (
     <div className='h-screen overflow-hidden'>
@@ -50,7 +50,7 @@ export default function Layout({children}) {
           </div>
         </main>
       </div>
-      <GameModal/>
+      <GameModal user={user}/>
       {inQueue && <SearchGame onCancel={() => {
         setInQueue(false);
         cancelSearch();

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import TypingAnimation from '@/components/TypingAnimation';
 
 const person =
   {
@@ -31,7 +32,7 @@ export default function SearchGame({onCancel}) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [seconds, minutes]);
+  }, [seconds, minutes, quote]);
 
   return (
     <div className="fixed inset-x-0 bottom-0 px-6 pb-6 z-50">
@@ -44,7 +45,9 @@ export default function SearchGame({onCancel}) {
                 {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
               </span>
             </div>
-            <p className="mt-1 text-sm text-gray-500">{quote}</p>
+            <p className="mt-1 text-sm text-gray-500">
+              <TypingAnimation text={quote} typingSpeed={50}/>
+            </p>
           </div>
         </div>
         <div className="-mt-px flex flex-1 divide-gray-200">

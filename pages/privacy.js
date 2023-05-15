@@ -27,7 +27,7 @@ export default function Privacy() {
 Privacy.getLayout = (page) => {
   return (
     <div className='w-full'>
-      <Navbar/>
+      <Navbar logged={page?.props?.logged}/>
       <main className='container mx-auto'>
         {page}
       </main>
@@ -35,3 +35,20 @@ Privacy.getLayout = (page) => {
     </div>
   );
 };
+
+export async function getServerSideProps({req}) {
+  let token = null;
+  try {
+    const newQueryString = req.headers.cookie.replace(/;/g, '&');
+    const cookies = new URLSearchParams(newQueryString);
+    token = cookies.get('api-auth');
+  } catch (err) {
+    console.error(err);
+  }
+
+  return {
+    props: {
+      logged: !!token,
+    },
+  };
+}

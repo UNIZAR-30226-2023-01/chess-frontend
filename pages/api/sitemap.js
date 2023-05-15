@@ -1,7 +1,7 @@
 import {SitemapStream, streamToPromise} from 'sitemap';
 import fs from 'fs';
 
-export default async (req, res) => {
+export default async function handleRequest(req, res) {
   try {
     const smStream = new SitemapStream({
       hostname: `https://${req.headers.host}`,
@@ -39,4 +39,4 @@ export default async (req, res) => {
   } catch (e) {
     res.send(JSON.stringify(e));
   }
-};
+}
