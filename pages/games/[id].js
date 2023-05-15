@@ -9,6 +9,9 @@ import { whoami, getOrientation } from '@/lib/cmd';
 import ChessPiece from 'components/ChessPiece';
 import EndGameModal from '@/components/EndGameModal';
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
+import Badge from '@/components/Badge';
+import copy from 'copy-to-clipboard';
+import toast from 'react-hot-toast';
 
 const promotionPieces= [
   {name: 'q',
@@ -29,7 +32,7 @@ export default function Game({authorized, data, user}) {
   const { setInQueue, customization } = useChess();
   const [text, setText] = useState('');
   const {
-    game, getInstance, sayHello, optionSquares, lastMoveSquares,
+    game, roomId, getInstance, sayHello, optionSquares, lastMoveSquares,
     onPieceDragBegin, onDrop, updateGame,
     onPromotion, setShowPromotion, showPromotion,
     over, turn, timer,
@@ -65,6 +68,16 @@ export default function Game({authorized, data, user}) {
               time ={timer[0] ?? 300}
               getInstance={getInstance}
             />
+            {roomId &&
+              <button
+                onClick={() => {
+                  copy(roomId, { debug: false, format: 'text/plain' });
+                  toast.success('Room id copiado al portapapeles');
+                }}
+              >
+                <Badge text={roomId} className={'bg-gray-200 text-gray-900'}/>
+              </button>
+            }
             <Player
               avatar={data?.darkPlayer?.avatar}
               username={getUsername('dark')}

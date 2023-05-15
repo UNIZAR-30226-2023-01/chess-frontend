@@ -211,6 +211,7 @@ export default function GameModal({user}) {
                         <button
                           type="submit"
                           onClick={()=>{
+                            console.log('PITO', gameType, options);
                             findRoom(gameType, options);
                             setOpen();
                           }}

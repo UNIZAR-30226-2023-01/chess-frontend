@@ -16,6 +16,7 @@ export function GameProvider({token, authorized, children}) {
   const router = useRouter();
   const [socket, setSocket] = useState(null);
 
+  const [roomId, setRoomId] = useState();
   const [gameType, setGameType] = useState();
   const [game, setGame] = useState(new Chess());
   const [pausedgame, setPausedGame] = useState({});
@@ -97,6 +98,8 @@ export function GameProvider({token, authorized, children}) {
       setPlayer(message.color);
       setGameType(message.gameType);
       setTurn(message.turn);
+      setGame(new Chess(message.board));
+      setRoomId(message.roomID);
       setTimer([message.timerLight/1000, message.timerDark/1000]);
       router.push(`/games/${message.roomID}`);
     };
@@ -226,6 +229,7 @@ export function GameProvider({token, authorized, children}) {
         increment: options?.increment ?? 5,
         hostColor: options?.hostColor ?? 'LIGHT',
       };
+      console.log('message', message);
     } else if (gameType === 'JOINCUSTOM') {
       message = options?.roomID ? {gameType: 'CUSTOM', roomID: options.roomID} : {};
       socket.emit('join_room', message);
@@ -434,6 +438,7 @@ export function GameProvider({token, authorized, children}) {
   return (
     <GameContext.Provider value={{
       sayHello,
+      roomId,
       getInstance,
       gameType,
       setGameType,
