@@ -175,6 +175,11 @@ export default function MSidebar({ sidebarOpen, setSidebarOpen, user }) {
                             {item.name}
                           </Link>
                         ))}
+                    <div className='w-full flex flex-col justify-center gap-y-1.5 py-4 items-center text-gray-200/30 border border-gray-200/30 rounded-md'>
+                      <span className='text-sm font-semibold select-none text-center'>
+                      Si experimentas algún problema al iniciar partida, prueba a recargar la aplicación
+                      </span>
+                    </div>
                   </nav>
                 </div>
                 {router.asPath.includes('game') && (

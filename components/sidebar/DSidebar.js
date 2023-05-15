@@ -83,8 +83,8 @@ export default function DSidebar({user}) {
       {/* Sidebar component, swap this element with another sidebar if you like */}
       <div className="flex min-h-0 flex-1 flex-col border-gray-200 divide-y divide-white/20 px-2">
         <div className="flex flex-1 flex-col overflow-y-auto py-2">
-          <nav className="flex-1 space-y-1.5">
-            <form autoComplete='off'>
+          <nav className="flex-1 space-y-1.5 flex flex-col h-full">
+            <form autoComplete='off' className='h-fit'>
               <div className="relative flex items-center">
                 <input
                   type="text"
@@ -141,6 +141,11 @@ export default function DSidebar({user}) {
                     }
                   </Link>
                 ))}
+            <div className='w-full flex flex-col justify-center gap-y-1.5 py-4 items-center text-gray-200/30 border border-gray-200/30 rounded-md'>
+              <span className='text-sm font-semibold select-none text-center'>
+                Si experimentas algún problema al iniciar partida, prueba a recargar la aplicación
+              </span>
+            </div>
             <div className='w-full flex flex-col justify-center gap-y-1.5 py-4 items-center text-gray-200/30'>
               <span className='text-sm font-semibold select-none'>
                 Volver al lobby
