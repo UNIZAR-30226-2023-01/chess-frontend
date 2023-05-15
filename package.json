@@ -32,6 +32,7 @@
     "next": "13.1.6",
     "next-pwa": "5.6.0",
     "react": "18.2.0",
+    "react-canvas-confetti": "^1.4.0",
     "react-chessboard": "2.0.8",
     "react-dom": "18.2.0",
     "react-hot-toast": "2.4.0",

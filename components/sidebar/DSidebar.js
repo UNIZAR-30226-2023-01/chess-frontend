@@ -12,6 +12,7 @@ import {
   BackspaceIcon,
   FlagIcon,
   PauseIcon,
+  HandRaisedIcon,
 } from '@heroicons/react/24/outline';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'})
@@ -24,7 +25,7 @@ export default function DSidebar({user}) {
   const router = useRouter();
   const { switchModal } = useChess();
   const [options, setOptions] = useState({ roomID: ''});
-  const { gameType, joinRoomAsSpectator, surrender, voteDraw, voteSave } = useGame();
+  const { gameType, joinRoomAsSpectator, surrender, voteDraw, voteSave, sayHello } = useGame();
   useEnterKey('Enter', () => options.roomID ? joinRoomAsSpectator(options.roomID) : {});
 
   const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, fetcher);
@@ -50,6 +51,10 @@ export default function DSidebar({user}) {
       text: 'tablas',
       onClick: () => voteDraw(),
       icon: FlagIcon,
+    }, {
+      text: 'saludar',
+      onClick: () => sayHello(),
+      icon: HandRaisedIcon,
     },
   ];
 
@@ -66,6 +71,10 @@ export default function DSidebar({user}) {
       text: 'guardar',
       onClick: () => voteSave(),
       icon: PauseIcon,
+    }, {
+      text: 'saludar',
+      onClick: () => sayHello(),
+      icon: HandRaisedIcon,
     },
   ];
 

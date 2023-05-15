@@ -1,6 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
+import ReactCanvasConfetti from 'react-canvas-confetti';
 
-export default function Player({avatar, username, elo, orientation='r', turn, time }) {
+const canvasStyles = {
+  position: 'absolute',
+  pointerEvents: 'none',
+  width: '100%',
+  height: '100%',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+};
+
+export default function Player({avatar, username, elo, orientation='r', turn, time, getInstance}) {
   const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -13,7 +25,6 @@ export default function Player({avatar, username, elo, orientation='r', turn, ti
     }
   }, [turn]);
 
-
   useEffect(() => {
     let intervalId;
     if (isRunning) {
@@ -24,11 +35,13 @@ export default function Player({avatar, username, elo, orientation='r', turn, ti
 
     return () => clearInterval(intervalId);
   }, [isRunning]);
+
   return (
     <div className="w-fit mx-auto">
       <div className='flex flex-col gap-y-6 max-w-3xl'>
         <div className='h-16 w-full flex gap-x-4'>
-          <div className='flex-1 flex items-end justify-between gap-x-4'>
+          <div className='flex-1 flex items-end justify-between gap-x-4 relative'>
+            <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
             <div className='flex items-center gap-x-4'>
               {orientation === 'l' &&
                 <div className='flex flex-col items-end justify-evenly dark:text-white text-black'>
@@ -46,7 +59,7 @@ export default function Player({avatar, username, elo, orientation='r', turn, ti
                   className="h-full w-full object-cover rounded-full"
                   alt="avatar image"
                 />
-                <div className='absolute bottom-0 left-0 w-full h-full z-20 border-b-2 rounded-2xl flex items-end justify-center text-lg font-bold font-mono bg-gradient-to-t from-white/50 via-white/20 to-transparent'>
+                <div className='absolute bottom-0 left-0 w-full h-full z-10 border-b-2 rounded-full flex items-end justify-center text-lg font-bold font-mono bg-gradient-to-t from-white/50 via-white/20 to-transparent'>
                   <span>
                     {Math.floor(timer / 60)}:{(timer % 60).toFixed(0).toString().padStart(2, '0')}
                   </span>

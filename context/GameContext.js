@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useRef, useCallback} from 'react';
 import { io } from 'socket.io-client';
 import { useRouter } from 'next/router';
 import { Chess } from 'chess.js';
@@ -145,6 +145,12 @@ export function GameProvider({token, authorized, children}) {
     };
 
 
+    const handleSalute = (message) => {
+      console.log('error message', message);
+      if (message === '') fire();
+      else toast(message, {icon: '📨'});
+    };
+
     const handleError = (message) => {
       console.log('error message', message);
       if (message.error === 'ALREADY_PLAYING') toast('Ya estas actualmente en una partida o en una cola para jugar.', {icon: '🥸'});
@@ -162,6 +168,7 @@ export function GameProvider({token, authorized, children}) {
     socket.on('game_over', handleGameOver);
     socket.on('voted_draw', handleVotedDraw);
     socket.on('voted_save', handleVotedSave);
+    socket.on('salute', handleSalute);
     socket.on('error', handleError);
 
     return () => {
@@ -176,6 +183,7 @@ export function GameProvider({token, authorized, children}) {
       socket.off('game_over', handleGameOver);
       socket.off('voted_draw', handleVotedDraw);
       socket.off('voted_save', handleVotedSave);
+      socket.off('salute', handleSalute);
       socket.off('error', handleError);
     };
   }, [socket, player, game]);
@@ -188,7 +196,6 @@ export function GameProvider({token, authorized, children}) {
 
   const findRoom = (gameType, options={}) => {
     setOver(false);
-    console.log('findRoom', gameType, options);
     const gameTypesAllowed = ['AI', 'COMPETITIVE', 'CUSTOM', 'JOINCUSTOM'];
     if (!gameTypesAllowed.includes(gameType)) {
       throw new Error('Invalid game type');
@@ -223,8 +230,11 @@ export function GameProvider({token, authorized, children}) {
       socket.emit('join_room', message);
       return;
     }
-    console.log(message);
     socket.emit('find_room', message);
+  };
+
+  const sayHello = (text='') => {
+    socket.emit('salute', {text});
   };
 
   const cancelSearch = () => {
@@ -247,19 +257,19 @@ export function GameProvider({token, authorized, children}) {
     socket.emit('move', {'move': mov});
   };
 
-  const surrender = (mov) => {
+  const surrender = () => {
     socket.emit('surrender');
     toast('Te has rendido', { icon: '🐥' });
   };
 
-  const voteDraw = (mov) => {
+  const voteDraw = () => {
     socket.emit('vote_draw');
     toast('Has pedido tablas', {
       icon: '♟️',
     });
   };
 
-  const voteSave = (mov) => {
+  const voteSave = () => {
     socket.emit('vote_save');
     if (gameType === 'AI') toast('Has guardado la partida.', { icon: '🤖' });
     else toast('Has pedido guardar la partida.', { icon: '👥' });
@@ -376,8 +386,54 @@ export function GameProvider({token, authorized, children}) {
     }
   }
 
+  const refAnimationInstance = useRef(null);
+
+  const getInstance = useCallback((instance) => {
+    refAnimationInstance.current = instance;
+  }, []);
+
+  const makeShot = useCallback((particleRatio, opts) => {
+    refAnimationInstance.current &&
+      refAnimationInstance.current({
+        ...opts,
+        origin: { y: 0.7 },
+        particleCount: Math.floor(200 * particleRatio),
+      });
+  }, []);
+
+  const fire = useCallback(() => {
+    makeShot(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+
+    makeShot(0.2, {
+      spread: 60,
+    });
+
+    makeShot(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2,
+    });
+
+    makeShot(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  }, [makeShot]);
+
   return (
     <GameContext.Provider value={{
+      sayHello,
+      getInstance,
       gameType,
       setGameType,
       resumeMatch,
