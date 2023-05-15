@@ -37,18 +37,17 @@ export function GameProvider({token, authorized, children}) {
     }
   };
 
-
   useEffect(() => {
     if (!socket) {
-      const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
+      const sock = io(process.env.NEXT_PUBLIC_WS_URL, {
         reconnectionDelayMax: 10000,
         extraHeaders: {
           token: token,
         },
       });
 
-      setSocket(socket);
-      console.log('socket created', socket);
+      setSocket(sock);
+      console.log('socket created', sock);
     }
   }, [token]);
 
@@ -95,10 +94,10 @@ export function GameProvider({token, authorized, children}) {
 
     const handleRoom = (message) => {
       console.log('room message', message);
-      setPlayer(message.color);
+      setPlayer(message.color ?? 'SPECTATOR');
       setGameType(message.gameType);
-      setTurn(message.turn);
       setGame(new Chess(message.board));
+      setTurn(message.turn);
       setRoomId(message.roomID);
       setTimer([message.timerLight/1000, message.timerDark/1000]);
       router.push(`/games/${message.roomID}`);
@@ -112,8 +111,10 @@ export function GameProvider({token, authorized, children}) {
       console.log('moved message', message);
       setTimer([message.timerLight/1000, message.timerDark/1000]);
       setTurn(message.turn);
-      if (!player) return;
-      if (message.turn === player) {
+      // if (!player) return;
+      console.log('player:', player);
+      if (message.turn === player || player === 'SPECTATOR') {
+        console.log('voy a mover', message);
         moved(message.move);
       }
     };
@@ -127,11 +128,14 @@ export function GameProvider({token, authorized, children}) {
     };
     const handleVotedDraw = (message) => {
       console.log('voted_draw message', message);
+
+      if (player === message.color || player === 'SPECTATOR') return;
       toast((t) => (
         <span className='flex items-center gap-x-2 whitespace-nowrap'>
           Tu rival pide tablas.
           <button
             onClick={() => {
+              socket.emit('voted_draw');
               toast.dismiss(t.id);
             }}
             className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -288,7 +292,7 @@ export function GameProvider({token, authorized, children}) {
     else if (authorized === 'DARK') who ='b';
 
     if (who !== piece[0]) {
-      toast('Quieto viejo suelta esa pieza', { icon: '👺' });
+      toast('No puedes mover esta pieza', { icon: '⛔️' });
       return;
     }
     const posibleMoves = game.moves({
@@ -335,14 +339,12 @@ export function GameProvider({token, authorized, children}) {
       });
 
       if (move && move.promotion) {
-        console.log('QUIERO PROMOCIONAR');
         setShowPromotion(true);
         setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
         return true;
       }
 
       setGame(gameCopy);
-      console.log('onDrop ', game);
       movePiece(move.lan);
       setOptionSquares({
         sourceSquare: { background: cMov },

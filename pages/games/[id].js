@@ -39,6 +39,7 @@ export default function Game({authorized, data, user}) {
   } = useGame();
 
   useEffect(() => {
+    console.log('game', data.board);
     updateGame(data.board);
     if (user.player === 'DARK' || user.player === 'LIGHT') setInQueue(false);
   }, []);
