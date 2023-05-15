@@ -16,6 +16,7 @@ export function GameProvider({token, authorized, children}) {
   const router = useRouter();
   const [socket, setSocket] = useState(null);
 
+  const [roomId, setRoomId] = useState();
   const [gameType, setGameType] = useState();
   const [game, setGame] = useState(new Chess());
   const [pausedgame, setPausedGame] = useState({});
@@ -36,27 +37,23 @@ export function GameProvider({token, authorized, children}) {
     }
   };
 
-
   useEffect(() => {
     if (!socket) {
-      const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
+      const sock = io(process.env.NEXT_PUBLIC_WS_URL, {
         reconnectionDelayMax: 10000,
         extraHeaders: {
           token: token,
         },
       });
 
-      setSocket(socket);
-      console.log('socket created', socket);
+      setSocket(sock);
     }
   }, [token]);
 
   useEffect(() => {
     if (!socket) return;
 
-    const handleConnectError = (err) => {
-      console.log(err.message);
-    };
+    const handleConnectError = (err) => {};
 
     const handleConnect = () => {
       console.log('connected');
@@ -71,7 +68,6 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleRoomCreated = (message) => {
-      console.log('room_created message', message);
       setGameType(message.gameType);
 
       toast((t) => (
@@ -93,10 +89,11 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleRoom = (message) => {
-      console.log('room message', message);
-      setPlayer(message.color);
+      setPlayer(message.color ?? 'SPECTATOR');
       setGameType(message.gameType);
+      setGame(new Chess(message.board));
       setTurn(message.turn);
+      setRoomId(message.roomID);
       setTimer([message.timerLight/1000, message.timerDark/1000]);
       router.push(`/games/${message.roomID}`);
     };
@@ -106,29 +103,27 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleMoved = (message) => {
-      console.log('moved message', message);
       setTimer([message.timerLight/1000, message.timerDark/1000]);
       setTurn(message.turn);
-      if (!player) return;
-      if (message.turn === player) {
+      if (message.turn === player || player === 'SPECTATOR') {
         moved(message.move);
       }
     };
 
     const handleGameOver = (message) => {
-      console.log('game_over message', message);
       const resul = ['CHECKMATE', 'TIMEOUT', 'DRAW', 'SURRENDER'].includes(message.endState);
       setGame(new Chess());
       setOver([resul, message.endState, message.winner]);
-      console.log([resul, message.endState, message.winner]);
     };
+
     const handleVotedDraw = (message) => {
-      console.log('voted_draw message', message);
+      if (player === message.color || player === 'SPECTATOR') return;
       toast((t) => (
         <span className='flex items-center gap-x-2 whitespace-nowrap'>
           Tu rival pide tablas.
           <button
             onClick={() => {
+              socket.emit('vote_draw');
               toast.dismiss(t.id);
             }}
             className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -142,18 +137,35 @@ export function GameProvider({token, authorized, children}) {
     };
 
     const handleVotedSave = (message) => {
-      console.log('voted_save message', message);
+      if (player === message.color || player === 'SPECTATOR') return;
+      toast((t) => (
+        <span className='flex items-center gap-x-2 whitespace-nowrap'>
+          Tu rival quiere guardar la partida.
+          <button
+            onClick={() => {
+              socket.emit('vote_save');
+              toast.dismiss(t.id);
+            }}
+            className="rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            Aceptar
+          </button>
+        </span>
+      ), {
+        duration: 1000 * 60,
+      });
     };
 
+    const handleSave = (message) => {
+      setOver([true, 'SAVE', '']);
+    };
 
     const handleSalute = (message) => {
-      console.log('error message', message);
       if (message === '') fire();
       else toast(message, {icon: '📨'});
     };
 
     const handleError = (message) => {
-      console.log('error message', message);
       if (message.error === 'ALREADY_PLAYING') toast('Ya estas actualmente en una partida o en una cola para jugar.', {icon: '🥸'});
       if (message.error === 'NOT_PLAYING_ANY_GAME')toast('No estas conectado a ninguna partida actualmente.', {icon: '🐦'});
     };
@@ -169,6 +181,7 @@ export function GameProvider({token, authorized, children}) {
     socket.on('game_over', handleGameOver);
     socket.on('voted_draw', handleVotedDraw);
     socket.on('voted_save', handleVotedSave);
+    socket.on('saved', handleSave);
     socket.on('salute', handleSalute);
     socket.on('error', handleError);
 
@@ -184,13 +197,13 @@ export function GameProvider({token, authorized, children}) {
       socket.off('game_over', handleGameOver);
       socket.off('voted_draw', handleVotedDraw);
       socket.off('voted_save', handleVotedSave);
+      socket.on('saved', handleSave);
       socket.off('salute', handleSalute);
       socket.off('error', handleError);
     };
   }, [socket, player, game]);
 
   const resumeMatch = (roomID) => {
-    console.log('Retomando partida : ', roomID);
     socket.emit('resume', {gameID: roomID});
   };
 
@@ -271,20 +284,23 @@ export function GameProvider({token, authorized, children}) {
   };
 
   const voteSave = () => {
-    socket.emit('vote_save');
-    if (gameType === 'AI') toast('Has guardado la partida.', { icon: '🤖' });
-    else toast('Has pedido guardar la partida.', { icon: '👥' });
+    if (gameType === 'AI') {
+      toast('Has guardado la partida.', { icon: '🤖' });
+      socket.emit('vote_save');
+    } else {
+      toast('Has pedido guardar la partida.', { icon: '👥' });
+      socket.emit('vote_save');
+    }
   };
 
   function onPieceDragBegin(piece, sourceSquare) {
-    console.log(game);
     // Obtenemos los posibles movimientos de la pieza
     let who;
     if (authorized === 'LIGHT') who = 'w';
     else if (authorized === 'DARK') who ='b';
 
     if (who !== piece[0]) {
-      toast('Quieto viejo suelta esa pieza', { icon: '👺' });
+      toast('No puedes mover esta pieza', { icon: '⛔️' });
       return;
     }
     const posibleMoves = game.moves({
@@ -331,14 +347,12 @@ export function GameProvider({token, authorized, children}) {
       });
 
       if (move && move.promotion) {
-        console.log('QUIERO PROMOCIONAR');
         setShowPromotion(true);
         setPausedGame({sourceSquare, targetSquare}); // Lo utilizaremos para la promotion
         return true;
       }
 
       setGame(gameCopy);
-      console.log('onDrop ', game);
       movePiece(move.lan);
       setOptionSquares({
         sourceSquare: { background: cMov },
@@ -380,7 +394,6 @@ export function GameProvider({token, authorized, children}) {
         [move.to]: { background: cMov },
       });
       setGame(game);
-      console.log('su move', game);
       return true;
     } catch (error) {
       return false;
@@ -434,6 +447,7 @@ export function GameProvider({token, authorized, children}) {
   return (
     <GameContext.Provider value={{
       sayHello,
+      roomId,
       getInstance,
       gameType,
       setGameType,

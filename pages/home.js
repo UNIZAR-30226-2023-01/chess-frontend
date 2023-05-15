@@ -15,7 +15,7 @@ const PAGE_SIZE = 4; // Número de juegos por página
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?&filter={"gameType":"COMPETITIVE","limit":${PAGE_SIZE},"skip":${(currentPage - 1) * PAGE_SIZE}}`, fetcher, { refreshInterval: 1000 * 60 * 3 });
+  const { data } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/games?&filter={"gameType":"COMPETITIVE","state":"PLAYING","limit":${PAGE_SIZE},"skip":${(currentPage - 1) * PAGE_SIZE}}`, fetcher, { refreshInterval: 1000 * 60 * 3 });
   const games = data?.flat();
 
   const now = new Date();
