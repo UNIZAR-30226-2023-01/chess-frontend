@@ -160,7 +160,7 @@ export default function Game({authorized, data, user}) {
           <source src="/assets/audio/audio.mp3" type="audio/mp3" />
         </audio>
       </div>
-      <EndGameModal show = {over[0]} setOpen={()=>{}} endGame={over[1]} winner={over[2]} player={user.Player}/>
+      <EndGameModal show={over[0]} setOpen={()=>{}} endGame={over[1]} winner={over[2]} player={user.player}/>
     </>
   );
 }
@@ -208,7 +208,6 @@ export async function getServerSideProps(context) {
         .then((res) => res.json())
         .catch((err)=>console.error(err));
   }
-
 
   return {
     props: {

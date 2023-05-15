@@ -120,6 +120,7 @@ export function GameProvider({token, authorized, children}) {
       const resul = ['CHECKMATE', 'TIMEOUT', 'DRAW', 'SURRENDER'].includes(message.endState);
       setGame(new Chess());
       setOver([resul, message.endState, message.winner]);
+      console.log([resul, message.endState, message.winner]);
     };
     const handleVotedDraw = (message) => {
       console.log('voted_draw message', message);
