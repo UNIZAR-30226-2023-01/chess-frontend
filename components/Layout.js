@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bars3Icon} from '@heroicons/react/24/outline';
 import MSidebar from '@/components/sidebar/MSidebar';
 import DSidebar from '@/components/sidebar/DSidebar';
@@ -12,9 +12,13 @@ import useKeyPress from '@/hooks/useKeyPress';
 export default function Layout({children}) {
   const router = useRouter();
   const { inQueue, setInQueue, switchModal } = useChess();
-  const { cancelSearch } = useGame();
+  const { cancelSearch, setToken } = useGame();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {user} = children.props;
+
+  useEffect(() => {
+    setToken(user.token);
+  }, []);
 
   useKeyPress('j', () => switchModal());
   useKeyPress('h', () => router.push('/home'));

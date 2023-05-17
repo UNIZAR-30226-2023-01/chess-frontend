@@ -60,7 +60,11 @@ export default function Home() {
 }
 
 
-Home.getLayout = (page) => <Layout>{page}</Layout>;
+Home.getLayout = (page) =>{
+  return (
+    <Layout>{page}</Layout>
+  );
+};
 
 export async function getServerSideProps({ req }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/authenticate`, {

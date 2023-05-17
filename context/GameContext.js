@@ -16,6 +16,7 @@ export function GameProvider({token, authorized, children}) {
   const router = useRouter();
   const [socket, setSocket] = useState(null);
 
+  const [_token, setToken] = useState(token);
   const [roomId, setRoomId] = useState();
   const [gameType, setGameType] = useState();
   const [game, setGame] = useState(new Chess());
@@ -39,16 +40,23 @@ export function GameProvider({token, authorized, children}) {
 
   useEffect(() => {
     if (!socket) {
+      console.log('connecting');
       const sock = io(process.env.NEXT_PUBLIC_WS_URL, {
         reconnectionDelayMax: 10000,
         extraHeaders: {
-          token: token,
+          token: _token,
         },
       });
 
       setSocket(sock);
     }
-  }, [token]);
+    return () => {
+      if (socket) {
+        socket.disconnect();
+        setSocket(null);
+      }
+    };
+  }, [_token, socket]);
 
   useEffect(() => {
     if (!socket) return;
@@ -446,6 +454,7 @@ export function GameProvider({token, authorized, children}) {
 
   return (
     <GameContext.Provider value={{
+      setToken,
       sayHello,
       roomId,
       getInstance,
