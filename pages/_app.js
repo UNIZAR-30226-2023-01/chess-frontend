@@ -1,10 +1,10 @@
 import '@/styles/globals.css';
 import {ChessProvider} from '@/context/ChessContext';
 import {ThemeProvider} from '@/context/ThemeContext';
-import { GameProvider } from '@/context/GameContext';
+import {GameProvider} from '@/context/GameContext';
 import {Toaster} from 'react-hot-toast';
 import Meta from '@/components/Meta';
-import { Analytics } from '@vercel/analytics/react';
+import {Analytics} from '@vercel/analytics/react';
 
 export default function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
