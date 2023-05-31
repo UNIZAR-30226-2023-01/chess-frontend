@@ -1,15 +1,20 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import ScrollTrigger from 'react-scroll-trigger';
+import CountUp from '@/components/CountUp';
+import { useState } from 'react';
 
 const stats = [
-  { id: 1, name: 'Jugadores registrados', value: '8,000+' },
-  { id: 2, name: 'Partidas diarias', value: '100+' },
+  { id: 1, name: 'Jugadores registrados', value: '8000+' },
+  { id: 2, name: 'Partidas diarias', value: '750+' },
   { id: 3, name: 'Torneos diarios', value: '200+' },
-  { id: 4, name: 'Garantía de disponibilidad', value: '99.9%' },
+  { id: 4, name: 'Garantía de disponibilidad', value: '99%' },
 ];
 
-export default function Index() {
+export default function Index({logged}) {
+  const [inView, setInView] = useState(false);
+
   return (
     <div className="relative isolate bg-white">
       <svg
@@ -36,10 +41,10 @@ export default function Index() {
         </svg>
         <rect width="100%" height="100%" strokeWidth={0} fill="url(#83fd4e5a-9d52-42fc-97b6-718e5d7ee527)" />
       </svg>
-      <Navbar/>
+      <Navbar logged={logged}/>
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-x-10 lg:px-8 lg:py-40">
         <div className="mx-auto max-w-2xl lg:mx-0 lg:flex-auto">
-          <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          <h1 className="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl ">
             Domina el tablero de ajedrez en línea
           </h1>
           <p className="mt-6 text-lg leading-8 text-gray-600">
@@ -80,7 +85,7 @@ export default function Index() {
               transform="translate(24 24)"
               clipPath="url(#2ade4387-9c63-4fc4-b754-10e687a0d332)"
             >
-              <img src="/assets/images/inicio.png" alt="" />
+              <img src="/assets/images/mobile.webp" alt="" />
             </foreignObject>
           </svg>
         </div>
@@ -96,14 +101,18 @@ export default function Index() {
               Algunos números sorprendentes de nuestra plataforma de ajedrez.
               </p>
             </div>
-            <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
-              {stats.map((stat) => (
-                <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
-                  <dt className="text-sm font-semibold leading-6 text-gray-600">{stat.name}</dt>
-                  <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900">{stat.value}</dd>
-                </div>
-              ))}
-            </dl>
+            <ScrollTrigger onEnter={() => setInView(true)} onExit={() => setInView(false)}>
+              <dl className="mt-16 grid grid-cols-1 gap-0.5 overflow-hidden rounded-2xl text-center sm:grid-cols-2 lg:grid-cols-4">
+                {stats.map((stat) => (
+                  <div key={stat.id} className="flex flex-col bg-gray-400/5 p-8">
+                    <dt className="text-sm font-semibold leading-6 text-gray-600">{stat.name}</dt>
+                    <dd className="order-first text-3xl font-semibold tracking-tight text-gray-900">
+                      {inView && <CountUp start={0} end={Number(stat.value.match(/\d+/)[0])} timer={10} symbol={stat.value.match(/\D+/)[0]}/>}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </ScrollTrigger>
           </div>
         </div>
       </div>
@@ -131,7 +140,7 @@ export default function Index() {
               </div>
             </div>
             <img
-              src="/assets/images/web_screenshot.png"
+              src="/assets/images/web.webp"
               alt="Product screenshot"
               className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:ml-0"
               width={2432}
@@ -148,7 +157,14 @@ export default function Index() {
             <br />
           Descarga ya la app o quédate en la web.
           </h2>
-          <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
+          <div className="mt-10 flex items-center gap-x-2 lg:mt-0 lg:flex-shrink-0">
+            <a
+              href={process.env.NEXT_PUBLIC_APK_URL}
+              className="rounded-md bg-emerald px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-emerald/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              download
+            >
+              Descargar APK
+            </a>
             <Link
               href="/home"
               className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -172,3 +188,20 @@ Index.getLayout = (page) => {
     </div>
   );
 };
+
+export async function getServerSideProps({req}) {
+  let token = null;
+  try {
+    const newQueryString = req.headers.cookie.replace(/;/g, '&');
+    const cookies = new URLSearchParams(newQueryString);
+    token = cookies.get('api-auth');
+  } catch (err) {
+    console.error(err);
+  }
+
+  return {
+    props: {
+      logged: !!token,
+    },
+  };
+}

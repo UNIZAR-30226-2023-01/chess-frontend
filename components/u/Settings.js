@@ -5,14 +5,9 @@ import toast, {Toaster} from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { customPieces } from '@/data/board';
 import { mutate } from 'swr';
-import { Switch } from '@headlessui/react';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
 
 export default function Settings({profile: user, boards, pieces}) {
-  const [enabled, setEnabled] = useState(false);
   const router = useRouter();
   const [board, setBoard] = useState(boards.find((b) => b.active).name);
   const [ptypes, setPTypes] = useState([pieces.find((b) => b.activeLight).name, pieces.find((b) => b.activeDark).name]);
@@ -281,7 +276,7 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(!enabled ? customization?.whitePiece : customization?.blackPiece)}
+                      customPieces={customPieces(customization?.whitePiece, customization?.blackPiece)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).darkColor }}
                       customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === customization?.board).lightColor }}
@@ -294,7 +289,7 @@ export default function Settings({profile: user, boards, pieces}) {
                     <Chessboard
                       id="BasicBoard"
                       boardOrientation='white'
-                      customPieces={customPieces(pieces.find((i) => i.name === ptypes[Number(enabled)]).name)}
+                      customPieces={customPieces(pieces.find((i) => i.name === ptypes[0]).name, pieces.find((i) => i.name === ptypes[1]).name)}
                       arePiecesDraggable={false}
                       customDarkSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).darkColor }}
                       customLightSquareStyle={{ backgroundColor: boards.find((i)=> i.name === board).lightColor }}
@@ -319,15 +314,32 @@ export default function Settings({profile: user, boards, pieces}) {
                       </select>
                     </React.Fragment>
                     <React.Fragment>
-                      <label htmlFor="pieces" className="block text-sm font-medium text-gray-700">
-                        Piezas
+                      <label htmlFor="pieces-b" className="block text-sm font-medium text-gray-700">
+                        Piezas (N)
                       </label>
                       <select
-                        id="pieces"
-                        name="pieces"
-                        autoComplete="pieces"
+                        id="pieces-b"
+                        name="pieces-b"
+                        autoComplete="pieces-b"
                         className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
-                        onChange={(e) => enabled ? setPTypes([ptypes[0], e.target.value]) : setPTypes([e.target.value, ptypes[1]])}
+                        onChange={(e) => setPTypes([ptypes[0], e.target.value])}
+                      >
+                        {pieces.map((piece, index) => (
+                          <option key={index}>{piece.name}</option>
+                        ))
+                        }
+                      </select>
+                    </React.Fragment>
+                    <React.Fragment>
+                      <label htmlFor="pieces-w" className="block text-sm font-medium text-gray-700">
+                        Piezas (B)
+                      </label>
+                      <select
+                        id="pieces-w"
+                        name="pieces-w"
+                        autoComplete="pieces-w"
+                        className="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-gray-900 focus:outline-none focus:ring-gray-900 sm:text-sm"
+                        onChange={(e) => setPTypes([e.target.value, ptypes[1]])}
                       >
                         {pieces.map((piece, index) => (
                           <option key={index}>{piece.name}</option>
@@ -338,26 +350,7 @@ export default function Settings({profile: user, boards, pieces}) {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6 flex justify-between items-center">
-                <div className='flex items-center gap-x-3'>
-                  <span className='text-sm'>Ver como:</span>
-                  <Switch
-                    checked={enabled}
-                    onChange={setEnabled}
-                    className={classNames(enabled ? 'bg-black' : 'bg-gray-200',
-                        'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2',
-                    )}
-                  >
-                    <span className="sr-only">See as</span>
-                    <span
-                      aria-hidden="true"
-                      className={classNames(enabled ? 'translate-x-5' : 'translate-x-0',
-                          'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-                      )}
-                    />
-                  </Switch>
-                  <span className='text-sm'>{enabled ? 'Negras': 'Blancas'}</span>
-                </div>
+              <div className="bg-gray-50 px-4 py-3 text-right sm:px-6 flex justify-end items-center">
                 <button
                   type="submit"
                   className="inline-flex justify-center rounded-md border border-transparent bg-gray-800 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2"

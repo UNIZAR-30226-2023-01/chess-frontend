@@ -22,7 +22,7 @@ const times = [
   },
 ];
 
-export default function TournamentModal({ open, setOpen}) {
+export default function TournamentModal({ open, setOpen, mutate}) {
   const [options, setOptions] = useState({rounds: 3, date: 0, time: 0, matchTime: times[1].value, matchIncrement: 5});
 
   const handleSubmit = async (e) => {
@@ -48,7 +48,10 @@ export default function TournamentModal({ open, setOpen}) {
           }),
         })
             .then((res) => {
-              if (res.ok && res.status === 201) resolve('ok');
+              if (res.ok && res.status === 201) {
+                mutate();
+                resolve('ok');
+              }
               reject(new Error('Network response was not ok.'));
             })
             .catch(() => reject(new Error('Network response was not ok.')));

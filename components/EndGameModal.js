@@ -3,10 +3,11 @@ import { useRouter } from 'next/router';
 import { Dialog, Transition } from '@headlessui/react';
 import { TrophyIcon } from '@heroicons/react/24/outline';
 
-export default function TournamentModal({ open, setOpen, endGame}) {
+export default function EndGameModal({show, setOpen, endGame, winner, player}) {
   const router = useRouter();
+  const win = (winner === player)? true : false;
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition.Root show={show ?? false} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
@@ -33,19 +34,32 @@ export default function TournamentModal({ open, setOpen, endGame}) {
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div>
-                  <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full  ${endGame === 'victory' ? 'bg-green-100' : 'bg-red-100'}`}>
-                    <TrophyIcon className={`h-6 w-6 ${endGame === 'victory' ? 'text-green-600' : 'text-red-600'}`} aria-hidden="true" />
+                  <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full  ${win ? 'bg-green-100' : 'bg-red-100'}`}>
+                    <TrophyIcon className={`h-6 w-6 ${win ? 'text-green-600' : 'text-red-600'}`} aria-hidden="true" />
                   </div>
                   <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                      {endGame === 'victory' ?
+                      {endGame === 'CHECKMATE' ?
+                          win ?
                          'Has ganado, ¡Felicidades!' :
-                         'Has perdido, ¡Sigue intentando!'
+                         'Has perdido, ¡Sigue intentando!' :
+                         endGame === 'SAVE' ?
+                         'Se ha guardado la partida' :
+                          endGame === 'DRAW' ?
+                         'Empatados, ¡Bien Jugado!':
+                          endGame === 'TIMEOUT' ?
+                          win ?
+                          'Has ganado por tiempo, ¡Felicidades!' :
+                          'Has perdido por tiempo, ¡Sigue intentando!' :
+                        'Te has rendido, no te des por vencido'
                       }
                     </Dialog.Title>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        {endGame === 'victory' ?
+                        { endGame === 'SAVE' ?
+                         '¡Puedes seguir jugando más tarde!' : endGame === 'DRAW' ?
+                        'De las mejores partidas vistas en estos tiempos, a pesar del empate cualquiera podria haberse llevado la victoria' :
+                        win ?
                          'Tu asombrosa habilidad cautiva a todos, impulsándolos a continuar jugando sin cesar.' :
                          'A pesar de la derrota, su espíritu resiliente inspira a levantarse y seguir luchando con renovada determinación.'
                         }

@@ -12,6 +12,7 @@ import {
   BackspaceIcon,
   FlagIcon,
   PauseIcon,
+  HandRaisedIcon,
 } from '@heroicons/react/24/outline';
 
 const fetcher = (url) => fetch(url, {credentials: 'include'})
@@ -24,7 +25,7 @@ export default function DSidebar({user}) {
   const router = useRouter();
   const { switchModal } = useChess();
   const [options, setOptions] = useState({ roomID: ''});
-  const { gameType, joinRoomAsSpectator, surrender, voteDraw, voteSave } = useGame();
+  const { gameType, joinRoomAsSpectator, surrender, voteDraw, voteSave, sayHello } = useGame();
   useEnterKey('Enter', () => options.roomID ? joinRoomAsSpectator(options.roomID) : {});
 
   const { data, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/${user.id}`, fetcher);
@@ -50,6 +51,10 @@ export default function DSidebar({user}) {
       text: 'tablas',
       onClick: () => voteDraw(),
       icon: FlagIcon,
+    }, {
+      text: 'saludar',
+      onClick: () => sayHello(),
+      icon: HandRaisedIcon,
     },
   ];
 
@@ -66,6 +71,10 @@ export default function DSidebar({user}) {
       text: 'guardar',
       onClick: () => voteSave(),
       icon: PauseIcon,
+    }, {
+      text: 'saludar',
+      onClick: () => sayHello(),
+      icon: HandRaisedIcon,
     },
   ];
 
@@ -74,8 +83,8 @@ export default function DSidebar({user}) {
       {/* Sidebar component, swap this element with another sidebar if you like */}
       <div className="flex min-h-0 flex-1 flex-col border-gray-200 divide-y divide-white/20 px-2">
         <div className="flex flex-1 flex-col overflow-y-auto py-2">
-          <nav className="flex-1 space-y-1.5">
-            <form autoComplete='off'>
+          <nav className="flex-1 space-y-1.5 flex flex-col h-full">
+            <form autoComplete='off' className='h-fit'>
               <div className="relative flex items-center">
                 <input
                   type="text"
@@ -112,24 +121,26 @@ export default function DSidebar({user}) {
                 ⌘ Alt+J
               </kbd>
             </button>
-            {navigation.map((item, id) => (
-              <Link
-                key={id}
-                href={item.href}
-                className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
-              >
-                <item.icon
-                  className='text-gray-200 mr-3 flex-shrink-0 h-5 w-5'
-                  aria-hidden="true"
-                />
-                {item.name}
-                {item?.key &&
+            {navigation
+                .filter((item) => user.username !== 'guest' ? true : item.name === 'Jugar partida')
+                .map((item, id) => (
+                  <Link
+                    key={id}
+                    href={item.href}
+                    className='cursor-pointer text-gray-200 hover:bg-gray-800/30 group flex items-center px-3 py-3 text-sm font-medium rounded-md'
+                  >
+                    <item.icon
+                      className='text-gray-200 mr-3 flex-shrink-0 h-5 w-5'
+                      aria-hidden="true"
+                    />
+                    {item.name}
+                    {item?.key &&
                   <kbd className="absolute right-0 inline-flex mr-5 items-center rounded border border-gray-200/20 px-1 font-sans text-sm text-gray-400/20">
                     ⌘ {item.key}
                   </kbd>
-                }
-              </Link>
-            ))}
+                    }
+                  </Link>
+                ))}
             <div className='w-full flex flex-col justify-center gap-y-1.5 py-4 items-center text-gray-200/30'>
               <span className='text-sm font-semibold select-none'>
                 Volver al lobby

@@ -3,6 +3,7 @@ import { useChess } from '@/context/ChessContext';
 import { customPieces } from '@/data/board';
 
 export default function Tablero({
+  skins,
   orientation,
   game,
   optionSquares,
@@ -13,7 +14,7 @@ export default function Tablero({
   const { customization } = useChess();
 
   return (
-    <div className='w-full bg-white/20'>
+    <div className='w-full bg-white/20 relative h-full'>
       <Chessboard
         id="BasicBoard"
         position={game.fen()}
@@ -23,13 +24,13 @@ export default function Tablero({
         onPieceDragBegin={onPieceDragBegin}
         animationDuration={400}
         boardOrientation={orientation}
-        customPieces={customPieces((orientation === 'w') ? customization?.whitePiece:customization?.blackPiece)}
+        customPieces={customPieces(customization?.whitePiece, customization?.blackPiece)}
         customSquareStyles={{
           ...optionSquares,
           ...lastMoveSquares,
         }}
-        // customDarkSquareStyle={{ backgroundColor: customization.board.black }}
-        // customLightSquareStyle={{ backgroundColor: customization.board.white }}
+        customDarkSquareStyle={{ backgroundColor: skins.find((i) => i.name === customization.board).darkColor }}
+        customLightSquareStyle={{ backgroundColor: skins.find((i) => i.name === customization.board).lightColor }}
       />
     </div>
   );

@@ -36,10 +36,10 @@ const times = [
 ];
 
 const levels = [
-  {name: 'facil', value: 1},
-  {name: 'intermedio', value: 2},
-  {name: 'dificil', value: 3},
-  {name: 'buena suerte', value: 4},
+  {name: 'facil', value: 0},
+  {name: 'intermedio', value: 1},
+  {name: 'dificil', value: 2},
+  {name: 'buena suerte', value: 3},
 ];
 
 const pieces = [
@@ -52,7 +52,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function GameModal() {
+export default function GameModal({user}) {
   const { gameType, setGameType, selModal: open, switchModal: setOpen, setInQueue } = useChess();
   const { findRoom } = useGame();
 
@@ -109,31 +109,35 @@ export default function GameModal() {
                   </div>
                   <div className="hidden sm:block w-full">
                     <nav className="w-full flex space-x-4" aria-label="Tabs">
-                      {tabs.map((tab) => (
-                        <button
-                          key={tab.name}
-                          onClick={() => setGameType(tab.value)}
-                          className={classNames(
+                      {tabs
+                          .filter((item) => user.username !== 'guest' ? true : item.value !== 'COMPETITIVE')
+                          .map((tab) => (
+                            <button
+                              key={tab.name}
+                              onClick={() => setGameType(tab.value)}
+                              className={classNames(
                             tab.value === gameType ? 'text-indigo-700' : 'text-gray-500 hover:text-gray-700',
                             'rounded-md px-3 py-2.5 text-sm font-medium bg-white shadow-lg flex-1 mb-3',
-                          )}
-                          aria-current={tab.value === gameType ? 'page' : undefined}
-                        >
-                          {tab.name}
-                        </button>
-                      ))}
+                              )}
+                              aria-current={tab.value === gameType ? 'page' : undefined}
+                            >
+                              {tab.name}
+                            </button>
+                          ))}
                     </nav>
                   </div>
                 </div>
                 <div className='bg-white rounded-lg px-4 pb-4 pt-5 text-left shadow-xl sm:p-6'>
                   <div className='flex flex-col space-y-1'>
-                    <ListBox
-                      key="Tiempo"
-                      label="Tiempo"
-                      items={times}
-                      setter={(value) => setTime(value)}
-                      defaultValue={times[1].value}
-                    />
+                    {(user.username !== 'guest' || gameType === 'AI') && (
+                      <ListBox
+                        key="Tiempo"
+                        label="Tiempo"
+                        items={times}
+                        setter={(value) => setTime(value)}
+                        defaultValue={times[1].value}
+                      />
+                    )}
                     {gameType === 'AI' && (
                       <ListBox
                         key="Dificultad"
@@ -144,6 +148,7 @@ export default function GameModal() {
                       />
                     )}
                     {(gameType === 'AI' || gameType === 'CUSTOM') && (
+                      user.username !== 'guest' || gameType === 'AI' ?
                       <>
                         <ListBox
                           key="Set piezas"
@@ -161,34 +166,39 @@ export default function GameModal() {
                           setter={(e) => setIncrement(e.target.value)}
                           defaultValue={5}
                         />
-                      </>
+                      </> :
+                      <></>
                     )}
                   </div>
-                  <div className="mt-5 sm:mt-6">
-                    <button
-                      type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      onClick={() => {
-                        findRoom(gameType, options);
-                        setOpen();
-                        if (gameType === 'COMPETITIVE' | gameType === 'CUSTOM') {
-                          setInQueue(true);
-                        }
-                      }}
-                    >
+                  {(user.username !== 'guest' || gameType === 'AI') &&
+                    <div className="mt-5 sm:mt-6">
+                      <button
+                        type="button"
+                        className="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        onClick={() => {
+                          findRoom(gameType, options);
+                          setOpen();
+                          if (gameType === 'COMPETITIVE' | gameType === 'CUSTOM') {
+                            setInQueue(true);
+                          }
+                        }}
+                      >
                       Buscar partida
-                    </button>
-                  </div>
+                      </button>
+                    </div>
+                  }
                   {gameType === 'CUSTOM' && (
                     <div className="mt-4 space-y-4">
-                      <div className="relative">
-                        <div className="absolute inset-0 flex items-center">
-                          <div className="w-full border-t border-gray-400" />
+                      {user.username !== 'guest' && (
+                        <div className="relative">
+                          <div className="absolute inset-0 flex items-center">
+                            <div className="w-full border-t border-gray-400" />
+                          </div>
+                          <div className="relative flex justify-center text-sm">
+                            <span className="bg-white px-2 text-gray-600 select-none">O</span>
+                          </div>
                         </div>
-                        <div className="relative flex justify-center text-sm">
-                          <span className="bg-white px-2 text-gray-600 select-none">O</span>
-                        </div>
-                      </div>
+                      )}
                       <div className="relative flex items-center">
                         <input
                           type="text"

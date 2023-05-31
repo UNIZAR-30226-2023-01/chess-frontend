@@ -7,6 +7,8 @@ import useDateTimeFormat from '@/hooks/useDateTimeFormat';
 import useSWR from 'swr';
 import useSWRInfinite from 'swr/infinite';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { PlayIcon } from '@heroicons/react/24/outline';
+import { useGame } from '@/context/GameContext';
 
 export function Stats({
   name, value, text, type,
@@ -52,6 +54,7 @@ export function Stats({
 }
 
 export function ExampleGame({
+  id,
   type,
   orientation,
   position,
@@ -59,6 +62,7 @@ export function ExampleGame({
   updatedAt,
   state,
 }) {
+  const { resumeMatch } = useGame();
   const timeago = useTimeAgo(createdAt);
   const createdAtFormated = useDateTimeFormat(createdAt);
 
@@ -72,7 +76,7 @@ export function ExampleGame({
 
   return (
     <Link
-      href="#"
+      href={`/games/${id}`}
       className='cursor-pointer relative w-full bg-white shadow p-2 border-l-4 border-emerald flex items-center gap-x-4 rounded-lg'
     >
       {/* <div className='w-28 h-28 bg-gray-800'/> */}
@@ -105,6 +109,17 @@ export function ExampleGame({
           </div>
         </div>
       </div>
+      {state == 'PAUSED' &&
+        <button
+          type="button"
+          className="z-10 absolute right-0 top-0 p-1 mt-2 mr-2 text-sm duration-300 font-semibold group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          onClick={() => {
+            resumeMatch(id);
+          }}
+        >
+          <PlayIcon className='w-6 h-6 text-black group-hover:text-blue-800 rounded' />
+        </button>
+      }
     </Link>
   );
 }
@@ -189,6 +204,7 @@ export default function Profile({profile: user}) {
           {games?.map((item) => (
             <ExampleGame
               key={item.id}
+              id={item.id}
               type={item.gameType}
               orientation={''}
               position={item.board}

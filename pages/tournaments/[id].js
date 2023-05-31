@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
 import Layout from '@/components/Layout';
 import jwt from 'jsonwebtoken';
 
@@ -7,10 +8,17 @@ const Bracket = dynamic(
     { ssr: false },
 );
 
-export default function Rounds({tournament}) {
+export default function Rounds({tournament, user}) {
+  useEffect(() => {
+    // Preload the component during the initial navigation
+    Bracket.preload();
+  }, []);
+
   const matches = tournament.matches.map((match) => {
     const participants = match.participants.map((participant) => {
-      return {...participant, name: participant.username};
+      const isWinner = participant.id === match.winner;
+      const ended = match.finished;
+      return {...participant, name: participant.username, isWinner, resultText: !ended ? null : isWinner ? 'Won' : 'Lost'};
     });
     const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
     return {...match, tournamentRoundText: match.tournamentRoundText.replace('Ronda ', ''), participants, startTime: new Date(match.startTime).toLocaleDateString('es-ES', options)};
@@ -18,7 +26,7 @@ export default function Rounds({tournament}) {
 
   return (
     <div className="px-0 sm:px-6 lg:px-8 py-12 mx-auto flex items-center justify-center">
-      <Bracket matches={matches}/>
+      <Bracket matches={matches} user={user}/>
     </div>
 
   );

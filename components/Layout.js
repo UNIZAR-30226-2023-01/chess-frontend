@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Bars3Icon} from '@heroicons/react/24/outline';
 import MSidebar from '@/components/sidebar/MSidebar';
 import DSidebar from '@/components/sidebar/DSidebar';
@@ -12,15 +12,19 @@ import useKeyPress from '@/hooks/useKeyPress';
 export default function Layout({children}) {
   const router = useRouter();
   const { inQueue, setInQueue, switchModal } = useChess();
-  const { cancelSearch } = useGame();
+  const { cancelSearch, setToken } = useGame();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const {user} = children.props;
 
-  useKeyPress('h', () => router.push('/home'));
+  useEffect(() => {
+    setToken(user.token);
+  }, []);
+
   useKeyPress('j', () => switchModal());
-  useKeyPress('t', () => router.push('/tournaments'));
-  useKeyPress('c', () => router.push('/ranking'));
-  useKeyPress('p', () => router.push( '/u/' + user.id));
+  useKeyPress('h', () => router.push('/home'));
+  useKeyPress('t', () => (user && user.username !== 'guest') ? router.push('/tournaments') : null);
+  useKeyPress('c', () => (user && user.username !== 'guest') ? router.push('/ranking') : null);
+  useKeyPress('p', () => (user && user.username !== 'guest') ? router.push('/u/' + user.id) : null);
 
   return (
     <div className='h-screen overflow-hidden'>
@@ -50,7 +54,7 @@ export default function Layout({children}) {
           </div>
         </main>
       </div>
-      <GameModal/>
+      <GameModal user={user}/>
       {inQueue && <SearchGame onCancel={() => {
         setInQueue(false);
         cancelSearch();
