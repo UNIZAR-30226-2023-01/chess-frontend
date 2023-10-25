@@ -29,7 +29,7 @@
     "eslint-config-next": "13.1.6",
     "fs": "0.0.1-security",
     "jsonwebtoken": "9.0.0",
-    "next": "13.1.6",
+    "next": "13.5.0",
     "react": "18.2.0",
     "react-canvas-confetti": "^1.4.0",
     "react-chessboard": "2.0.8",
